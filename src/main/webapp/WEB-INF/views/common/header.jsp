@@ -48,12 +48,12 @@
 								<li><a href="">봉사게시판</a></li>
 							</ul>
 						</div></li>
-					<li class=""><a href="">후원</a>
+					<li class="support"><a href="supportPage.sup">후원</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
 								<li><a href="">후원하기</a></li>
 								<li><a href="">후훤내역조회</a></li>
-								<li><a href="">후원금사용내역조회</a></li>
+								<li><a href="sList.sup">후원금사용내역조회</a></li>
 								<li><a href="">후원상품</a></li>
 							</ul>
 						</div></li>
