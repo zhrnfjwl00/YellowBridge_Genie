@@ -8,8 +8,9 @@
 </head>
 <body>
 	<h1>
-		안녕하세요.
-		안녕하세요.
+		<%@include file="WEB-INF/views/common/header.jsp"%>
+		<%@include file="WEB-INF/views/common/mainContents/mainContents.jsp"  %>
+		<%@include file="WEB-INF/views/common/footer.jsp"  %>
 	</h1>
 </body>
 </html>
