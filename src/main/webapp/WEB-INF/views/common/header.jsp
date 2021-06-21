@@ -39,11 +39,11 @@
 								<li><a href="">입양일지</a></li>
 							</ul>
 						</div></li>
-					<li class=""><a href="t">봉사</a>
+					<li class="volunteer"><a href="serviceInfo.vol">봉사</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="">봉사시작</a></li>
-								<li><a href="">봉사신청</a></li>
+								<li><a href="serviceInfo.vol">봉사시작</a></li>
+								<li><a href="serviceapply.vol">봉사신청</a></li>
 								<li><a href="">봉사신청조회</a></li>
 								<li><a href="">봉사게시판</a></li>
 							</ul>
