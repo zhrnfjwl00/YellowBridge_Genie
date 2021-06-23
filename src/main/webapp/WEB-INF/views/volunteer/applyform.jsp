@@ -18,7 +18,6 @@
     
     .none{display: none;}
     
-    
     input{padding: 8px;}
     
     th{
