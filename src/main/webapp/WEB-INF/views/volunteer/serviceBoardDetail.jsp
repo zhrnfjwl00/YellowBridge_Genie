@@ -15,6 +15,7 @@
 <style type="text/css">
 	#rinsertBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
 	#listBtn{float: center;}
+	
 	.serviceBoardtext{
 		margin-top: 150px;
 		letter-spacing: -1px;

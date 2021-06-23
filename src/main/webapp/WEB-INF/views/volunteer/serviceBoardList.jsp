@@ -10,7 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
- <style>
+<style>
 	#example{text-align: center;}
 	
 	#example tr th{padding: 10px; font-size: 18px; font-weight: bold;  border-bottom: 1px solid black;}
@@ -33,7 +33,7 @@
 	.tableCount{width: 10%;}
 	#searchArea{padding-bottom:25px;}
 	.btnDiv{padding-top:25px; float: right;}
- </style>
+</style>
 
 </head>
 <body>

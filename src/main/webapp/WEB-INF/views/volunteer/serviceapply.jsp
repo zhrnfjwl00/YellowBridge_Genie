@@ -11,6 +11,7 @@
 	html{
 		min-width: 1000px;
 	}
+	
 	.serviceapply {
 		width: 65%;
 		margin: 0px auto;

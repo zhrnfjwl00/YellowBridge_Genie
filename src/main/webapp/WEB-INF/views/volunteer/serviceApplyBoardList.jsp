@@ -31,8 +31,7 @@
 	.tableStatus{width:15%;}
 	
 	#listArea{padding: 5px;}
- </style>
-
+</style>
 </head>
 <body>
 <div class="serviceApplyBoard">

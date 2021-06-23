@@ -34,7 +34,6 @@
 	.serviceinfo1 .infoImg {
 		display: table-cell;
 	}
-	
 	.serviceinfo2 {
 		margin-top: 50px;
 		margin-bottom: 150px;
