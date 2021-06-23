@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper>
-  <cache-ref namespace=""/>
+<mapper namespace="supportMapper">
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE BOARD_STATUS='Y'
+	</select>
+	
+	<select id="selectList" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARD 
+		WHERE BOARD_STATUS='Y'
+		ORDER BY BOARD_NO DESC
+	</select>
+
+	<resultMap type="Board" id="boardResultSet">
+		<id property="bNo" column="BOARD_NO"/>
+		<result property="bTitle" column="BOARD_TITLE"/>
+		<result property="bContent" column="BOARD_CONTENT"/>
+		<result property="bWriter" column="BOARD_WRITER"/>
+		<result property="bView" column="BOARD_VIEW"/>
+		<result property="bCreateDate" column="BOARD_CREATE_DATE"/>
+		<result property="bModifyDate" column="BOARD_MODIFY_DATE"/>
+		<result property="bStatus" column="BOARD_STATUS"/>
+		<result property="cateNo" column="CATE_NO"/>
+	</resultMap>
+	
+	<insert id="insertBoard">
+		INSERT 
+		INTO BOARD 
+		VALUES (SEQ_BNO.nextval, #{bTitle}, #{bContent},
+					 0, SYSDATE, SYSDATE, 'Y', 1, #{bWriter})
+	</insert>
+	
+	<insert id="insertFile">
+		INSERT 
+		INTO FILE_INFO 
+		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{ChangeName}, SYSDATE, 1, 
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL)
+	</insert>
 </mapper>
