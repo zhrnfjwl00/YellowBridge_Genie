@@ -44,8 +44,8 @@
 							<ul class="inner">
 								<li><a href="serviceInfo.vol">봉사시작</a></li>
 								<li><a href="serviceapply.vol">봉사신청</a></li>
-								<li><a href="">봉사신청조회</a></li>
-								<li><a href="">봉사게시판</a></li>
+								<li><a href="serviceApplyBoard.vol">봉사신청조회</a></li>
+								<li><a href="serviceBoardList.vol">봉사게시판</a></li>
 							</ul>
 						</div></li>
 					<li class="support"><a href="supportPage.sup">후원</a>
