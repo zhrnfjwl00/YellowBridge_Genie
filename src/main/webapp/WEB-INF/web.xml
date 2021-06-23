@@ -68,5 +68,21 @@
 		<url-pattern>*.sup</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 봉사 게시판 관련 -->
+	<servlet>
+		<servlet-name>volunteerServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/spring/appServlet/volunteer-context.xml
+			</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>volunteerServlet</servlet-name>
+		<url-pattern>*.vol</url-pattern>
+	</servlet-mapping>
+	
 
 </web-app>
