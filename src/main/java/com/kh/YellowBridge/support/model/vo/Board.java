@@ -6,6 +6,7 @@ public class Board {
 	private int bNo;
 	private String bTitle;
 	private String bContent;
+	private String bWriter;
 	private int bView;
 	private Date bCreateDate;
 	private Date bModifyDate;
@@ -14,12 +15,13 @@ public class Board {
 	
 	public Board() {}
 
-	public Board(int bNo, String bTitle, String bContent, int bView, Date bCreateDate, Date bModifyDate, String bStatus,
-			int cateNo) {
+	public Board(int bNo, String bTitle, String bContent, String bWriter, int bView, Date bCreateDate, Date bModifyDate,
+			String bStatus, int cateNo) {
 		super();
 		this.bNo = bNo;
 		this.bTitle = bTitle;
 		this.bContent = bContent;
+		this.bWriter = bWriter;
 		this.bView = bView;
 		this.bCreateDate = bCreateDate;
 		this.bModifyDate = bModifyDate;
@@ -49,6 +51,14 @@ public class Board {
 
 	public void setbContent(String bContent) {
 		this.bContent = bContent;
+	}
+
+	public String getbWriter() {
+		return bWriter;
+	}
+
+	public void setbWriter(String bWriter) {
+		this.bWriter = bWriter;
 	}
 
 	public int getbView() {
@@ -93,11 +103,13 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [bNo=" + bNo + ", bTitle=" + bTitle + ", bContent=" + bContent + ", bView=" + bView
-				+ ", bCreateDate=" + bCreateDate + ", bModifyDate=" + bModifyDate + ", bStatus=" + bStatus + ", cateNo="
-				+ cateNo + "]";
+		return "Board [bNo=" + bNo + ", bTitle=" + bTitle + ", bContent=" + bContent + ", bWriter=" + bWriter
+				+ ", bView=" + bView + ", bCreateDate=" + bCreateDate + ", bModifyDate=" + bModifyDate + ", bStatus="
+				+ bStatus + ", cateNo=" + cateNo + "]";
 	}
 	
+	
+
 	
 
 }

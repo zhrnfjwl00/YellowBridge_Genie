@@ -74,7 +74,7 @@
 				
 				<br>
 				
-				<!-- 댓글 -->
+				<%-- <!-- 댓글 -->
 				<div id="reply">
 					<ol class="replyList">
 						<c:forEach items="${replyList}" var="replyList">
@@ -110,8 +110,17 @@
 					
 					<hr>
 						<div>등록된 댓글이 없습니다.</div>
-					<hr>
-					
+					<hr> --%>
+					<c:url var="bupView" value="bupView.bo">
+					<c:param name="bId" value="${ board.bId }"/>
+					<c:param name="page" value="${ page }"/>
+					</c:url>
+					<c:url var="bdelete" value="bdelete.bo">
+						<c:param name="bId" value="${ board.bId }"/>
+					</c:url>
+					<c:url var="blist" value="blist.bo">
+						<c:param name="page" value="${ page }"/>
+					</c:url>
 				</form>
 			</section>
 		</div>
