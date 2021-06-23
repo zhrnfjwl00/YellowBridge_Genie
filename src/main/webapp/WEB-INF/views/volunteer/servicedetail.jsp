@@ -108,7 +108,6 @@
         text-decoration: none;
         font-size: 0.9375em;
 	}
-	
 </style>
 </head>
 <body>
