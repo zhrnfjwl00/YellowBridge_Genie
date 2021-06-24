@@ -15,6 +15,7 @@
 	
 	<mappers>
 		<mapper resource="mapper/support-mapper.xml"/>
+		<mapper resource="mapper/adoption-mapper.xml"/>
 		<mapper resource="mapper/volunteer-mapper.xml"/>
 	</mappers>
 
