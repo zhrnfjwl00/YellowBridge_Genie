@@ -63,7 +63,7 @@
 	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
-		<h1 style="color:#BDCC94; letter-spacing: -1px;">봉사 신청</h1>
+		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
 	</div>
 	
 	<div id="service">

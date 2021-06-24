@@ -18,7 +18,6 @@
     
     .none{display: none;}
     
-    
     input{padding: 8px;}
     
     th{
@@ -73,44 +72,46 @@
 		</p>
 	</div>
 	<div>
-		<table class="contentTable" >
-			<tr>
-        		<th>* 봉사자 성함</th>
-        		<td><input type="text" name="name" id="name" size="80px" placeholder="필수입력" required></td>
-        	</tr>
-           	<tr>
-           		<th>* 휴대전화번호</th>
-           		<td><input type="tel" name="phone" id="phone" size="80px" placeholder="필수입력" required></td>
-           	</tr>
-           	<tr>
-           		<th>* 이메일</th>
-           		<td><input type="email" name="email" id="email" placeholder="필수입력" size="80px" required></td>
-           	</tr>
-           	<tr>
-           		<th>* 봉사자 주소 <br>(사는 곳 동/읍/면까지만 적어주세요)</th>
-           		<td><input type="text" name="address" id="address" placeholder="필수입력" size="80px" required></td>
-           	</tr>
-           	<tr>
-           		<th>전달사항</th>
-           		<td><input type="text" name="request" id="request" size="80px" placeholder="할 말 있으시면 적어주세요! "></td>
-           	</tr>
-           	<tr>
-           		<th>결제방법<br><input type="radio" name="payment" value="무통장입금" required checked>무통장입금</th>
-           		<td>
-           			<select>
-           				<option>기업은행 12123434565678 옐로우브릿지</option>
-           			</select>
-           			<input type="text" name="payname" id="payname" size="50px" placeholder="입금자명" required>
-           		</td>
-           	</tr>
-           	<tr>
-           		<td colspan="2" style="text-align:center; padding-top:30px;">봉사 오고 가는 길 차량 사고 및 봉사 도중 사고 발생 시 치료비 등 본인 책임입니다. 동의하십니까? *<input type="radio" name="agree" value="네" required checked>네</td>
-           	</tr>
-       </table>
+		<form action="minsert.me" method="post" id="joinForm">
+			<table class="contentTable" >
+				<tr>
+	        		<th>* 봉사자 성함</th>
+	        		<td><input type="text" name="name" id="name" size="80px" placeholder="필수입력" required></td>
+	        	</tr>
+	           	<tr>
+	           		<th>* 휴대전화번호</th>
+	           		<td><input type="tel" name="phone" id="phone" size="80px" placeholder="필수입력" required></td>
+	           	</tr>
+	           	<tr>
+	           		<th>* 이메일</th>
+	           		<td><input type="email" name="email" id="email" placeholder="필수입력" size="80px" required></td>
+	           	</tr>
+	           	<tr>
+	           		<th>* 봉사자 주소 <br>(사는 곳 동/읍/면까지만 적어주세요)</th>
+	           		<td><input type="text" name="address" id="address" placeholder="필수입력" size="80px" required></td>
+	           	</tr>
+	           	<tr>
+	           		<th>전달사항</th>
+	           		<td><input type="text" name="request" id="request" size="80px" placeholder="할 말 있으시면 적어주세요! "></td>
+	           	</tr>
+	           	<tr>
+	           		<th>결제방법<br><input type="radio" name="payment" value="무통장입금" required checked>무통장입금</th>
+	           		<td>
+	           			<select>
+	           				<option>기업은행 12123434565678 옐로우브릿지</option>
+	           			</select>
+	           			<input type="text" name="payname" id="payname" size="50px" placeholder="입금자명" required>
+	           		</td>
+	           	</tr>
+	           	<tr>
+	           		<td colspan="2" style="text-align:center; padding-top:30px;">봉사 오고 가는 길 차량 사고 및 봉사 도중 사고 발생 시 치료비 등 본인 책임입니다. 동의하십니까? *<input type="radio" name="agree" value="네" required checked>네</td>
+	           	</tr>
+	       </table>
        
-       <div style="text-align: center;">
-			<input type="submit" name="applybtn" id="applybtn" value="신청하기">
-		</div>
+			<div style="text-align: center;">
+				<input type="submit" name="applybtn" id="applybtn" value="신청하기">
+			</div>
+		</form>
 	</div>
 </div>
 </body>
