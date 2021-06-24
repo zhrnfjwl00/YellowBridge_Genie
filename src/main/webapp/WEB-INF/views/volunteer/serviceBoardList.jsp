@@ -25,11 +25,11 @@
 		letter-spacing: -1px;
 	}
 	
-	.tableNo{width: 10%;}
+	.tableNo{width: 5%;}
 	.tablecate{width: 15%;}
 	.tableTitle{width: 40%;}
 	.tableWriter{width: 15%;}
-	.tableDate{width: 10%;}
+	.tableDate{width: 15%;}
 	.tableCount{width: 10%;}
 	#searchArea{padding-bottom:25px;}
 	.btnDiv{padding-top:25px; float: right;}
