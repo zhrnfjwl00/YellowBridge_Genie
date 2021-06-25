@@ -5,7 +5,10 @@ import java.sql.Date;
 public class VolunteerBoard {
 	private int volId;
 	private String volTitle;
+	private int volWriterNo;
 	private String volWriter;
+	private String volWriterName;
+	private String volWriterNickname;
 	private String volContent;
 	private String volCategory;
 	private int volCateNo;
@@ -17,6 +20,25 @@ public class VolunteerBoard {
 	private String volStatus;
 	
 	public VolunteerBoard() {}
+	
+	public VolunteerBoard(int volId, String volTitle, int volWriterNo, String volWriter, String volContent,
+			String volCategory, int volCateNo, String originalFileName, String renameFileName, int volCount,
+			Date volCreateDate, Date volModifyDate, String volStatus) {
+		super();
+		this.volId = volId;
+		this.volTitle = volTitle;
+		this.volWriterNo = volWriterNo;
+		this.volWriter = volWriter;
+		this.volContent = volContent;
+		this.volCategory = volCategory;
+		this.volCateNo = volCateNo;
+		this.originalFileName = originalFileName;
+		this.renameFileName = renameFileName;
+		this.volCount = volCount;
+		this.volCreateDate = volCreateDate;
+		this.volModifyDate = volModifyDate;
+		this.volStatus = volStatus;
+	}
 
 	public VolunteerBoard(int volId, String volTitle, String volWriter, String volContent, String volCategory,
 			int volCateNo, String originalFileName, String renameFileName, int volCount, Date volCreateDate,
@@ -25,6 +47,28 @@ public class VolunteerBoard {
 		this.volId = volId;
 		this.volTitle = volTitle;
 		this.volWriter = volWriter;
+		this.volContent = volContent;
+		this.volCategory = volCategory;
+		this.volCateNo = volCateNo;
+		this.originalFileName = originalFileName;
+		this.renameFileName = renameFileName;
+		this.volCount = volCount;
+		this.volCreateDate = volCreateDate;
+		this.volModifyDate = volModifyDate;
+		this.volStatus = volStatus;
+	}
+
+	
+	public VolunteerBoard(int volId, String volTitle, int volWriterNo, String volWriter, String volWriterName,
+			String volWriterNickname, String volContent, String volCategory, int volCateNo, String originalFileName,
+			String renameFileName, int volCount, Date volCreateDate, Date volModifyDate, String volStatus) {
+		super();
+		this.volId = volId;
+		this.volTitle = volTitle;
+		this.volWriterNo = volWriterNo;
+		this.volWriter = volWriter;
+		this.volWriterName = volWriterName;
+		this.volWriterNickname = volWriterNickname;
 		this.volContent = volContent;
 		this.volCategory = volCategory;
 		this.volCateNo = volCateNo;
@@ -51,6 +95,14 @@ public class VolunteerBoard {
 	public void setVolTitle(String volTitle) {
 		this.volTitle = volTitle;
 	}
+	
+	public int getVolWriterNo() {
+		return volWriterNo;
+	}
+
+	public void setVolWriterNo(int volWriterNo) {
+		this.volWriterNo = volWriterNo;
+	}
 
 	public String getVolWriter() {
 		return volWriter;
@@ -58,6 +110,22 @@ public class VolunteerBoard {
 
 	public void setVolWriter(String volWriter) {
 		this.volWriter = volWriter;
+	}
+	
+	public String getVolWriterName() {
+		return volWriterName;
+	}
+
+	public void setVolWriterName(String volWriterName) {
+		this.volWriterName = volWriterName;
+	}
+
+	public String getVolWriterNickname() {
+		return volWriterNickname;
+	}
+
+	public void setVolWriterNickname(String volWriterNickname) {
+		this.volWriterNickname = volWriterNickname;
 	}
 
 	public String getVolContent() {
@@ -134,12 +202,15 @@ public class VolunteerBoard {
 
 	@Override
 	public String toString() {
-		return "VolunteerBoard [volId=" + volId + ", volTitle=" + volTitle + ", volWriter=" + volWriter
-				+ ", volContent=" + volContent + ", volCategory=" + volCategory + ", volCateNo=" + volCateNo
-				+ ", originalFileName=" + originalFileName + ", renameFileName=" + renameFileName + ", volCount="
-				+ volCount + ", volCreateDate=" + volCreateDate + ", volModifyDate=" + volModifyDate + ", volStatus="
-				+ volStatus + "]";
+		return "VolunteerBoard [volId=" + volId + ", volTitle=" + volTitle + ", volWriterNo=" + volWriterNo
+				+ ", volWriter=" + volWriter + ", volWriterName=" + volWriterName + ", volWriterNickname="
+				+ volWriterNickname + ", volContent=" + volContent + ", volCategory=" + volCategory + ", volCateNo="
+				+ volCateNo + ", originalFileName=" + originalFileName + ", renameFileName=" + renameFileName
+				+ ", volCount=" + volCount + ", volCreateDate=" + volCreateDate + ", volModifyDate=" + volModifyDate
+				+ ", volStatus=" + volStatus + "]";
 	}
+
+	
 	
 	
 }
