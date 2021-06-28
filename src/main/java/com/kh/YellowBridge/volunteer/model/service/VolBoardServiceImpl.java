@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.volunteer.model.dao.VolBoardDAO;
+import com.kh.YellowBridge.volunteer.model.vo.VolReply;
+import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Service("volBoardService")
@@ -41,6 +43,26 @@ public class VolBoardServiceImpl implements VolBoardService{
 		}
 		
 		return vb;
+	}
+
+	@Override
+	public int insertVolReply(VolReply r) {
+		return VolBoardDAO.insertVolReply(sqlSession, r);
+	}
+
+	@Override
+	public ArrayList<VolReply> selectReplyList(int volId) {
+		return VolBoardDAO.selectReplyList(sqlSession, volId);
+	}
+
+	@Override
+	public int getSearchResultListCount(VolSearchCondition vsc) {
+		return VolBoardDAO.getSearchResultListCount(sqlSession, vsc);
+	}
+
+	@Override
+	public ArrayList<VolunteerBoard> selectSearchResultList(VolSearchCondition vsc, PageInfo pi) {
+		return VolBoardDAO.selectSearchResultList(sqlSession, vsc, pi);
 	}
 
 }

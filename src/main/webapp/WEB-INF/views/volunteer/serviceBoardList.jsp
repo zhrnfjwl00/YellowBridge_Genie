@@ -71,13 +71,13 @@
 						</tr>
 					</thead>
 					<tbody id = "listArea">
-					<c:if test="${ empty vollist }">
+					<%-- <c:if test="${ empty vollist }">
 						<tr>
 							<td colspan="6">작성된 게시물이 없습니다.</td>
 						</tr>
-					</c:if>
+					</c:if> --%>
 					
-					<c:if test="${ !empty vollist }">
+					<%-- <c:if test="${ !empty vollist }"> --%>
 						<c:forEach var="vol" items="${ vollist }">
 							<tr>
 								<td align="center" class="tableNo">${ vol.volId }</td>
@@ -91,12 +91,12 @@
 									<a href="${ volBoardDetail }">${ vol.volTitle }</a>
 								</td>
 								
-								<td align="center" class="tableWriter">${ vol.volWriter }</td>
+								<td align="center" class="tableWriter">${ vol.volWriterNickname }</td>
 								<td align="center" class="tableDate">${ vol.volCreateDate }</td>
 								<td align="center" class="tableCount">${ vol.volCount }</td>
 							</tr>
 						</c:forEach>
-					</c:if>
+					<%-- </c:if> --%>
 					
 						<!-- 페이징 처리 -->
 							<tr align="center" height="20" id="buttonTab">
@@ -165,7 +165,7 @@
 			var searchCondition = $("#searchCondition").val();
 			var searchValue = $("#searchValue").val();
 			
-			location.href="search.bo?searchCondition="+searchCondition+"&searchValue="+searchValue;
+			location.href="search.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
 		}
 		
 	</script>

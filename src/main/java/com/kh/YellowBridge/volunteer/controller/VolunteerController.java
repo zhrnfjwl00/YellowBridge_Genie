@@ -1,19 +1,30 @@
 package com.kh.YellowBridge.volunteer.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.volunteer.model.exception.VolunteerException;
 import com.kh.YellowBridge.volunteer.model.service.VolBoardService;
-import com.kh.YellowBridge.volunteer.model.service.VolBoardServiceImpl;
+import com.kh.YellowBridge.volunteer.model.vo.VolReply;
+import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Controller
@@ -29,12 +40,12 @@ public class VolunteerController {
 	
 	@RequestMapping("serviceapply.vol")
 	public String serviceApply(){
-		return "serviceapply";
+		return "apply_advertise_list";
 	}
 	
 	@RequestMapping("serviceApplyBoard.vol")
 	public String serviceApplyBoard(){
-		return "serviceApplyBoardList";
+		return "apply_search_list";
 	}
 	
 	@RequestMapping("serviceBoardList.vol")
@@ -81,4 +92,69 @@ public class VolunteerController {
 	public String serviceBoardWrite(){
 		return "serviceBoardWrite";
 	}
+	
+	@RequestMapping("voladdReply.vol")
+	@ResponseBody
+	public String insertReply(@ModelAttribute VolReply r, HttpSession session) {
+		
+		/*
+		 * int rWriter = ((Member)session.getAttribute("loginUser")).getId(); //
+		 * import해줘야 빨간 줄 사라짐 r.setVolrWriter(rWriter);
+		 */
+		
+		int result = volBoardService.insertVolReply(r);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new VolunteerException("댓글 등록에 실패했습니다.");
+		}
+	}
+	
+	@RequestMapping(value="volrList.vol")
+	public void selectReplyList(@RequestParam("volId") int volId, HttpServletResponse response) throws JsonIOException, IOException {
+		
+		ArrayList<VolReply> list = volBoardService.selectReplyList(volId);
+		
+		response.setContentType("application/json; charset=UTF-8");
+//		Gson gson = new Gson();
+		GsonBuilder gb = new GsonBuilder();
+		GsonBuilder dateGb = gb.setDateFormat("yyyy-MM-dd");
+		Gson gson = dateGb.create();
+		gson.toJson(list, response.getWriter());
+	}
+	
+	
+	@RequestMapping("search.vol")
+	public ModelAndView searchVol(@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
+		
+		VolSearchCondition vsc = new VolSearchCondition();	
+		if(searchCondition.equals("writer")) vsc.setWriter(searchValue);
+		else if(searchCondition.equals("title")) vsc.setTitle(searchValue);
+		else if(searchCondition.equals("category")) vsc.setCategory(searchValue);
+		
+		int currentPage = 1;
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		int listCount = volBoardService.getSearchResultListCount(vsc);
+		System.out.println("검색 결과 개수 : " + listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<VolunteerBoard> vsclist = volBoardService.selectSearchResultList(vsc, pi);
+		System.out.println("검색결과 : " + vsclist);
+			
+		if(vsclist != null) {
+			mv.addObject("vollist", vsclist).addObject("pi", pi).addObject("searchCondition", searchCondition).addObject("searchValue", searchValue).setViewName("serviceBoardList");
+		} else {
+			throw new VolunteerException("게시글 검색에 실패하였습니다.");
+		}
+		
+		System.out.println(" =================== ");
+		return mv;
+	}
+	
+	
 }

@@ -9,9 +9,10 @@
 	
 	<select id="selectList" resultMap="volboardResultSet">
 		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, cate_no,
-				board_status, board_writer, list
+				board_status, board_writer, list, member_name, member_nickname
 		from board
 		    left join category using (cate_no)
+		    left join member on (board_writer = member_id)
 		where board_status='Y'
 		order by board_no desc
 	</select>
@@ -27,6 +28,8 @@
 		<result property="volStatus" column="BOARD_STATUS"/>
 		<result property="volCateNo" column="CATE_NO"/>
 		<result property="volWriter" column="BOARD_WRITER"/>
+		<result property="volWriterNickname" column="MEMBER_NICKNAME"/>
+		<result property="volWriterName" column="MEMBER_NAME"/>
 	</resultMap> 
 	<!-- join한 것도 resultMap에 포함시켜야 함 -->
 
@@ -47,4 +50,65 @@
 		from board
 		WHERE board_status='Y' and BOARD_NO = #{volId}
 	</select> 
+	
+	<insert id="insertReply">
+		insert into comments
+		values(seq_rid.nextval, #{volrContent}, sysdate, default, #{volrWriterNo}, #{volrefBid})
+	</insert>
+	
+	<select id="selectReplyList" parameterType="_int" resultMap="ReplyResultSet">
+		select *
+		from COMMENTS
+		where COMMETS_STATUS='Y' and BOARD_NO=#{volId}
+		order by COMMENTS_NO desc
+	</select>
+	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.VolReply" id="ReplyResultSet"> 
+		<id property="volrId" column="COMMENTS_NO"/>
+		<result property="volrContent" column="COMMETS_COTENT"/>
+		<result property="volrefBid" column="BOARD_NO"/>
+		<result property="volrWriter" column="MEMBER_ID"/>
+		<result property="volrWriterNo" column="MEMBER_NO"/>
+		<result property="volrCreateDate" column="COMMETS_DATE"/>
+		<result property="volrStatus" column="COMMETS_STATUS"/>
+	</resultMap> 
+	
+	<select id="getSearchResultListCount" parameterType="com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition" resultType="_int">
+		select count(*)
+		from board
+			left join category using (cate_no)
+		    left join member on (board_writer = member_id)
+		where board_status='Y'
+		<if test="writer != null">
+			and MEMBER_NICKNAME like '%' || #{writer} || '%'
+		</if>
+		<if test="category != null">
+			and LIST like '%' || #{category} || '%'
+		</if>
+		<if test="title != null">
+			and BOARD_TITLE like '%' || #{title} || '%'
+		</if>
+	</select>
+	
+	
+	<select id="selectSearchResultList" parameterType="com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition" resultMap="volboardResultSet">
+		select *
+		from board
+			join category using (cate_no)
+		    join member on (board_writer = member_id)
+		where board_status='Y'
+		<choose>
+			<when test="writer != null">
+				and MEMBER_NICKNAME like '%' || #{writer} || '%'
+			</when>
+			<when test="title != null">
+				and BOARD_TITLE like '%' || #{title} || '%'
+			</when>
+			<otherwise>
+				and LIST like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
+		order by board_no desc
+	</select>
+	
+	
 </mapper>
