@@ -13,5 +13,9 @@ public interface SupportService {
 	ArrayList<Board> selectList(PageInfo pi);
 
 	int insertBoard(Board b, FileInfo fi);
+	
+	Board detailBoard(int bNo);
+
+	FileInfo detailFile(int bNo);
 
 }

@@ -31,6 +31,20 @@ public class SupportDAO {
 	public int insertFile(SqlSessionTemplate sqlSession, FileInfo fi) {
 		return sqlSession.insert("supportMapper.insertFile", fi);
 	}
+	
+	public int updateView(SqlSessionTemplate sqlSession, int bNo) {
+		
+		return sqlSession.update("supportMapper.updateView", bNo);
+	}
+
+	public Board detailBoard(SqlSessionTemplate sqlSession, int bNo) {
+		
+		return sqlSession.selectOne("supportMapper.detailBoard", bNo);
+	}
+
+	public FileInfo detailFile(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.selectOne("supportMapper.detailFile", bNo);
+	}
 
 
 }
