@@ -46,8 +46,11 @@
 	</update>
 	
 	<select id="selectVolBoard" parameterType="_int" resultMap="volboardResultSet">
-		select *
+		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, cate_no,
+				board_status, board_writer, list, member_name, member_nickname
 		from board
+			left join category using (cate_no)
+			left join member on (board_writer = member_id)
 		WHERE board_status='Y' and BOARD_NO = #{volId}
 	</select> 
 	
@@ -109,6 +112,28 @@
 		</choose>
 		order by board_no desc
 	</select>
+	
+	<select id="serviceApplyList" resultMap="volAdvertiseResultSet">
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH
+		from SERVICE_INFO
+			join FILE_INFO using (SERVICE_NO)
+		where SERVICE_STATUS='Y'
+		order by SERVICE_NO desc
+	</select>
+	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" id="volAdvertiseResultSet"> 
+		<id property="serviceNo" column="SERVICE_NO"/>
+		<result property="serviceTitle" column="SERVICE_TITLE"/>
+		<result property="shelterName" column="SHELTER_NAME"/>
+		<result property="shelterTel" column="SHELTER_TEL"/>
+		<result property="shelterInfo" column="SHELTER_INFO"/>
+		<result property="serviceContent" column="SERVICE_CONTENT"/>
+		<result property="serviceStatus" column="SERVICE_STATUS"/>
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="changeName" column="FILE_CHANGE"/>
+		<result property="filePath" column="FILE_PATH"/>
+	</resultMap> 
+	
 	
 	
 </mapper>

@@ -52,7 +52,7 @@
 					
 				</tr>
 				<tr>
-					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriter }</td>
+					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname }</td>
 				</tr>
 				<tr>
 					<td><b>작성일</b>&nbsp;&nbsp;${ volboard.volCreateDate } &nbsp;&nbsp;</td> 
@@ -259,6 +259,7 @@
 				+ "&rno="+$(this).attr("data-rno");
 		});
 	})
+	
 </script>
 </body>
 </html>

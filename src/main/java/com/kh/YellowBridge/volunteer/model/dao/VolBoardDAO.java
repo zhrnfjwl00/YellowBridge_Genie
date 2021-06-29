@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Repository("VolBoardDAO")
@@ -51,6 +52,13 @@ public class VolBoardDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("volunteerMapper.selectSearchResultList", vsc, rowBounds);
+	}
+
+	public ArrayList<Volunteer> serviceApplyList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("volunteerMapper.serviceApplyList", null, rowBounds);
 	}
 
 
