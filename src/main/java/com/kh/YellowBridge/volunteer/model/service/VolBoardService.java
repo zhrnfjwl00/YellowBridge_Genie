@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 public interface VolBoardService {
@@ -23,4 +24,7 @@ public interface VolBoardService {
 
 	ArrayList<VolunteerBoard> selectSearchResultList(VolSearchCondition vsc, PageInfo pi);
 
+	ArrayList<Volunteer> serviceApplyList(PageInfo pi);
+
+	
 }

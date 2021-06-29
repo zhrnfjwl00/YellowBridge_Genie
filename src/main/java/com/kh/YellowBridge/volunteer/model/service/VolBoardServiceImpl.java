@@ -10,6 +10,7 @@ import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.volunteer.model.dao.VolBoardDAO;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Service("volBoardService")
@@ -65,4 +66,10 @@ public class VolBoardServiceImpl implements VolBoardService{
 		return VolBoardDAO.selectSearchResultList(sqlSession, vsc, pi);
 	}
 
+	@Override
+	public ArrayList<Volunteer> serviceApplyList(PageInfo pi) {
+		return VolBoardDAO.serviceApplyList(sqlSession, pi);
+	}
+
+	
 }
