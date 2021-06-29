@@ -5,23 +5,25 @@ import java.sql.Date;
 public class FileInfo {
 	private int fileNo;
 	private String fileName;
-	private String ChangeName;
+	private String changeName;
 	private Date fileCreateDate;
 	private int fileLevel;
 	private String filePath;
+	private String fileStatus;
 	private int BoardNo;
 	
 	public FileInfo() {}
 
 	public FileInfo(int fileNo, String fileName, String changeName, Date fileCreateDate, int fileLevel, String filePath,
-			int boardNo) {
+			String fileStatus, int boardNo) {
 		super();
 		this.fileNo = fileNo;
 		this.fileName = fileName;
-		ChangeName = changeName;
+		this.changeName = changeName;
 		this.fileCreateDate = fileCreateDate;
 		this.fileLevel = fileLevel;
 		this.filePath = filePath;
+		this.fileStatus = fileStatus;
 		BoardNo = boardNo;
 	}
 
@@ -42,11 +44,11 @@ public class FileInfo {
 	}
 
 	public String getChangeName() {
-		return ChangeName;
+		return changeName;
 	}
 
 	public void setChangeName(String changeName) {
-		ChangeName = changeName;
+		this.changeName = changeName;
 	}
 
 	public Date getFileCreateDate() {
@@ -73,6 +75,14 @@ public class FileInfo {
 		this.filePath = filePath;
 	}
 
+	public String getFileStatus() {
+		return fileStatus;
+	}
+
+	public void setFileStatus(String fileStatus) {
+		this.fileStatus = fileStatus;
+	}
+
 	public int getBoardNo() {
 		return BoardNo;
 	}
@@ -83,13 +93,11 @@ public class FileInfo {
 
 	@Override
 	public String toString() {
-		return "FileInfo [fileNo=" + fileNo + ", fileName=" + fileName + ", ChangeName=" + ChangeName
+		return "FileInfo [fileNo=" + fileNo + ", fileName=" + fileName + ", changeName=" + changeName
 				+ ", fileCreateDate=" + fileCreateDate + ", fileLevel=" + fileLevel + ", filePath=" + filePath
-				+ ", BoardNo=" + BoardNo + "]";
+				+ ", fileStatus=" + fileStatus + ", BoardNo=" + BoardNo + "]";
 	}
 
-	
-	
 	
 
 }

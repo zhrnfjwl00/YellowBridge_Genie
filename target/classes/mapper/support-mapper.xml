@@ -36,16 +36,10 @@
 	<insert id="insertFile">
 		INSERT 
 		INTO FILE_INFO 
-		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{ChangeName}, SYSDATE, 1, 
-					#{filePath}, 'Y', SEQ_BNO.CURRVAL)
+		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{changeName}, SYSDATE, 1, 
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL)
 	</insert>
 	
-	<insert id="insertFile">
-		INSERT 
-		INTO FILE_INFO 
-		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{ChangeName}, SYSDATE, 1, 
-					#{filePath}, 'Y', SEQ_BNO.CURRVAL)
-	</insert>
 	
 	<update id="updateView">
 		UPDATE BOARD
@@ -61,7 +55,8 @@
 	</select>
 	
 	<select id="detailFile" resultMap="fileInfoResultMap">
-		SELECT *
+		SELECT FILE_NO,FILE_NAME,FILE_CHANGE,FILE_CREATE_DATE,FILE_LEVEL,
+				FILE_PATH,FILE_STATUS,BOARD_NO
 		FROM FILE_INFO
 		WHERE BOARD_NO=#{bNo}
 	</select>

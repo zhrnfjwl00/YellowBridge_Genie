@@ -8,6 +8,7 @@
 	
 	<typeAliases>
 		<typeAlias type="com.kh.YellowBridge.support.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.YellowBridge.support.model.vo.FileInfo" alias="FileInfo"/>
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" alias="Volunteer"/>
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard" alias="VolunteerBoard"/>
 	</typeAliases>
