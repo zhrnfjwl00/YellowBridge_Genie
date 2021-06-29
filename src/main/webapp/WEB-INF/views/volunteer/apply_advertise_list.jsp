@@ -68,80 +68,67 @@
 	
 	<div id="service">
 		<div id="service-list" align="center">
-			<div class="shelter">
-				<input type="hidden" id="pNo" name="pNo" value="0">
-				<div>
-					<div class="shelter-img">
-						<img src="<%=request.getContextPath()%>/resources/images/serviceinfo.jpg" >
-					</div>
-					<div id="shelter-info">
-						<div class="shelter-name">보호소 이름</div>
-						<div class="shelter-price">10,000원</div>
-					</div>
-				</div>
-			</div>
-			<div class="shelter">
-				<input type="hidden" id="pNo" name="pNo" value="0">
-				<div>
-					<div class="shelter-img">
-						<img src="<%=request.getContextPath()%>/resources/images/serviceinfo.jpg">
-					</div>
-					<div id="shelter-info">
-						<div class="shelter-name">보호소 이름</div>
-						<div class="shelter-price">10,000원</div>
+		
+			<c:forEach var="shel" items="${ volad }">
+				<div class="shelter">
+					<input type="hidden" id="shelNo" name="shelNo" value="${ shel.serviceNo }">
+					<div>
+						<div class="shelter-img">
+								<img src="<%=request.getContextPath()%>${ shel.filePath }${ shel.fileName }" >
+						</div>
+						<div id="shelter-info">
+							<div class="shelter-name">${ shel.serviceTitle }</div>
+							<div class="shelter-price">10,000원</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="shelter">
-				<input type="hidden" id="pNo" name="pNo" value="0">
-				<div>
-					<div class="shelter-img">
-						<img src="<%=request.getContextPath()%>/resources/images/serviceinfo.jpg">
-					</div>
-					<div id="shelter-info">
-						<div class="shelter-name">보호소 이름</div>
-						<div class="shelter-price">10,000원</div>
-					</div>
-				</div>
-			</div>
-			<div class="shelter">
-				<input type="hidden" id="pNo" name="pNo" value="0">
-				<div>
-					<div class="shelter-img">
-						<img src="<%=request.getContextPath()%>/resources/images/serviceinfo.jpg">
-					</div>
-					<div id="shelter-info">
-						<div class="shelter-name">보호소 이름</div>
-						<div class="shelter-price">10,000원</div>
-					</div>
-				</div>
-			</div>
-			<div class="shelter">
-				<input type="hidden" id="pNo" name="pNo" value="0">
-				<div>
-					<div class="shelter-img">
-						<img src="<%=request.getContextPath()%>/resources/images/serviceinfo.jpg">
-					</div>
-					<div id="shelter-info">
-						<div class="shelter-name">보호소 이름</div>
-						<div class="shelter-price">10,000원</div>
-					</div>
-				</div>
-			</div>
-			<div class="shelter">
-				<input type="hidden" id="pNo" name="pNo" value="0">
-				<div>
-					<div class="shelter-img">
-						<img src="<%=request.getContextPath()%>/resources/images/serviceinfo.jpg">
-					</div>
-					<div id="shelter-info">
-						<div class="shelter-name">보호소 이름</div>
-						<div class="shelter-price">10,000원</div>
-					</div>
-				</div>
-			</div>
+			</c:forEach>
+			
 		</div>
 	</div>
+	
+	<table>
+	<tr align="center" height="20" id="buttonTab">
+		<td colspan="6">
+		
+			<!-- [이전] -->
+			<c:if test="${ vpi.currentPage <= 1 }">
+				[이전] &nbsp;
+			</c:if>
+			<c:if test="${ vpi.currentPage > 1 }">
+				<c:url var="before" value="serviceapply.vol">
+					<c:param name="page" value="${ vpi.currentPage - 1 }"/>
+				</c:url>
+				<a href="${ before }">[이전]</a> &nbsp;
+			</c:if>
+			
+			<!-- 페이지 -->
+			<c:forEach var="p" begin="${ vpi.startPage }" end="${ vpi.endPage }">
+				<c:if test="${ p eq vpi.currentPage }">
+					<font color="red" size="4"><b>[${ p }]</b></font>
+				</c:if>
+				
+				<c:if test="${ p ne vpi.currentPage }">
+					<c:url var="pagination" value="serviceapply.vol">
+						<c:param name="page" value="${ p }"/>
+					</c:url>
+					<a href="${ pagination }">${ p }</a> &nbsp;
+				</c:if>
+			</c:forEach>
+			
+			<!-- [다음] -->
+			<c:if test="${ vpi.currentPage >= vpi.maxPage }">
+				[다음]
+			</c:if>
+			<c:if test="${ vpi.currentPage < vpi.maxPage }">
+				<c:url var="after" value="serviceapply.vol">
+					<c:param name="page" value="${ vpi.currentPage + 1 }"/>
+				</c:url> 
+				<a href="${ after }">[다음]</a>
+			</c:if>
+		</td>
+	</tr>
+	</table>
 	
 	<c:import url="../common/footer.jsp"/>
 </div>

@@ -26,9 +26,9 @@
 	}
 	
 	.tableNo{width: 5%;}
-	.tablecate{width: 15%;}
+	.tablecate{width: 20%;}
 	.tableTitle{width: 40%;}
-	.tableWriter{width: 15%;}
+	.tableWriter{width: 10%;}
 	.tableDate{width: 15%;}
 	.tableCount{width: 10%;}
 	#searchArea{padding-bottom:25px;}

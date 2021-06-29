@@ -23,8 +23,10 @@ import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.volunteer.model.exception.VolunteerException;
 import com.kh.YellowBridge.volunteer.model.service.VolBoardService;
+import com.kh.YellowBridge.volunteer.model.vo.VolPagination;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Controller
@@ -39,8 +41,32 @@ public class VolunteerController {
 	}
 	
 	@RequestMapping("serviceapply.vol")
-	public String serviceApply(){
-		return "apply_advertise_list";
+	public ModelAndView serviceApplyList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
+		int currentPage = 1; // 연산에 사용될 변수
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getListCount();
+		
+		// 페이징 처리를 위한 연산 : Pagination
+		PageInfo vpi = VolPagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Volunteer> volad = volBoardService.serviceApplyList(vpi);
+//		System.out.println(volad);
+		System.out.println(volad.get(1).getFilePath()+volad.get(1).getFileName());
+		
+		
+		if(volad != null) {
+			// Model or ModelAndView 사용하기
+			mv.addObject("volad", volad).addObject("vpi", vpi).setViewName("apply_advertise_list");
+			// setViewName은 반환값이 void이기 때문에 맨 뒤에 와야함
+		} else {
+			throw new VolunteerException("게시글 전체 조회에 실패하였습니다.");
+		}
+		
+		return mv;
+		
 	}
 	
 	@RequestMapping("serviceApplyBoard.vol")
