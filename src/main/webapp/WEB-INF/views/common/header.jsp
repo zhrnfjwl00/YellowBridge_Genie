@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>header_member</title>
 <link rel="stylesheet"  href="<%= request.getContextPath() %>/resources/css/common.css">
-<link rel="stylesheet" href=".<%= request.getContextPath() %>/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/bootstrap.min.css">
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/common.js"></script>
 </head>
