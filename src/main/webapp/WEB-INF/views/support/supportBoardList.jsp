@@ -14,27 +14,41 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
 <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script> 
  <style>
-  .fakeimg {
-    height: 200px;
-    background: #aaa;
-  }
   #example{text-align: center;}
-	.container{padding: 100px;}
-	#searchArea{padding: 60px;}
-	#writeBtn{pading: 50px; float: right;}
+	
+	#example tr th{padding: 10px; font-size: 18px; font-weight: bold;  border-bottom: 1px solid black;}
+	#example tr td{padding: 7px; font-size: 16px;}
+	
+	.supportBoard {
+		width: 65%;
+		margin: 0px auto;
+	}
+	.supportBoardtext{
+		margin-top: 150px;
+		letter-spacing: -1px;
+	}
+	
+	.tableNo{width: 5%;}
+	.tableTitle{width: 40%;}
+	.tableWriter{width: 15%;}
+	.tableDate{width: 15%;}
+	.tableCount{width: 10%;}
+	#searchArea{padding-bottom:25px;}
+	.btnDiv{padding-top:25px; float: right;}
  </style>
 
 </head>
 <body>
+<div class="supportBoard">
 	<c:import url="../common/header.jsp"/>
-	
-	<div class="container" style="margin-top:30px">
+	<div style="text-align:center;" class="supportBoardtext">
+		<h1 style="color:#BDCC94;"><b>후원금 사용내역 조회 게시판</b></h1>
+		<h5><b>소중한 후원금 이렇게 쓰였습니다.</b></h5>
+	</div>
+	<div class="container" style="margin-top:30px; text-align:center;" >
 		<div class="row">
 			<div class="col-sm-12">
-		      <h2>후원금 사용내역 조회 </h2>
-		      	<h4>소중한 후원금 이렇게 쓰였습니다.</h4>
-			      <div id="searchArea" align="center">
-			      
+			      <div id="searchArea" align="center" >
 					<select id="searchCondition" name="searchCondition">
 						<option>-------</option>
 						<option value="writer">작성자</option>
@@ -49,11 +63,11 @@
 				<table id="example" class="display" style="width:100%">
 			        <thead>
 			            <tr>
-			                <th>NO.</th>
-			                <th>제목</th>
-			                <th>작성자</th>
-			                <th>작성일</th>
-			                <th>조회수</th>
+			                <th class="tableNo">NO.</th>
+							<th class="tableTitle">제목</th>
+							<th class="tableWriter">글쓴이</th>
+							<th class="tableDate">작성일</th>
+							<th class="tableCount">조회수</th>
 			            </tr>
 			        </thead>
 			        <tbody id = "listArea">
@@ -61,15 +75,15 @@
 							<tr>
 								<td align="center">${ b.bNo }</td>
 								
-								<td align="left">
+								<td align="center">
 <%-- 									<c:if test="${ !empty loginUser }">
- --%>										<c:url var="bdetail" value="bdetail.bo">
+ --%>										<c:url var="sdetail" value="sdetail.sup">
 											<c:param name="bNo" value="${ b.bNo }"/>
 											<c:param name="page" value="${ pi.currentPage }"/>
-										</c:url>
-										<a href="${ bdetail }">${ b.bTitle }</a>
+											</c:url>
+										<a href="${ sdetail }">${ b.bTitle }</a>
 <%-- 									</c:if>
- --%><%-- 									<c:if test="${ empty loginUser }">
+ --%><%-- 								<c:if test="${ empty loginUser }">
 <%-- 									</c:if>
  --%>								</td>
 								
@@ -121,9 +135,14 @@
 						</c:if>
 						</td>
 					</tr>
-				<button type="button" class="btn btn-primary" id = "writeBtn" onclick="location.href='sinsertView.sup';">글쓰기</button>
+<%-- 					<c:if test="${ !empty loginUser }">
+ --%>					<div class="btnDiv">
+						<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='sinsertView.sup';">글쓰기</button>
+<%-- 					</c:if>
+ --%>					</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	<c:import url="../common/footer.jsp"/>
 	<script type="text/javascript">
@@ -133,12 +152,7 @@
 				$(this).parent().css({'background' : 'lightgray', 'cursor':'pointer'});					
 			}, 'mouseout':function(){
 				$(this).parent().css({'background' : 'none'});
-			}, 'click' : function(){
-				var num = $(this).parent().children().eq(0).text();
-				location.href='<%=request.getContextPath()%>/sdetail.sup?no=' + num;
-			}
-			
-			});
+			}});
 			
 			
 		});

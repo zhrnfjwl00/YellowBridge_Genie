@@ -122,6 +122,7 @@ public class SupportController {
 			System.out.println("파일 전송 에러 : " + e.getMessage());
 			
 		}
+		
 		fi.setChangeName(renameFileName);
 		fi.setFilePath(savePath);
 		
