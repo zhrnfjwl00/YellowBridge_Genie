@@ -14,6 +14,7 @@
 	}
 	.serviceinfotext{
 		margin-top: 150px;
+		letter-spacing: -1px;
 	}
 	.serviceinfo1 {
 		padding-top: 50px;
@@ -33,7 +34,6 @@
 	.serviceinfo1 .infoImg {
 		display: table-cell;
 	}
-	
 	.serviceinfo2 {
 		margin-top: 50px;
 		margin-bottom: 150px;
@@ -71,7 +71,7 @@
 	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center;" class="serviceinfotext">
-		<h1 style="color:#BDCC94;">Yellow Bridge와 함께 따뜻한 정을 나누어 보세요!</h1>
+		<h1 style="color:#BDCC94;"><b>Yellow Bridge와 함께 따뜻한 정을 나누어 보세요!</b></h1>
 	</div>
 	
 	<div class="serviceinfo1">
@@ -88,11 +88,11 @@
 	</div>
 	
 	<div class="serviceinfo2">
-		<h2 style="padding: 10px;">봉사 신청 안내</h2>
+		<h2 style="padding: 10px; color:black;"><b>봉사 신청 안내</b></h2>
 		
 		<div class="infotext2">
 			1. Yellow Bridge 홈페이지 접속 후 봉사 > 봉사 신청 메뉴에 들어갑니다.<br>
-			<button id="servicego" style="align: center;" onclick="location.href='<%= request.getContextPath() %>/serviceapply.vol'";>봉사 신청하러 가기</button>
+			<button id="servicego" style="align: center;" onclick="location.href='<%= request.getContextPath() %>/serviceapply.vol'">봉사 신청하러 가기</button>
 		</div>
 		<div class="infotext2">2. 봉사 신청 메뉴에서 원하는 보호소를 선택 후 봉사료(자재비와 간식비로 쓰입니다)를 결제합니다.</div>
 		<div class="infotext2">3. 관리자가 확인 후 확정 메시지나 이메일을 개별로 보내드립니다.</div>

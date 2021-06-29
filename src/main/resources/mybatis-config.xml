@@ -8,11 +8,15 @@
 	
 	<typeAliases>
 		<typeAlias type="com.kh.YellowBridge.support.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" alias="Volunteer"/>
+		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard" alias="VolunteerBoard"/>
 	</typeAliases>
 	
 	
 	<mappers>
 		<mapper resource="mapper/support-mapper.xml"/>
+		<mapper resource="mapper/adoption-mapper.xml"/>
+		<mapper resource="mapper/volunteer-mapper.xml"/>
 	</mappers>
 
 </configuration>

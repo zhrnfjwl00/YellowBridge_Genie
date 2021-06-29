@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="volunteerMapper">
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status='Y'
+	</select>
+	
+	<select id="selectList" resultMap="volboardResultSet">
+		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, cate_no,
+				board_status, board_writer, list, member_name, member_nickname
+		from board
+		    left join category using (cate_no)
+		    left join member on (board_writer = member_id)
+		where board_status='Y'
+		order by board_no desc
+	</select>
+	
+	<resultMap type="VolunteerBoard" id="volboardResultSet"> 
+		<id property="volId" column="BOARD_NO"/>
+		<result property="volTitle" column="BOARD_TITLE"/>
+		<result property="volContent" column="BOARD_CONTENT"/>
+		<result property="volCount" column="BOARD_VIEW"/>
+		<result property="volCategory" column="LIST"/>
+		<result property="volCreateDate" column="BOARD_CREATE_DATE"/>
+		<result property="volModifyDate" column="BOARD_MODIFY_DATE"/>
+		<result property="volStatus" column="BOARD_STATUS"/>
+		<result property="volCateNo" column="CATE_NO"/>
+		<result property="volWriter" column="BOARD_WRITER"/>
+		<result property="volWriterNickname" column="MEMBER_NICKNAME"/>
+		<result property="volWriterName" column="MEMBER_NAME"/>
+	</resultMap> 
+	<!-- join한 것도 resultMap에 포함시켜야 함 -->
+
+	
+	<!-- <insert id="insertBoard">
+		insert into board
+		values(SEQ_BNO.nextval, #{volTitle}, #{volContent}, 0, sysdate, sysdate, default, 3, #{volWriter});)
+	</insert> -->
+	
+	<update id="addReadCount">
+		update board
+		set BOARD_VIEW = BOARD_VIEW + 1
+		where BOARD_NO = #{volId}
+	</update>
+	
+	<select id="selectVolBoard" parameterType="_int" resultMap="volboardResultSet">
+		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, cate_no,
+				board_status, board_writer, list, member_name, member_nickname
+		from board
+			left join category using (cate_no)
+			left join member on (board_writer = member_id)
+		WHERE board_status='Y' and BOARD_NO = #{volId}
+	</select> 
+	
+	<insert id="insertReply">
+		insert into comments
+		values(seq_rid.nextval, #{volrContent}, sysdate, default, #{volrWriterNo}, #{volrefBid})
+	</insert>
+	
+	<select id="selectReplyList" parameterType="_int" resultMap="ReplyResultSet">
+		select *
+		from COMMENTS
+		where COMMETS_STATUS='Y' and BOARD_NO=#{volId}
+		order by COMMENTS_NO desc
+	</select>
+	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.VolReply" id="ReplyResultSet"> 
+		<id property="volrId" column="COMMENTS_NO"/>
+		<result property="volrContent" column="COMMETS_COTENT"/>
+		<result property="volrefBid" column="BOARD_NO"/>
+		<result property="volrWriter" column="MEMBER_ID"/>
+		<result property="volrWriterNo" column="MEMBER_NO"/>
+		<result property="volrCreateDate" column="COMMETS_DATE"/>
+		<result property="volrStatus" column="COMMETS_STATUS"/>
+	</resultMap> 
+	
+	<select id="getSearchResultListCount" parameterType="com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition" resultType="_int">
+		select count(*)
+		from board
+			left join category using (cate_no)
+		    left join member on (board_writer = member_id)
+		where board_status='Y'
+		<if test="writer != null">
+			and MEMBER_NICKNAME like '%' || #{writer} || '%'
+		</if>
+		<if test="category != null">
+			and LIST like '%' || #{category} || '%'
+		</if>
+		<if test="title != null">
+			and BOARD_TITLE like '%' || #{title} || '%'
+		</if>
+	</select>
+	
+	
+	<select id="selectSearchResultList" parameterType="com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition" resultMap="volboardResultSet">
+		select *
+		from board
+			join category using (cate_no)
+		    join member on (board_writer = member_id)
+		where board_status='Y'
+		<choose>
+			<when test="writer != null">
+				and MEMBER_NICKNAME like '%' || #{writer} || '%'
+			</when>
+			<when test="title != null">
+				and BOARD_TITLE like '%' || #{title} || '%'
+			</when>
+			<otherwise>
+				and LIST like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
+		order by board_no desc
+	</select>
+	
+	<select id="serviceApplyList" resultMap="volAdvertiseResultSet">
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH
+		from SERVICE_INFO
+			join FILE_INFO using (SERVICE_NO)
+		where SERVICE_STATUS='Y'
+		order by SERVICE_NO desc
+	</select>
+	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" id="volAdvertiseResultSet"> 
+		<id property="serviceNo" column="SERVICE_NO"/>
+		<result property="serviceTitle" column="SERVICE_TITLE"/>
+		<result property="shelterName" column="SHELTER_NAME"/>
+		<result property="shelterTel" column="SHELTER_TEL"/>
+		<result property="shelterInfo" column="SHELTER_INFO"/>
+		<result property="serviceContent" column="SERVICE_CONTENT"/>
+		<result property="serviceStatus" column="SERVICE_STATUS"/>
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="changeName" column="FILE_CHANGE"/>
+		<result property="filePath" column="FILE_PATH"/>
+	</resultMap> 
+	
+	
+	
+</mapper>
