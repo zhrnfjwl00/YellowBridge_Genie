@@ -39,4 +39,41 @@
 		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{ChangeName}, SYSDATE, 1, 
 					#{filePath}, 'Y', SEQ_BNO.CURRVAL)
 	</insert>
+	
+	<insert id="insertFile">
+		INSERT 
+		INTO FILE_INFO 
+		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{ChangeName}, SYSDATE, 1, 
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL)
+	</insert>
+	
+	<update id="updateView">
+		UPDATE BOARD
+		SET BOARD_VIEW = BOARD_VIEW + 1
+		WHERE BOARD_NO=#{bNo} AND CATE_NO=1	
+	</update>
+	
+	<select id="detailBoard" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARD 
+		WHERE BOARD_STATUS='Y' AND BOARD_NO=#{bNo} AND CATE_NO=1
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<select id="detailFile" resultMap="fileInfoResultMap">
+		SELECT *
+		FROM FILE_INFO
+		WHERE BOARD_NO=#{bNo}
+	</select>
+	
+	<resultMap type="FileInfo" id="fileInfoResultMap">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="changeName" column="FILE_CHANGE"/>
+		<result property="fileCreateDate" column="FILE_CREATE_DATE"/>
+		<result property="fileLevel" column="FILE_LEVEL"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="fileStatus" column="FILE_STATUS"/>
+		<result property="BoardNo" column="BOARD_NO"/>
+	</resultMap>
 </mapper>

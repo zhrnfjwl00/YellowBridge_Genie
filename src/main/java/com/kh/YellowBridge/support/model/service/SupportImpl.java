@@ -40,4 +40,21 @@ public class SupportImpl implements SupportService{
 		return result;
 	}
 	
+	@Override
+	public Board detailBoard(int bNo) {
+		Board b = null;
+		int result = sDAO.updateView(sqlSession, bNo);
+		
+		if(result > 0) {
+			b = sDAO.detailBoard(sqlSession, bNo);
+		}
+		
+		return b;
+	}
+
+	@Override
+	public FileInfo detailFile(int bNo) {
+		return sDAO.detailFile(sqlSession, bNo);
+	}
+	
 }
