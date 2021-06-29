@@ -26,4 +26,5 @@ public interface VolBoardService {
 
 	ArrayList<Volunteer> serviceApplyList(PageInfo pi);
 
+	
 }

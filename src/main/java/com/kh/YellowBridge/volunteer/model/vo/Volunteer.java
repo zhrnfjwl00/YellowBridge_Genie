@@ -13,7 +13,6 @@ public class Volunteer {
 	private String changeName;
 	private String filePath;
 
-	
 	public Volunteer() {}
 
 	public Volunteer(int serviceNo, String serviceTitle, String shelterName, String shelterTel, String shelterInfo,

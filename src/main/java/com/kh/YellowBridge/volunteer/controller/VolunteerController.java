@@ -49,7 +49,6 @@ public class VolunteerController {
 		
 		int listCount = volBoardService.getListCount();
 		
-		// 페이징 처리를 위한 연산 : Pagination
 		PageInfo vpi = VolPagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Volunteer> volad = volBoardService.serviceApplyList(vpi);

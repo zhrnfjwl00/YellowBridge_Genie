@@ -130,6 +130,7 @@
 	</tr>
 	</table>
 	
+	
 	<c:import url="../common/footer.jsp"/>
 </div>
 </html>

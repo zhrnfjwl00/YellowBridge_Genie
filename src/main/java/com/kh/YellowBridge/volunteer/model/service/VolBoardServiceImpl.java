@@ -71,4 +71,5 @@ public class VolBoardServiceImpl implements VolBoardService{
 		return VolBoardDAO.serviceApplyList(sqlSession, pi);
 	}
 
+	
 }

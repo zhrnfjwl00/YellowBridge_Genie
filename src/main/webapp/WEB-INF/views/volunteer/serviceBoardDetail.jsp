@@ -259,6 +259,7 @@
 				+ "&rno="+$(this).attr("data-rno");
 		});
 	})
+	
 </script>
 </body>
 </html>

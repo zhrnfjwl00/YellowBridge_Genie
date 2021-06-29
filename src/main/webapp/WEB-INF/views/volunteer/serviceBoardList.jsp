@@ -147,7 +147,6 @@
 			</div>
 		</div>
 		
-		
 	</div>
 	<c:import url="../common/footer.jsp"/>
 </div>
