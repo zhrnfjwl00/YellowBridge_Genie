@@ -12,8 +12,29 @@ public class Volunteer {
 	private String fileName;
 	private String changeName;
 	private String filePath;
+	private int cateNo;
+	private String cateName;
 
 	public Volunteer() {}
+
+	public Volunteer(int serviceNo, String serviceTitle, String shelterName, String shelterTel, String shelterInfo,
+			String serviceContent, String serviceStatus, int fileNo, String fileName, String changeName,
+			String filePath, int cateNo, String cateName) {
+		super();
+		this.serviceNo = serviceNo;
+		this.serviceTitle = serviceTitle;
+		this.shelterName = shelterName;
+		this.shelterTel = shelterTel;
+		this.shelterInfo = shelterInfo;
+		this.serviceContent = serviceContent;
+		this.serviceStatus = serviceStatus;
+		this.fileNo = fileNo;
+		this.fileName = fileName;
+		this.changeName = changeName;
+		this.filePath = filePath;
+		this.cateNo = cateNo;
+		this.cateName = cateName;
+	}
 
 	public Volunteer(int serviceNo, String serviceTitle, String shelterName, String shelterTel, String shelterInfo,
 			String serviceContent, String serviceStatus, int fileNo, String fileName, String changeName) {
@@ -145,6 +166,22 @@ public class Volunteer {
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+	
+	public int getCateNo() {
+		return cateNo;
+	}
+
+	public void setCateNo(int cateNo) {
+		this.cateNo = cateNo;
+	}
+
+	public String getCateName() {
+		return cateName;
+	}
+
+	public void setCateName(String cateName) {
+		this.cateName = cateName;
 	}
 
 	@Override

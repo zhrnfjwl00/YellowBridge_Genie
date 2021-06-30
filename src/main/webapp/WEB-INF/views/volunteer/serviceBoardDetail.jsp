@@ -49,7 +49,6 @@
 					<th id="title"> ${ volboard.volTitle } </th>
 					<button class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
 					<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
-					
 				</tr>
 				<tr>
 					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname }</td>
@@ -70,8 +69,8 @@
 		
 		<div class="form-group">
 			<% pageContext.setAttribute("newLineChar", "\r\n"); %>
-		<label for="content" class="col-sm-2 control-label"><b>내용</b></label>
-		<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none"><c:out value="${fn:replace(volboard.volContent, newLineChar, '<br>')}" /></textarea>
+			<label for="content" class="col-sm-2 control-label"><b>내용</b></label>
+			<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none"><c:out value="${fn:replace(volboard.volContent, newLineChar, '<br>')}" /></textarea>
 		</div>
 						
 		<div align="center">

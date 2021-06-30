@@ -61,5 +61,9 @@ public class VolBoardDAO {
 		return (ArrayList)sqlSession.selectList("volunteerMapper.serviceApplyList", null, rowBounds);
 	}
 
+	public Volunteer selectAppBoard(SqlSessionTemplate sqlSession, int adId) {
+		return sqlSession.selectOne("volunteerMapper.selectAppBoard", adId);
+	}
+
 
 }

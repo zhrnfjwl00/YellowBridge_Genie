@@ -120,7 +120,7 @@
 		where SERVICE_STATUS='Y'
 		order by SERVICE_NO desc
 	</select>
-	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" id="volAdvertiseResultSet"> 
+	<resultMap type="Volunteer" id="volAdvertiseResultSet"> 
 		<id property="serviceNo" column="SERVICE_NO"/>
 		<result property="serviceTitle" column="SERVICE_TITLE"/>
 		<result property="shelterName" column="SHELTER_NAME"/>
@@ -134,6 +134,15 @@
 		<result property="filePath" column="FILE_PATH"/>
 	</resultMap> 
 	
+	<select id="selectAppBoard" resultMap="volAdvertiseResultSet">
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
+				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list
+		from SERVICE_INFO
+		    left join category on (SHELTER_NAME = LIST)
+		    join FILE_INFO using (SERVICE_NO)
+		where SERVICE_STATUS='Y' and SERVICE_NO = #{serviceNo}
+		order by SERVICE_NO desc
+	</select>
 	
 	
 </mapper>

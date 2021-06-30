@@ -71,5 +71,10 @@ public class VolBoardServiceImpl implements VolBoardService{
 		return VolBoardDAO.serviceApplyList(sqlSession, pi);
 	}
 
+	@Override
+	public Volunteer selectAppBoard(int adId) {
+		return VolBoardDAO.selectAppBoard(sqlSession, adId);
+	}
+
 	
 }
