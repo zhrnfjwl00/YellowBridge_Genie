@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,32 +110,47 @@
         text-decoration: none;
         font-size: 0.9375em;
 	}
+	
+	.serviceBoardtext{
+		margin-top: 150px;
+		letter-spacing: -1px;
+	}
 </style>
 </head>
 <body>
 <div class="servicedetail">
+	<c:import url="../common/header.jsp"/>
+	
+	<div style="text-align:center;" class="serviceBoardtext">
+		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
+	</div>
+	
 	<form action="<%= request.getContextPath() %>/insert.vo" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
-				<img src="<%=request.getContextPath()%>/resources/serviceinfo.jpg">
+				<img src="<%=request.getContextPath()%>${ volad.filePath }${ volad.fileName }">
 			</div>
 			<div id="apply-info1">
 				<table>
 					<tr>
-						<td><b>대구 반야월 쉼터 봉사 (8월 7일)</b></td>
+						<td><b>${ volad.serviceTitle }</b></td>
 					</tr>
 					<tr>
 						<td>10,000원</td>
 					</tr>
 						<td><div style="border-top:2px solid black; width:100%; margin: 20px 0;"></div></td>
 					<tr>
-						<td>약 90마리의 강아지들과 10마리의 고양이들이 살고 있는 사설보호소예요 따뜻한 관심 가져주세요 :)</textarea></td>
+						<td>${ volad.shelterInfo }</td>
 					</tr>
 					<tr>
-						<td>문의 : 010-0101-1212</td>
+						<td>${ volad.shelterTel }</td>
 					</tr>
 					<tr>
-						<td><div style="text-align: center;"><button id="applybtn" >봉사신청</button></div></td>
+						<td>
+							<div style="text-align: center;">
+							<button id="applybtn" onclick="location.href='<%= request.getContextPath() %>/serviceapplyform.vol'">봉사신청</button>
+							</div>
+						</td>
 					</tr>
 				</table>
 			</div>
@@ -141,25 +158,15 @@
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				봉사 장소 : 동구 율암동 142-1 번지<br><br>
-				주소 검색 후 들어오기 전 공용 주차장에 주차하세요.<br><br>
-				(주소는 블로그나 인스타 등에 공개하지 말아주세요.)<br><br>
-				
-				봉사 시간 : 10:00~13:00<br><br>
-				
-				준비물:<br>
-				더러워져도 되는 신발, 옷  등<br>
-				보호소에 공용 방진복, 장갑이 있습니다.(개인방진복 따로 구매해주세요!)<br><br>
-				
-				구역별 할 일<br>
-				1. 똥, 쓰레기 치우기<br>
-				2. 밥, 물 그릇 씻기<br>
-				3. 밥, 물 주기<br>
-				4. 그 외 환경 개선<br>
+				<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent"><c:out value="${fn:replace(volad.serviceContent, newLineChar, '<br>')}" /></textarea>
+				<%-- ${fn:replace(volad.serviceContent, newLineChar, "<br>")} --%>
 			</div>
 		</div>
+		
+		
 		<div class="replyDiv">
-			<h2>후기</h2>
+			<h5>후기</h5>
 			<table class="replyTable" style="text-align:center;">
 				<tr class="replyTr" >
 					<td width="100px">강건강</td>
@@ -175,7 +182,9 @@
 			<table class="replyWriteTable">
 				<tr>
 					<td>
-						<textarea cols="100%" rows="5" placeholder="후기를 남겨주세요" style="resize:none;"></textarea>
+						<div class="wrap">
+							<textarea cols="100%" rows="5" placeholder="후기를 남겨주세요" style="resize:none;"></textarea>
+						</div>
 					</td>
 					<td>
 						<button id="replybtn">등록하기</button>
@@ -187,8 +196,9 @@
 			</table>
 		</div>
 	</form>
-	
-	
+	<c:import url="../common/footer.jsp"/>
+</div>
+
 	<script>
 	function readImage(input) {
 	    // 인풋 태그에 파일이 있는 경우
@@ -212,6 +222,16 @@
 	    readImage(e.target)
 	});
 	</script>
-</div>
+	
+	<script>
+    $(document).ready(function() {
+      $('.wrap').on( 'keyup', 'textarea', function (e){
+        $(this).css('height', 'auto' );
+        $(this).height( this.scrollHeight );
+      });
+      $('.wrap').find( 'textarea' ).keyup();
+    });
+  </script>
+
 </body>
 </html>

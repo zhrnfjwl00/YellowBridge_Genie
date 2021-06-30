@@ -40,6 +40,19 @@ public class VolunteerController {
 		return "serviceInfo";
 	}
 	
+	@RequestMapping("serviceAppDetail.vol")
+	public String serviceApplyDatail(@RequestParam("page") int page, @RequestParam("volId") int adId, Model model){
+		System.out.println(adId);
+		Volunteer vol = volBoardService.selectAppBoard(adId);
+		
+		if( vol != null) {
+			model.addAttribute("page", page).addAttribute("volad", vol);
+			return "apply_advertise_detail";
+		} else {
+			throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
+		}
+	}
+	
 	@RequestMapping("serviceapply.vol")
 	public ModelAndView serviceApplyList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
 		int currentPage = 1; // 연산에 사용될 변수
@@ -66,6 +79,11 @@ public class VolunteerController {
 		
 		return mv;
 		
+	}
+	
+	@RequestMapping("serviceapplyform.vol")
+	public String serviceApplyForm(){
+		return "apply_advertise_form";
 	}
 	
 	@RequestMapping("serviceApplyBoard.vol")
