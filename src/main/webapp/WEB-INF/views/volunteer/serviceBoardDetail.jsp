@@ -22,6 +22,9 @@
 	}
 	.form-group #title{font-size:24px; font-weight:bold;padding-bottom:15px;}
 	.replyTable{margin: auto; }
+	#rtb tbody{text-align:center; }
+	#rtb th{border-bottom: 1px dotted grey;}
+	#rtb td{padding: 3px;}
 </style>
 </head>
 <body>
@@ -41,17 +44,21 @@
 			<input type="hidden" id="volCategory" name="volCategory" value="${volboard.volCategory}"> 
 			<input type="hidden" id="volCount" name="volCount" value="${volboard.volCount}"> 
 			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${volboard.volCreateDate}"> 
+			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
 	
 		<div class="form-group">
 			<table>
 				<tr>
 					<th id="title"> ${ volboard.volTitle } </th>
-					<button class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
+					<th>
+					<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
 					<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
+					</th>
 				</tr>
 				<tr>
-					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname }</td>
+					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname } &nbsp;&nbsp;</td>
+					<td>| <b>보호소</b> &nbsp;&nbsp;${ volboard.volCategory } </td>
 				</tr>
 				<tr>
 					<td><b>작성일</b>&nbsp;&nbsp;${ volboard.volCreateDate } &nbsp;&nbsp;</td> 
@@ -62,15 +69,16 @@
 		</div>
 		
 		<div class="downloadFile">
-				<a href='' download=''> 첨부 파일 다운로드 </a>
+				<b>첨부파일</b>
+				<a href="<%= request.getContextPath() %>/resources/voluploadFiles/${ vFile.changeName }" download="${ vFile.fileName }">${ vFile.changeName }</a>
+				
 		</div>
 		
 		<br>
 		
 		<div class="form-group">
-			<% pageContext.setAttribute("newLineChar", "\r\n"); %>
 			<label for="content" class="col-sm-2 control-label"><b>내용</b></label>
-			<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none"><c:out value="${fn:replace(volboard.volContent, newLineChar, '<br>')}" /></textarea>
+			<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none">${volboard.volContent}</textarea>
 		</div>
 						
 		<div align="center">
@@ -79,57 +87,22 @@
 		
 		<br>
 		
-		<!-- 댓글 -->
-		<div id="reply">
-			<ol class="replyList">
-				<c:forEach items="${replyList}" var="replyList">
-					<li>
-						<p>
-							작성자 : ${replyList.writer}<br/>
-							작성 날짜 :  <fmt:formatDate value="${replyList.regdate}" pattern="yyyy-MM-dd" />
-						</p>
-					  
-						<p>${replyList.content}</p>
-						
-						<div>
-							<button type="button" class="replyUpdateBtn btn btn-warning" data-rno="${replyList.rno}">수정</button>
-							<button type="button" class="replyDeleteBtn btn btn-danger" data-rno="${replyList.rno}">삭제</button>
-						</div>
-					</li>
-				</c:forEach>   
-			</ol>
-		</div>
-		
-		<form name="replyForm" method="post" class="form-horizontal">
-			<input type="hidden" id="bno" name="bno" value="${read.bno}" />
-			<input type="hidden" id="page" name="page" value="${scri.page}"> 
-			<input type="hidden" id="perPageNum" name="perPageNum" value="${scri.perPageNum}"> 
-			<input type="hidden" id="searchType" name="searchType" value="${scri.searchType}"> 
-			<input type="hidden" id="keyword" name="keyword" value="${scri.keyword}"> 
-				
-			<hr>
-					
-			<div class="form-group">
-				<table>
-					<tr>
-						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
-					</tr>
-					<tr>
-						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
+		<table class="replyTable">
+			<tr>
+				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
 						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
-					</tr>
-				</table>
-						
-						
-				<table class="replyTable" id="rtb">
-					<thead>
-						<tr><td colspan="2"><b id="rCount"></b></td></tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-			</div>
+			</tr>
+		</table>
+		
+		<table class="replyTable" id="rtb">
+			<thead>
+				<tr>
+					<td colspan="2"><b id="rCount"></b></td>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 			
-		</form>
 	</section>
 	<c:import url="../common/footer.jsp"/>
 </div>
@@ -144,12 +117,12 @@
 		}, 1000);
 		
 		$('#rinsertBtn').on('click', function(){
-			var rContent = $('#rContent').val();
-			var refBid = ${volboard.volId};
+			var volrContent = $('#rContent').val();
+			var volrefBid = ${volboard.volId};
 			
 			$.ajax({
 				url: 'voladdReply.vol',
-				data: {rContent:rContent, refBid:refBid},
+				data: {volrContent:volrContent, volrefBid:volrefBid},
 				success: function(data){
 					console.log(data);
 					
@@ -176,11 +149,21 @@
 				
 				$('#rCount').text('댓글(' + data.length + ')');
 				if(data.length > 0){
+					var $tr = $('<tr>');
+					var $trWriter = $('<th>').text('작성자');
+					var $trContent = $('<th colspan=3>').text('내용');
+					var $trCreateDate = $('<th>').text('작성일');
+					
+					$tr.append($trWriter);
+					$tr.append($trContent);
+					$tr.append($trCreateDate);
+					$tableBody.append($tr);
+					
 					for(var i in data){
 						var $tr = $('<tr>');
-						var $rWriter = $('<td width=100>').text(data[i].volrWriter);
-						var $rContent = $('<td>').text(data[i].volrContent);
-						var $rCreateDate = $('<td width=100>').text(data[i].volrCreateDate);
+						var $rWriter = $('<td>').text(data[i].volrNickname);
+						var $rContent = $('<td colspan=3>').text(data[i].volrContent);
+						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
 						
 						$tr.append($rWriter);
 						$tr.append($rContent);
@@ -189,7 +172,7 @@
 					}
 				} else {
 					var $tr = $('<tr>');
-					var $rContent = $('<td colspan=3>').text('등록된 댓글이 없습니다.');
+					var $rContent = $('<td colspan=5>').text('등록된 댓글이 없습니다.');
 					
 					$tr.append($rContent);
 					$tableBody.append($tr);
@@ -199,12 +182,12 @@
 	}
 </script>
 	
-<script type="text/javascript">
+ <script type="text/javascript">
 	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
-	$(document).ready(function(){
+/* 	$(document).ready(function(){
 		var formObj = $("form[name='readForm']");
 		
-		// 수정 
+  		// 수정 
 		$(".update_btn").on("click", function(){
 			formObj.attr("action", "/board/updateView");
 			formObj.attr("method", "get");
@@ -222,17 +205,27 @@
 			formObj.submit();
 				
 			}
-		})
+		})  */ 
 		
 		// 목록
 		$(".list_btn").on("click", function(){
 			
-			location.href = "/board/list?page=${scri.page}"
-					      +"&perPageNum=${scri.perPageNum}"
-					      +"&searchType=${scri.searchType}&keyword=${scri.keyword}";
+			location.href = "/YellowBridge/serviceBoardList.vol";
+		})
+		$("#updateBtn").on("click", function(){
+			var volId = ${volboard.volId};
+			var page = ${page};
+			
+			location.href="serviceBoardUpdateForm.vol?volId="+volId+"&page="+page;
 		})
 		
-		$(".replyWriteBtn").on("click", function(){
+		$("#deleteBtn").on("click", function(){
+			var volId = ${volboard.volId};
+			
+			location.href = "serviceBoardDelete.vol?volId="+volId;
+		})
+		
+/* 		$(".replyWriteBtn").on("click", function(){
 			var formObj = $("form[name='replyForm']");
 			formObj.attr("action", "/board/replyWrite");
 			formObj.submit();
@@ -257,8 +250,8 @@
 				+ "&keyword=${scri.keyword}"
 				+ "&rno="+$(this).attr("data-rno");
 		});
-	})
+	}) */
 	
-</script>
+</script> 
 </body>
 </html>

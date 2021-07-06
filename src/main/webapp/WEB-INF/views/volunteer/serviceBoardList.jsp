@@ -99,50 +99,62 @@
 					<%-- </c:if> --%>
 					
 						<!-- 페이징 처리 -->
+							
 							<tr align="center" height="20" id="buttonTab">
 								<td colspan="6">
 								
 									<!-- [이전] -->
-									<c:if test="${ pi.currentPage <= 1 }">
-										[이전] &nbsp;
-									</c:if>
+									<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
 									<c:if test="${ pi.currentPage > 1 }">
-										<c:url var="before" value="serviceBoardList.vol">
+										<c:url value="${ loc }" var="blistBack">
 											<c:param name="page" value="${ pi.currentPage - 1 }"/>
+											<c:if test="${ searchValue ne null }">
+												<c:param name="searchCondition" value="${ searchCondition }"/>
+												<c:param name="searchValue" value="${ searchValue }"/>
+											</c:if>
 										</c:url>
-										<a href="${ before }">[이전]</a> &nbsp;
+										<a href="${ blistBack }">[이전]</a>
 									</c:if>
+									<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
 									
-									<!-- 페이지 -->
+									<!-- 숫자 -->
 									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-										<c:if test="${ p eq pi.currentPage }">
+										<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
+										<c:if test="${ p == pi.currentPage }">
 											<font color="red" size="4"><b>[${ p }]</b></font>
 										</c:if>
-										
+										<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
 										<c:if test="${ p ne pi.currentPage }">
-											<c:url var="pagination" value="serviceBoardList.vol">
+											<c:url var="blistCheck" value="${ loc }">
 												<c:param name="page" value="${ p }"/>
+												<c:if test="${ searchValue ne null }">
+													<c:param name="searchCondition" value="${ searchCondition }"/>
+													<c:param name="searchValue" value="${ searchValue }"/>
+												</c:if>
 											</c:url>
-											<a href="${ pagination }">${ p }</a> &nbsp;
+											<a href="${ blistCheck }">${ p }</a>
 										</c:if>
+										<!-- loc: search.bo -->
 									</c:forEach>
 									
 									<!-- [다음] -->
-									<c:if test="${ pi.currentPage >= pi.maxPage }">
-										[다음]
-									</c:if>
+									<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
 									<c:if test="${ pi.currentPage < pi.maxPage }">
-										<c:url var="after" value="serviceBoardList.vol">
+										<c:url value="${ loc }" var="blistNext">
 											<c:param name="page" value="${ pi.currentPage + 1 }"/>
-										</c:url> 
-										<a href="${ after }">[다음]</a>
+											<c:if test="${ searchValue ne null }">
+												<c:param name="searchCondition" value="${ searchCondition }"/>
+												<c:param name="searchValue" value="${ searchValue }"/>
+											</c:if>
+										</c:url>
+										<a href="${ blistNext }">[다음]</a>
 									</c:if>
 								</td>
 							</tr>
 					</tbody>
 				</table>
 				<div class="btnDiv">
-					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/serviceBoardWrite.vol'">글쓰기</button>
+					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/serviceBoardWriteForm.vol'">글쓰기</button>
 				</div>
 			</div>
 		</div>

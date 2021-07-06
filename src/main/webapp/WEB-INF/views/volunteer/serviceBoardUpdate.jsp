@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -31,7 +32,9 @@
 	</div>
 	
     <div style="padding : 30px;">
-		<form action="serviceBoardWrite.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
+		<form action="serviceBoardUpdate.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
+			<input type="hidden" id="volId" name="volId" value="${volu.volId}" />
+			
 			<table>
 				<tr>
 					<td>
@@ -52,7 +55,7 @@
 					<td>
 						<div class="form-group">
 							<label>제목</label>
-							<input type="text" name="volTitle" class="form-control">
+							<input type="text" name="volTitle" class="form-control" value="${ volu.volTitle }">
 						</div>
 					</td>
 				</tr>
@@ -60,27 +63,59 @@
 					<td>
 						<div class="form-group">
 							<label>첨부파일</label>
-							<input type="file" id="uploadFile" multiple="multiple" name="uploadFile">
+							<input type="file" id="uploadFile" multiple="multiple" name="uploadFile"><button class="fileBtn" id="fileBtn">삭제</button>
+							<a href="<%= request.getContextPath() %>/resources/voluploadFiles/${ vFu.changeName }" download="${ vFu.fileName }">${ vFu.changeName }</a>
+							
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<div class="form-group">
-							<label>내용</label>
-							<textarea name="volContent" class="form-control" cols="60" rows="25" style="resize:none"></textarea>
+						<label for="content" class="col-sm-2 control-label"><b>내용</b></label>
+						<textarea id="volContent" name="volContent" class="form-control" cols="60" rows="25" style="resize:none">${volu.volContent}</textarea>
 						</div>
 					</td>
 				</tr>
 			</table>
 			<div class="btnDiv">
-			<button type="submit" class="btn btn-default">작성</button>
+			<button type="submit" class="btn btn-default">수정</button>
+			<c:url var="serviceBoardDelete" value="serviceBoardDelete.vol">
+				<c:param name="volId" value="${volboard.volId}"/>
+			</c:url>
 			</div>
 		</form>
 	</div>
 	<c:import url="../common/footer.jsp"/>
 	
 </div>
+
+<script type="text/javascript">
+	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
+	$(document).ready(function(){
+		/* var formObj = $("form[name='readForm']");
+		
+		// 삭제
+		$(".fileBtn").on("click", function(){
+			
+			var deleteYN = confirm("삭제하시겠습니까?");
+			if(deleteYN == true){
+				
+			formObj.attr("action", "/volunteer/delete");
+			formObj.attr("method", "post");
+			formObj.submit();
+				
+			}
+		})   */
+		
+		
+		$("#fileBtn").on("click", function(){
+			var fileNo = ${vFu.fileNo};
+			
+			location.href = "serviceBoardDelete.vol?volId="+volId;
+		})
+	}
+</script>
 </body>
 </html>
 
