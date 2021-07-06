@@ -7,6 +7,8 @@ public class VolReply {
 	private String volrContent;
 	private int volrefBid;
 	private String volrWriter;
+	private String volrNickname;
+	private int volrWriterNo;
 	private Date volrCreateDate;
 	private Date volrModifyDate;
 	private String volrStatus;
@@ -20,6 +22,33 @@ public class VolReply {
 		this.volrContent = volrContent;
 		this.volrefBid = volrefBid;
 		this.volrWriter = volrWriter;
+		this.volrCreateDate = volrCreateDate;
+		this.volrModifyDate = volrModifyDate;
+		this.volrStatus = volrStatus;
+	}
+	
+	public VolReply(int volrId, String volrContent, int volrefBid, String volrWriter, int volrWriterNo,
+			Date volrCreateDate, Date volrModifyDate, String volrStatus) {
+		super();
+		this.volrId = volrId;
+		this.volrContent = volrContent;
+		this.volrefBid = volrefBid;
+		this.volrWriter = volrWriter;
+		this.volrWriterNo = volrWriterNo;
+		this.volrCreateDate = volrCreateDate;
+		this.volrModifyDate = volrModifyDate;
+		this.volrStatus = volrStatus;
+	}
+	
+	public VolReply(int volrId, String volrContent, int volrefBid, String volrWriter, String volrNickname,
+			int volrWriterNo, Date volrCreateDate, Date volrModifyDate, String volrStatus) {
+		super();
+		this.volrId = volrId;
+		this.volrContent = volrContent;
+		this.volrefBid = volrefBid;
+		this.volrWriter = volrWriter;
+		this.volrNickname = volrNickname;
+		this.volrWriterNo = volrWriterNo;
 		this.volrCreateDate = volrCreateDate;
 		this.volrModifyDate = volrModifyDate;
 		this.volrStatus = volrStatus;
@@ -79,6 +108,22 @@ public class VolReply {
 
 	public void setVolrStatus(String volrStatus) {
 		this.volrStatus = volrStatus;
+	}
+	
+	public int getVolrWriterNo() {
+		return volrWriterNo;
+	}
+
+	public void setVolrWriterNo(int volrWriterNo) {
+		this.volrWriterNo = volrWriterNo;
+	}
+	
+	public String getVolrNickname() {
+		return volrNickname;
+	}
+
+	public void setVolrNickname(String volrNickname) {
+		this.volrNickname = volrNickname;
 	}
 
 	@Override

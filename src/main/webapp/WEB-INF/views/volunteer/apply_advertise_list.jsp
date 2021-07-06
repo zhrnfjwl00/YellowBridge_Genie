@@ -57,7 +57,7 @@
 
 <div class="serviceapply">
 	<c:import url="../common/header.jsp"/>
-	
+	<form action="serviceBoardWrite.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
 	</div>
@@ -134,7 +134,7 @@
 	</tr>
 	</table>
 	
-	
+	</form>
 	<c:import url="../common/footer.jsp"/>
 </div>
 

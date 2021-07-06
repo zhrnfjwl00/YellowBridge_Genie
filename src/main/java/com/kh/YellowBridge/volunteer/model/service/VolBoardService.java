@@ -6,7 +6,9 @@ import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
 import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
+import com.kh.YellowBridge.volunteer.model.vo.VolunteerApply;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
+import com.kh.YellowBridge.volunteer.model.vo.VolunteerFile;
 
 public interface VolBoardService {
 
@@ -27,6 +29,24 @@ public interface VolBoardService {
 	ArrayList<Volunteer> serviceApplyList(PageInfo pi);
 
 	Volunteer selectAppBoard(int adId);
+
+	int insertVolBoard(VolunteerBoard volb);
+
+	int insertVolFile(VolunteerFile vFile);
+
+	VolunteerFile selectVolFile(int volId);
+
+	int updateVolBoard(VolunteerBoard volb);
+
+	int deleteVolFile(int boardNo);
+
+	int updateVolFile(VolunteerFile vF);
+
+	int serviceBoardDelete(int volId);
+
+	int insertAppForm(VolunteerApply volApp);
+
+	VolunteerApply selectAppForm(int vAppNo);
 
 	
 }

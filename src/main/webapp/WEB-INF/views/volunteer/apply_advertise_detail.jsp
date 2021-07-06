@@ -61,41 +61,12 @@
 		margin: 0px auto;
 	}
 	
-	.replyDiv{
-		padding-top: 5px;
-		padding-bottom: 30px;
-		width: 80%;
-		margin: 0px auto;
-	}
-	
-	.replyTable{
-		border-bottom: 1px solid black;
-		border-top: 1px solid black;
-		padding-top: 15px;
-		padding-bottom: 15px;
-		width: 100%;
-	}
-	
-	.replyWriteTable{
-		padding-top: 30px;
-		padding-bottom: 15px;
-		
-	}
-	
-	#replybtn{
-		background-color: lightgrey;
-        border: 1px solid white;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        letter-spacing: -1px;
-        padding: 30px 30px;
-        word-break: keep-all;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 0.9375em;
-	}
-	
+	.replyTable{margin: auto; }
+	#rinsertBtn{float: right; margin: 5px;}
+	#rtb tbody{text-align:center; }
+	#rtb th{border-bottom: 1px dotted grey;}
+	#rtb td{padding: 3px;}
+
 	#applybtn{
     	background-color: rgb(189, 204, 148);
         border: 1px solid white;
@@ -125,7 +96,7 @@
 		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
 	</div>
 	
-	<form action="<%= request.getContextPath() %>/insert.vo" method="post" encType="multipart/form-data">
+	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volad.serviceNo }" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
 				<img src="<%=request.getContextPath()%>${ volad.filePath }${ volad.fileName }">
@@ -148,13 +119,14 @@
 					<tr>
 						<td>
 							<div style="text-align: center;">
-							<button id="applybtn" onclick="location.href='<%= request.getContextPath() %>/serviceapplyform.vol'">봉사신청</button>
+							<button id="applybtn" onclick="goApply();">봉사신청</button>
 							</div>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
+	</form>
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
@@ -165,39 +137,26 @@
 		</div>
 		
 		
-		<div class="replyDiv">
-			<h5>후기</h5>
-			<table class="replyTable" style="text-align:center;">
-				<tr class="replyTr" >
-					<td width="100px">강건강</td>
-					<td width="400px">오늘 봉사 너무 즐거웠습니다~ 다음에 또 뵐게요</td>
-					<td width="150px">2021-02-03</td>
-				</tr>
-				<tr class="replyTr">
-					<td width="100px">남나눔</td>
-					<td width="400px">재밌었어요~</td>
-					<td width="150px">2021-02-03</td>
-				</tr>
-			</table>
-			<table class="replyWriteTable">
+		<br>
+		<div class="container">
+		<table class="replyTable">
+			<tr>
+				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
+				<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+			</tr>
+		</table>
+		
+		<table class="replyTable" id="rtb">
+			<thead>
 				<tr>
-					<td>
-						<div class="wrap">
-							<textarea cols="100%" rows="5" placeholder="후기를 남겨주세요" style="resize:none;"></textarea>
-						</div>
-					</td>
-					<td>
-						<button id="replybtn">등록하기</button>
-					</td>
+					<td colspan="2"><b id="rCount"></b></td>
 				</tr>
-				<tr>
-					<td colspan="2"><b>댓글(${ rCount })</b>
-				</tr>
-			</table>
+			</thead>
+			<tbody></tbody>
+		</table>
 		</div>
-	</form>
-	<c:import url="../common/footer.jsp"/>
 </div>
+	<c:import url="../common/footer.jsp"/>
 
 	<script>
 	function readImage(input) {
@@ -221,9 +180,7 @@
 	inputImage.addEventListener("change", function(e){
 	    readImage(e.target)
 	});
-	</script>
 	
-	<script>
     $(document).ready(function() {
       $('.wrap').on( 'keyup', 'textarea', function (e){
         $(this).css('height', 'auto' );
@@ -231,7 +188,88 @@
       });
       $('.wrap').find( 'textarea' ).keyup();
     });
+    
+    function goApply(){
+    	var serId = ${ volad.serviceNo };
+		
+		location.href="serviceapplyform.vol?serId="+serId;
+	}
   </script>
+  
+  <script>
+	$(function(){
+		
+		getReplyList();
+		
+		setInterval(function(){
+			getReplyList();
+		}, 1000);
+		
+		$('#rinsertBtn').on('click', function(){
+			var volrContent = $('#rContent').val();
+			var volrefBid = ${ volad.serviceNo };
+			
+			$.ajax({
+				url: 'voladdReply.vol',
+				data: {volrContent:volrContent, volrefBid:volrefBid},
+				success: function(data){
+					console.log(data);
+					
+					if(data == 'success'){
+						$('#rContent').val('');
+						getReplyList(); // 댓글 리스트 불러오기
+					}
+				}
+			});
+		});
+	});
+	
+	function getReplyList(){
+		var volId = ${ volad.serviceNo };
+		
+		$.ajax({
+			url: 'volrList.vol',
+			data: {volId:volId},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				var $tableBody = $('#rtb tbody');
+				$tableBody.html('');
+				
+				$('#rCount').text('후기(' + data.length + ')');
+				if(data.length > 0){
+					var $tr = $('<tr>');
+					var $trWriter = $('<th>').text('작성자');
+					var $trContent = $('<th colspan=3>').text('내용');
+					var $trCreateDate = $('<th>').text('작성일');
+					
+					$tr.append($trWriter);
+					$tr.append($trContent);
+					$tr.append($trCreateDate);
+					$tableBody.append($tr);
+					
+					for(var i in data){
+						var $tr = $('<tr>');
+						var $rWriter = $('<td>').text(data[i].volrNickname);
+						var $rContent = $('<td colspan=3>').text(data[i].volrContent);
+						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
+						
+						$tr.append($rWriter);
+						$tr.append($rContent);
+						$tr.append($rCreateDate);
+						$tableBody.append($tr);
+					}
+				} else {
+					var $tr = $('<tr>');
+					var $rContent = $('<td colspan=5>').text('등록된 후기가 없습니다.');
+					
+					$tr.append($rContent);
+					$tableBody.append($tr);
+				}
+			}
+		});
+	}
+	</script>
 
 </body>
 </html>
