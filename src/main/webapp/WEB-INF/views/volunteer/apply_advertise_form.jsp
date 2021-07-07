@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,23 +8,37 @@
 <title>봉사자 신청서 작성</title>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
 <style>
+	.applyform{
+		width: 65%;
+		margin: 0px auto;
+		padding-top: 30px;
+	}
+	
+	.serviceBoardtext{
+		margin-top: 150px;
+		letter-spacing: -1px;
+	}
+	
 	.contentTable{
     	width: 60%;
 		margin: 0px auto;
 		height: auto;
 		min-height: 30%;
 		border-collapse : collapse;
-		padding: 30px;
+		padding: 50px;
+		align: center;
     }
     
     .none{display: none;}
     
     input{padding: 8px;}
     
-    th{
+    .contentTable th{
+    	width: 30%;
     	padding: 10px;
     }
-    td{
+    .contentTable td{
+    	width: 70%;
     	padding: 10px;
     }
     
@@ -53,54 +68,74 @@
         text-decoration: none;
         font-size: 0.9375em;
 	}
+	
+	.contentBox{
+    margin-left:auto;
+    margin-right:auto;
+	}
+	
 
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="applyform">
-	<div style="text-align:center;">
-		<h1 style="color:#BDCC94;">봉사자 신청서 작성</h1>
-		<h3 style="color:rgb(192, 57, 43);">신청서를 작성하기 전 유의사항을 꼭 읽어주세요!</h3>
+	<div style="text-align:center;" class="serviceBoardtext">
+		<h1 style="color:#BDCC94;"><b>봉사자 신청서 작성</b></h1>
+		<h3 style="color:rgb(192, 57, 43);"><b>신청서를 작성하기 전 유의사항을 꼭 읽어주세요!</b></h3>
 		<p>
+			<br>
 			1. 동반인이 있을 경우 본인과 동반인 각각 따로 신청서를 작성해 주셔야 합니다.(반드시 봉사자 한 명 당 하나의 신청서 제출)<br><br>
 
 			2. 신청서를 제출하는 사람은 반드시 봉사자 본인이어야 합니다.(대리 신청서 제출 불가. 반드시 회원가입 후 자신의 이름으로 제출해주세요)<br><br>
 
 			3. 당일 노쇼일 경우 평생 Yellow Bridge에서 봉사자로서 참여하실 수 없으니 꼭 참석이 가능하신 분만 신청서를 제출해주세요.<br><br>
 
-			4. 픽업과 준비물 등은 해당 보호소에 문의해주세요.<br><br>
+			4. 픽업과 준비물 등은 해당 보호소에 문의해주세요.<br><br><br>
 		</p>
 	</div>
-	<div>
-		<form action="minsert.me" method="post" id="joinForm">
-			<table class="contentTable" >
+	<div class="contentBox">
+		<form action="<%= request.getContextPath() %>/sApplyForm.vol" method="post" id="sApplyForm">
+			<table class="contentTable" style="​margin: auto; text-align: center;">
 				<tr>
-	        		<th>* 봉사자 성함</th>
-	        		<td><input type="text" name="name" id="name" size="80px" placeholder="필수입력" required></td>
+	        		<th><b>신청 봉사</b></th>
+	        		<td style="color:red;">
+	        		<b>${ vol.serviceTitle }</b>
+	        		<input type="hidden" name="serviceNo" id="serviceNo" size="10px" value="${ vol.serviceNo }" required>
+	        		</td>
+	        	</tr>
+				<tr>
+	        		<th><b>입금하실 금액</b></th>
+	        		<td>10,000원</td>
+	        	</tr>
+				<tr>
+	        		<th><b>봉사자 성함</b></th>
+	        		<td>강건강</td>
 	        	</tr>
 	           	<tr>
-	           		<th>* 휴대전화번호</th>
-	           		<td><input type="tel" name="phone" id="phone" size="80px" placeholder="필수입력" required></td>
+	           		<th><b>휴대전화번호</b></th>
+	           		<td>01012345678</td>
 	           	</tr>
 	           	<tr>
-	           		<th>* 이메일</th>
-	           		<td><input type="email" name="email" id="email" placeholder="필수입력" size="80px" required></td>
+	           		<th><b>이메일</b></th>
+	           		<td>health@gmail.com</td>
 	           	</tr>
 	           	<tr>
-	           		<th>* 봉사자 주소 <br>(사는 곳 동/읍/면까지만 적어주세요)</th>
-	           		<td><input type="text" name="address" id="address" placeholder="필수입력" size="80px" required></td>
+	           		<th><b>봉사자 주소</b></th>
+	           		<td>서울시 강남구 역삼동</td>
 	           	</tr>
 	           	<tr>
-	           		<th>전달사항</th>
-	           		<td><input type="text" name="request" id="request" size="80px" placeholder="할 말 있으시면 적어주세요! "></td>
+	           		<th><b>전달사항</b></th>
+	           		<td><input type="text" name="volReq" id="volReq" size="50px" placeholder="할 말 있으시면 적어주세요! "></td>
 	           	</tr>
 	           	<tr>
-	           		<th>결제방법<br><input type="radio" name="payment" value="무통장입금" required checked>무통장입금</th>
+	           		<th><b>결제방법</b><br><input type="radio" name="payment" value="무통장입금" required checked>무통장입금</th>
 	           		<td>
 	           			<select>
 	           				<option>기업은행 12123434565678 옐로우브릿지</option>
 	           			</select>
-	           			<input type="text" name="payname" id="payname" size="50px" placeholder="입금자명" required>
+	           			<br>
+	           			입금자명 : <input type="text" name="servicepayName" id="servicepayName" size="10px" required>
 	           		</td>
 	           	</tr>
 	           	<tr>
@@ -114,5 +149,13 @@
 		</form>
 	</div>
 </div>
+<c:import url="../common/footer.jsp"/>
+
+<script>
+	$("#applybtn").on("click", function(){
+		var YN = confirm("입력하신 정보를 다시 한번 확인해주세요. 제출 후 수정이 불가능합니다.");
+		
+	})
+</script>
 </body>
 </html>

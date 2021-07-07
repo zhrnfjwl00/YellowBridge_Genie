@@ -51,35 +51,39 @@
 		padding: 15px;
 		text-align: center;
 	}
-	
-	.shelter-price{
-		margin-top: 10px;
-	}
 </style>
 </head>
 <body>
 
 <div class="serviceapply">
 	<c:import url="../common/header.jsp"/>
-	
+	<form action="serviceBoardWrite.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
 	</div>
 	
 	<div id="service">
-		<div id="service-list" align="center">
+		<div id="service-list" class="service-list" align="center">
 		
 			<c:forEach var="shel" items="${ volad }">
 				<div class="shelter">
 					<input type="hidden" id="shelNo" name="shelNo" value="${ shel.serviceNo }">
-					<div>
+					<div id="contents">
 						<div class="shelter-img">
-								<img src="<%=request.getContextPath()%>${ shel.filePath }${ shel.fileName }" >
+							<c:url var="serviceAppDetail" value="serviceAppDetail.vol">
+								<c:param name="volId" value="${ shel.serviceNo }"/>
+								<c:param name="page" value="${ vpi.currentPage }"/>
+							</c:url>
+							<a href="${ serviceAppDetail }"><img src="<%=request.getContextPath()%>${ shel.filePath }${ shel.fileName }" ></a>
 						</div>
 						<div id="shelter-info">
-							<div class="shelter-name">${ shel.serviceTitle }</div>
-							<div class="shelter-price">10,000원</div>
+						<c:url var="serviceAppDetail" value="serviceAppDetail.vol">
+							<c:param name="volId" value="${ shel.serviceNo }"/>
+							<c:param name="page" value="${ vpi.currentPage }"/>
+						</c:url>
+							<a href="${ serviceAppDetail }" class="shelter-name">${ shel.serviceTitle }</a>
 						</div>
+						<div class="shelter-price">10,000원</div>
 					</div>
 				</div>
 			</c:forEach>
@@ -130,7 +134,21 @@
 	</tr>
 	</table>
 	
-	
+	</form>
 	<c:import url="../common/footer.jsp"/>
 </div>
+
+<script type="text/javascript">
+   // 게시글 상세보기
+	$(function(){
+			$('#service-list #contents').on({'mouseenter':function(){
+				$(this).parent().css({'background' : 'lightgray', 'cursor':'pointer'});					
+			}, 'mouseout':function(){
+				$(this).parent().css({'background' : 'none'});
+			}});
+		});
+
+	
+</script>
+</body>
 </html>

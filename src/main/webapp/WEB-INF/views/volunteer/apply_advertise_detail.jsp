@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,41 +61,12 @@
 		margin: 0px auto;
 	}
 	
-	.replyDiv{
-		padding-top: 5px;
-		padding-bottom: 30px;
-		width: 80%;
-		margin: 0px auto;
-	}
-	
-	.replyTable{
-		border-bottom: 1px solid black;
-		border-top: 1px solid black;
-		padding-top: 15px;
-		padding-bottom: 15px;
-		width: 100%;
-	}
-	
-	.replyWriteTable{
-		padding-top: 30px;
-		padding-bottom: 15px;
-		
-	}
-	
-	#replybtn{
-		background-color: lightgrey;
-        border: 1px solid white;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        letter-spacing: -1px;
-        padding: 30px 30px;
-        word-break: keep-all;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 0.9375em;
-	}
-	
+	.replyTable{margin: auto; }
+	#rinsertBtn{float: right; margin: 5px;}
+	#rtb tbody{text-align:center; }
+	#rtb th{border-bottom: 1px dotted grey;}
+	#rtb td{padding: 3px;}
+
 	#applybtn{
     	background-color: rgb(189, 204, 148);
         border: 1px solid white;
@@ -108,87 +81,83 @@
         text-decoration: none;
         font-size: 0.9375em;
 	}
+	
+	.serviceBoardtext{
+		margin-top: 150px;
+		letter-spacing: -1px;
+	}
 </style>
 </head>
 <body>
 <div class="servicedetail">
-	<form action="<%= request.getContextPath() %>/insert.vo" method="post" encType="multipart/form-data">
+	<c:import url="../common/header.jsp"/>
+	
+	<div style="text-align:center;" class="serviceBoardtext">
+		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
+	</div>
+	
+	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volad.serviceNo }" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
-				<img src="<%=request.getContextPath()%>/resources/serviceinfo.jpg">
+				<img src="<%=request.getContextPath()%>${ volad.filePath }${ volad.fileName }">
 			</div>
 			<div id="apply-info1">
 				<table>
 					<tr>
-						<td><b>대구 반야월 쉼터 봉사 (8월 7일)</b></td>
+						<td><b>${ volad.serviceTitle }</b></td>
 					</tr>
 					<tr>
 						<td>10,000원</td>
 					</tr>
 						<td><div style="border-top:2px solid black; width:100%; margin: 20px 0;"></div></td>
 					<tr>
-						<td>약 90마리의 강아지들과 10마리의 고양이들이 살고 있는 사설보호소예요 따뜻한 관심 가져주세요 :)</textarea></td>
+						<td>${ volad.shelterInfo }</td>
 					</tr>
 					<tr>
-						<td>문의 : 010-0101-1212</td>
+						<td>${ volad.shelterTel }</td>
 					</tr>
 					<tr>
-						<td><div style="text-align: center;"><button id="applybtn" >봉사신청</button></div></td>
+						<td>
+							<div style="text-align: center;">
+							<button id="applybtn" onclick="goApply();">봉사신청</button>
+							</div>
+						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
+	</form>
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				봉사 장소 : 동구 율암동 142-1 번지<br><br>
-				주소 검색 후 들어오기 전 공용 주차장에 주차하세요.<br><br>
-				(주소는 블로그나 인스타 등에 공개하지 말아주세요.)<br><br>
-				
-				봉사 시간 : 10:00~13:00<br><br>
-				
-				준비물:<br>
-				더러워져도 되는 신발, 옷  등<br>
-				보호소에 공용 방진복, 장갑이 있습니다.(개인방진복 따로 구매해주세요!)<br><br>
-				
-				구역별 할 일<br>
-				1. 똥, 쓰레기 치우기<br>
-				2. 밥, 물 그릇 씻기<br>
-				3. 밥, 물 주기<br>
-				4. 그 외 환경 개선<br>
+				<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent"><c:out value="${fn:replace(volad.serviceContent, newLineChar, '<br>')}" /></textarea>
+				<%-- ${fn:replace(volad.serviceContent, newLineChar, "<br>")} --%>
 			</div>
 		</div>
-		<div class="replyDiv">
-			<h2>후기</h2>
-			<table class="replyTable" style="text-align:center;">
-				<tr class="replyTr" >
-					<td width="100px">강건강</td>
-					<td width="400px">오늘 봉사 너무 즐거웠습니다~ 다음에 또 뵐게요</td>
-					<td width="150px">2021-02-03</td>
-				</tr>
-				<tr class="replyTr">
-					<td width="100px">남나눔</td>
-					<td width="400px">재밌었어요~</td>
-					<td width="150px">2021-02-03</td>
-				</tr>
-			</table>
-			<table class="replyWriteTable">
+		
+		
+		<br>
+		<div class="container">
+		<table class="replyTable">
+			<tr>
+				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
+				<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+			</tr>
+		</table>
+		
+		<table class="replyTable" id="rtb">
+			<thead>
 				<tr>
-					<td>
-						<textarea cols="100%" rows="5" placeholder="후기를 남겨주세요" style="resize:none;"></textarea>
-					</td>
-					<td>
-						<button id="replybtn">등록하기</button>
-					</td>
+					<td colspan="2"><b id="rCount"></b></td>
 				</tr>
-				<tr>
-					<td colspan="2"><b>댓글(${ rCount })</b>
-				</tr>
-			</table>
+			</thead>
+			<tbody></tbody>
+		</table>
 		</div>
-	</form>
-	
-	
+</div>
+	<c:import url="../common/footer.jsp"/>
+
 	<script>
 	function readImage(input) {
 	    // 인풋 태그에 파일이 있는 경우
@@ -211,7 +180,96 @@
 	inputImage.addEventListener("change", function(e){
 	    readImage(e.target)
 	});
+	
+    $(document).ready(function() {
+      $('.wrap').on( 'keyup', 'textarea', function (e){
+        $(this).css('height', 'auto' );
+        $(this).height( this.scrollHeight );
+      });
+      $('.wrap').find( 'textarea' ).keyup();
+    });
+    
+    function goApply(){
+    	var serId = ${ volad.serviceNo };
+		
+		location.href="serviceapplyform.vol?serId="+serId;
+	}
+  </script>
+  
+  <script>
+	$(function(){
+		
+		getReplyList();
+		
+		setInterval(function(){
+			getReplyList();
+		}, 1000);
+		
+		$('#rinsertBtn').on('click', function(){
+			var volrContent = $('#rContent').val();
+			var volrefBid = ${ volad.serviceNo };
+			
+			$.ajax({
+				url: 'voladdReply.vol',
+				data: {volrContent:volrContent, volrefBid:volrefBid},
+				success: function(data){
+					console.log(data);
+					
+					if(data == 'success'){
+						$('#rContent').val('');
+						getReplyList(); // 댓글 리스트 불러오기
+					}
+				}
+			});
+		});
+	});
+	
+	function getReplyList(){
+		var volId = ${ volad.serviceNo };
+		
+		$.ajax({
+			url: 'volrList.vol',
+			data: {volId:volId},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				var $tableBody = $('#rtb tbody');
+				$tableBody.html('');
+				
+				$('#rCount').text('후기(' + data.length + ')');
+				if(data.length > 0){
+					var $tr = $('<tr>');
+					var $trWriter = $('<th>').text('작성자');
+					var $trContent = $('<th colspan=3>').text('내용');
+					var $trCreateDate = $('<th>').text('작성일');
+					
+					$tr.append($trWriter);
+					$tr.append($trContent);
+					$tr.append($trCreateDate);
+					$tableBody.append($tr);
+					
+					for(var i in data){
+						var $tr = $('<tr>');
+						var $rWriter = $('<td>').text(data[i].volrNickname);
+						var $rContent = $('<td colspan=3>').text(data[i].volrContent);
+						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
+						
+						$tr.append($rWriter);
+						$tr.append($rContent);
+						$tr.append($rCreateDate);
+						$tableBody.append($tr);
+					}
+				} else {
+					var $tr = $('<tr>');
+					var $rContent = $('<td colspan=5>').text('등록된 후기가 없습니다.');
+					
+					$tr.append($rContent);
+					$tableBody.append($tr);
+				}
+			}
+		});
+	}
 	</script>
-</div>
+
 </body>
 </html>
