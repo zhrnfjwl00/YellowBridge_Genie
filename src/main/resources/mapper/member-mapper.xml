@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+	
+	<select id="login" resultMap="memberResultSet">
+		select *
+		from member
+		where member_id=#{id} and status='Y'
+	</select>
+	<resultMap type="Member" id="memberResultSet">
+		<id column="MEMBER_NO" property="no"/>
+		<result column="MEMBER_ID" property="id"/>
+		<result column="MEMBER_PW" property="pwd"/>
+		<result column="MEMBER_NAME" property="name"/>
+		<result column="MEMBER_NICKNAME" property="nickname"/>
+		<result column="MEMBER_PHONE" property="phone"/>
+		<result column="MEMBER_ADDRESS" property="address"/>
+		<result column="MEMBER_BIRTH" property="birth"/>
+		<result column="MEMBER_DATE" property="date"/>
+		<result column="MEMBER_EMAIL" property="email"/>
+		<result column="GRADE" property="grade"/>
+		<result column="STATUS" property="mStatus"/>
+	</resultMap>	
+	
+	
+	<insert id="insertMember">
+		insert into member
+  		values(SEQ_MNO.NEXTVAL, #{id}, #{pwd}, #{name}, #{nickname}, #{phone},
+  		        #{address}, #{birth}, sysdate, #{email}, default, default)
+	</insert>
+	
+	<update id="updateMember">
+		update member
+		set member_pw=#{pwd}, member_name=#{name}, member_nickname=#{nickname}, member_email=#{email}, member_phone=#{phone},
+		    member_address=#{address}, member_birth=#{birth}
+		where member_id=#{id}
+	</update>
+	
+	<update id="deleteMember">
+		update member
+		set status='N'
+		where member_id=#{id}
+	</update>
+	
+</mapper>
