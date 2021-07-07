@@ -12,6 +12,7 @@
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" alias="Volunteer"/>
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard" alias="VolunteerBoard"/>
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.VolunteerApply" alias="VolunteerApply"/>
+		<typeAlias type="com.kh.YellowBridge.member.model.vo.Member" alias="Member"/>
 	</typeAliases>
 	
 	
@@ -19,6 +20,7 @@
 		<mapper resource="mapper/support-mapper.xml"/>
 		<mapper resource="mapper/adoption-mapper.xml"/>
 		<mapper resource="mapper/volunteer-mapper.xml"/>
+		<mapper resource="mapper/member-mapper.xml"/>
 	</mappers>
 
 </configuration>
