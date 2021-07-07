@@ -100,4 +100,39 @@
 		<servlet-name>adoptionServlet</servlet-name>
 		<url-pattern>*.ado</url-pattern>
 	</servlet-mapping>
+	
+	
+	<!-- 회원 관련 DispathcerServlet -->
+	<servlet>
+		<servlet-name>memberServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/member-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>memberServlet</servlet-name>
+		<url-pattern>*.me</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 사이트 정보 관련  -->
+	<servlet>
+		<servlet-name>aboutServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/about-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>aboutServlet</servlet-name>
+		<url-pattern>*.ab</url-pattern>
+	</servlet-mapping>
+	
+	
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<loaction>/WEB-INF/views/common/errorPage.jsp</loaction>
+	</error-page>
 </web-app>
