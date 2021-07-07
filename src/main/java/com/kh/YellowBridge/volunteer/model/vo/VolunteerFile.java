@@ -9,6 +9,7 @@ public class VolunteerFile {
 	private Date fCreateDate;
 	private int fileLevel;
 	private String filePath;
+	private String fileStatus;
 	private int boardNo;
 	private int serviceNo;
 	
@@ -23,6 +24,20 @@ public class VolunteerFile {
 		this.fCreateDate = fCreateDate;
 		this.fileLevel = fileLevel;
 		this.filePath = filePath;
+		this.boardNo = boardNo;
+		this.serviceNo = serviceNo;
+	}
+	
+	public VolunteerFile(int fileNo, String fileName, String changeName, Date fCreateDate, int fileLevel,
+			String filePath, String fileStatus, int boardNo, int serviceNo) {
+		super();
+		this.fileNo = fileNo;
+		this.fileName = fileName;
+		this.changeName = changeName;
+		this.fCreateDate = fCreateDate;
+		this.fileLevel = fileLevel;
+		this.filePath = filePath;
+		this.fileStatus = fileStatus;
 		this.boardNo = boardNo;
 		this.serviceNo = serviceNo;
 	}
@@ -90,12 +105,22 @@ public class VolunteerFile {
 	public void setServiceNo(int serviceNo) {
 		this.serviceNo = serviceNo;
 	}
+	
+	public String getFileStatus() {
+		return fileStatus;
+	}
+
+	public void setFileStatus(String fileStatus) {
+		this.fileStatus = fileStatus;
+	}
 
 	@Override
 	public String toString() {
 		return "VolunteerFile [fileNo=" + fileNo + ", fileName=" + fileName + ", changeName=" + changeName
-				+ ", fCreateDate=" + fCreateDate + ", fileLevel=" + fileLevel + ", filePath=" + filePath + ", boardNo="
-				+ boardNo + ", serviceNo=" + serviceNo + "]";
+				+ ", fCreateDate=" + fCreateDate + ", fileLevel=" + fileLevel + ", filePath=" + filePath
+				+ ", fileStatus=" + fileStatus + ", boardNo=" + boardNo + ", serviceNo=" + serviceNo + "]";
 	}
+
+	
 	
 }

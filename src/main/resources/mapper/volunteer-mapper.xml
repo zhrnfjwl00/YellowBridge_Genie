@@ -54,14 +54,32 @@
 		WHERE board_status='Y' and BOARD_NO = #{volId}
 	</select> 
 	
-	<insert id="insertReply">
+	<select id="selectVolFile" parameterType="_int" resultMap="volFileResultSet">
+		select *
+		from FILE_INFO
+		WHERE FILE_STATUS='Y' and BOARD_NO = #{boardNo}
+	</select> 
+	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.VolunteerFile" id="volFileResultSet"> 
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="changeName" column="FILE_CHANGE"/>
+		<result property="fCreateDate" column="FILE_CREATE_DATE"/>
+		<result property="fileLevel" column="FILE_LEVEL"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="fileStatus" column="FILE_STATUS"/>
+		<result property="boardNo" column="BOARD_NO"/>
+		<result property="serviceNo" column="SERVICE_NO"/>
+	</resultMap> 
+	
+	<insert id="insertVolReply">
 		insert into comments
-		values(seq_rid.nextval, #{volrContent}, sysdate, default, #{volrWriterNo}, #{volrefBid})
+		values(SEQ_COMMNO.nextval, #{volrContent}, default, default, null, #{volrefBid}, 'user01')
 	</insert>
 	
 	<select id="selectReplyList" parameterType="_int" resultMap="ReplyResultSet">
 		select *
 		from COMMENTS
+			left join member on (MEMBER_ID = COMMETS_WRITER)
 		where COMMETS_STATUS='Y' and BOARD_NO=#{volId}
 		order by COMMENTS_NO desc
 	</select>
@@ -71,6 +89,7 @@
 		<result property="volrefBid" column="BOARD_NO"/>
 		<result property="volrWriter" column="MEMBER_ID"/>
 		<result property="volrWriterNo" column="MEMBER_NO"/>
+		<result property="volrNickname" column="MEMBER_NICKNAME"/>
 		<result property="volrCreateDate" column="COMMETS_DATE"/>
 		<result property="volrStatus" column="COMMETS_STATUS"/>
 	</resultMap> 
@@ -120,7 +139,7 @@
 		where SERVICE_STATUS='Y'
 		order by SERVICE_NO desc
 	</select>
-	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.Volunteer" id="volAdvertiseResultSet"> 
+	<resultMap type="Volunteer" id="volAdvertiseResultSet"> 
 		<id property="serviceNo" column="SERVICE_NO"/>
 		<result property="serviceTitle" column="SERVICE_TITLE"/>
 		<result property="shelterName" column="SHELTER_NAME"/>
@@ -132,6 +151,86 @@
 		<result property="fileName" column="FILE_NAME"/>
 		<result property="changeName" column="FILE_CHANGE"/>
 		<result property="filePath" column="FILE_PATH"/>
+	</resultMap> 
+	
+	<select id="selectAppBoard" resultMap="volAdvertiseResultSet">
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
+				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list
+		from SERVICE_INFO
+		    left join category on (SHELTER_NAME = LIST)
+		    join FILE_INFO using (SERVICE_NO)
+		where SERVICE_STATUS='Y' and SERVICE_NO = #{serviceNo}
+		order by SERVICE_NO desc
+	</select>
+	
+	<insert id="insertVolBoard">
+		insert into board
+		values(SEQ_BNO.nextval, #{volTitle}, #{volContent},  0, sysdate, sysdate, 'Y', #{volCateNo}, 'user01')
+	</insert>
+	
+	<insert id="insertVolFile">
+		insert into FILE_INFO
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, SEQ_BNO.currval, null)
+	</insert>
+	
+	<update id="updateVolBoard">
+		update board
+		set BOARD_TITLE=#{volTitle}, BOARD_CONTENT=#{volContent}, CATE_NO=#{volCateNo}
+		where BOARD_NO=#{volId}
+	</update>
+	
+	<update id="deleteVolFile">
+		update FILE_INFO
+		set FILE_STATUS='N'
+		where FILE_NO=#{fileNo}
+	</update>
+	
+	<insert id="updateVolFile">
+		insert into FILE_INFO
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, #{boardNo}, null)
+	</insert>
+	
+	<update id="deleteVolBoard">
+		update board
+		set BOARD_STATUS='N'
+		where BOARD_NO=#{volId}
+	</update>
+	
+	<insert id="insertAppForm">
+		insert into SERVICE_APP
+		values(SEQ_SENO.nextval, #{volReq}, #{servicepayName}, 10000, sysdate, '입금대기', 'Y', #{serviceNo}, 2)
+	</insert>
+	
+	<select id="selectAppForm" resultMap="volAppResultSet">
+	select *
+	from (select SERVICEAPP_NO, VOLUNTEER_REQ, SERVICEPAY_NAME, VOLUNTEER_PRICE, VOLUNTEER_DATE, VOLUNTEER_STATUS, VOLUNTEER_YN, SERVICE_NO, MEMBER_NO,
+				MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_ADDRESS, MEMBER_EMAIL, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL
+			from SERVICE_APP
+				left join member using (MEMBER_NO)
+				left join SERVICE_INFO using (SERVICE_NO)
+			where VOLUNTEER_YN='Y' and member_no=#{memberNo}
+			order by SERVICEAPP_NO desc)
+	where rownum = 1
+	
+	</select>
+	<resultMap type="com.kh.YellowBridge.volunteer.model.vo.VolunteerApply" id="volAppResultSet"> 
+		<id property="serviceappNo" column="SERVICEAPP_NO"/>
+		<result property="volReq" column="VOLUNTEER_REQ"/>
+		<result property="servicepayName" column="SERVICEPAY_NAME"/>
+		<result property="volPrice" column="VOLUNTEER_PRICE"/>
+		<result property="volDate" column="VOLUNTEER_DATE"/>
+		<result property="volStatus" column="VOLUNTEER_STATUS"/>
+		<result property="volYN" column="VOLUNTEER_YN"/>
+		<result property="serviceNo" column="SERVICE_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="mName" column="MEMBER_NAME"/>
+		<result property="mNickname" column="MEMBER_NICKNAME"/>
+		<result property="mPhone" column="MEMBER_PHONE"/>
+		<result property="mAddress" column="MEMBER_ADDRESS"/>
+		<result property="mEmail" column="MEMBER_EMAIL"/>
+		<result property="serviceName" column="SERVICE_TITLE"/>
+		<result property="shelterName" column="SHELTER_NAME"/>
+		<result property="shelterTel" column="SHELTER_TEL"/>
 	</resultMap> 
 	
 	

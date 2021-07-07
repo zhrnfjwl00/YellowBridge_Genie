@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,25 +24,39 @@
 		padding-top: 30px;
 	}
 	
+	.serviceCompletetext{
+		margin-top: 150px;
+		letter-spacing: -1px;
+	}
+	
 	table{
   		margin: auto;
-		width: 80%;
+		width: 100%;
   		border-collapse : collapse;
-  		cellpadding: 10px;
+  		padding: 10px;
+  		margin-bottom: 50px;
+  		text-align: center;
+	}
+	
+	#tableDiv{
+  		margin: auto;
+		width: 60%;
   		margin-bottom: 50px;
   		align: center;
 	}
 	
-	th{
-		width: 30%;
-		padding: 10px;
+	#tableDiv th{
+		width: 20%;
+		padding: 5px;
 		background: lightgray;
 	}
 	
-	td{
+	#tableDiv td{
 		width: 70%;
-		padding: 10px;
+		padding: 5px;
 	}
+	
+	#bottontxt{padding-bottom:15px;}
 	
 	#goMain{
 		background: lightgray;
@@ -65,48 +80,68 @@
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="applycomplete">
-	<div style="text-align:center; padding-bottom:30px;">
-		<h1 style="color:#BDCC94; letter-spacing: -1px;">봉사 신청이 완료되었습니다!</h1>
+	<div style="text-align:center; padding-bottom:30px;"  class="serviceCompletetext">
+		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청이 완료되었습니다!</b></h1>
 	</div>
-		
+	
+	<div id="tableDiv">
 	<table border="1" align="center">
 		<tr>
-			<th>신청 봉사</th>
-			<td>대구 반야월 쉼터 봉사 (8월 7일)</td>
+			<th><b>신청 봉사</b></th>
+			<td style="color:red; font-size: 18px; font-weight:bold;">${ volApp.serviceName }</td>
 		</tr>
 		<tr>
-			<th>봉사자 성함</th>
-			<td>강건강</td>
+			<th><b>신청 보호소</b></th>
+			<td>${ volApp.shelterName }</td>
 		</tr>
 		<tr>
-			<th>봉사자 핸드폰 번호</th>
-			<td>010-1111-2222</td>
+			<th><b>보호소 연락처</b></th>
+			<td>${ volApp.shelterTel }</td>
 		</tr>
 		<tr>
-			<th>봉사자 이메일 주소</th>
-			<td>health@kh.or.kr</td>
+			<th><b>봉사자 성함</b></th>
+			<td>${ volApp.mName }</td>
 		</tr>
 		<tr>
-			<th>봉사자 주소</th>
-			<td>서울시 강남구 역삼동</td>
+			<th><b>봉사자 핸드폰 번호</b></th>
+			<td>${ volApp.mPhone }</td>
 		</tr>
 		<tr>
-			<th>전달사항</th>
-			<td>전달사항이 없습니다.</td>
+			<th><b>봉사자 이메일 주소</b></th>
+			<td>${ volApp.mEmail }</td>
 		</tr>
 		<tr>
-			<th>결제 수단</th>
-			<td>무통장입금(기업은행 12123434565678 옐로우브릿지)</td>
+			<th><b>봉사자 주소</b></th>
+			<td>${ volApp.mAddress }</td>
+		</tr>
+		<tr>
+			<th><b>전달사항</b></th>
+			<td>${ volApp.volReq }</td>
+		</tr>
+		<tr>
+			<th><b>결제 수단</b></th>
+			<td style="color:blue; font-size: 18px; font-weight:bold;">
+				무통장입금(기업은행 12123434565678 옐로우브릿지)<br>
+				입금자 성함 : ${ volApp.servicepayName }
+			</td>
+		</tr>
+		<tr>
+			<th><b>입금하실 금액</b></th>
+			<td style="font-size: 18px; font-weight:bold;">
+				10,000원
+			</td>
 		</tr>
 	</table>
-
+	</div>
 						
 	<div align="center" class="pay button">
-		<h3 style="color:rgb(192, 57, 43);">무통장입금은 봉사신청 후 12시간 내로 입금해주세요. 12시간 동안 미입금시 자동 취소됩니다.</h3>
+		<h3 style="color:rgb(192, 57, 43);" id="bottontxt"><b>무통장입금은 봉사신청 후 12시간 내로 입금해주세요. 12시간 동안 미입금시 자동 취소됩니다.</b></h3>
 		<input type="button" id="goOrderDetail" value="신청내역보기">
 		<input type="button" onclick="location.href='<%= request.getContextPath() %>/gomain'" id="goMain" value="메인으로">
 	</div>
 </div>	
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>
