@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+.header {width:100%; height:160px; position:fixed; z-index:1002; left:0; top:0; min-width:1100px; overflow:hidden; }
+@media all and  (max-width:1100px) {.header {position:absolute;}}
+
+.gnb_wrap {width:100%; min-width:1100px; height:60px; background:#fff; text-align:center;}
+.gnb_wrap .gnb {width:1100px; height:60px; margin:0 auto; text-align:center; position:relative;}
+.gnb_wrap .gnb .logo {position:absolute; left:440px; top:0; z-index:999;}
+.gnb_wrap .gnb .quick {float:left; width:320px;}
+.gnb_wrap .gnb .quick li {float:left; font-size:14px; color:#444; height:60px; line-height:60px;}
+.gnb_wrap .gnb .quick li img {margin-right:10px; float:left; margin-top:17px;}
+.gnb_wrap .gnb .quick li a {line-height:60px;}
+.gnb_wrap .gnb .login {float:right;  }
+.gnb_wrap .gnb .login li {float:left; font-size:14px; color:#444; text-align:right;height:60px; line-height:60px;}
+.gnb_wrap .gnb .login li a {line-height:60px;}
+
+
+.lnb_wrap .lnb li ul {width:1100px;}
+.lnb_wrap .lnb li ul li {float:left; font-size:14px;  border:0; text-align:left; width:auto; margin-right:20px;}
+.lnb_wrap .lnb li ul li  a { line-height:35px; color:#444; height:35px; font-family: 'NanumGothicWeb'!important;}
+.lnb_wrap .lnb li ul li  a:hover {color:#95998A;}
+.lnb_wrap .lnb li #snb01 {position:absolute; z-index:999; left:12px; top:50px; display:none; }
+.lnb_wrap .lnb li #snb02 {position:absolute; z-index:999; left:-68px; top:50px; display:none;}
+.lnb_wrap .lnb li #snb03 {position:absolute; z-index:999; left:-68px; top:50px; display:none; }
+.lnb_wrap .lnb li #snb04 {position:absolute; z-index:999; left:-50px; top:50px; display:none; }
+.lnb_wrap .lnb li #snb05 {position:absolute; z-index:999; /*left:-178px;*/ left:-148px; top:50px; display:none;}
+.lnb_wrap .lnb li #snb06 {position:absolute; z-index:999; left:-38px; top:50px; display:none;}
+.lnb_wrap .lnb li #snb07 {position:absolute; z-index:999; left:-420px; top:50px; display:none;}
+
+.snb {width:100%; height:35px; background:#f4f4f4;min-width:1100px;}
+
+.wrap {width:100%; height:auto; padding-top:145px;min-width:1100px; overflow-x:hidden;}
+.wrap_sub {width:100%; height:auto; min-width:1100px; overflow-x:hidden; background:#fcfcfc; min-height:800px; padding-top: 100px;}
+ 
+.footer_menu {width:100%; height:45px; background:#eaeaea; text-align:center; font-size:14px; color:#444; line-height:45px;min-width:1100px;}
+.footer_wrap {width:100%; height:115px; min-width:1100px; background:#9a9a9a; text-align:center;}
+.footer {width:1100px; height:115px; margin:0 auto;  position:relative; padding:0!important;}
+.footer .comodo {width:100px; height:85px; position:absolute; left:0; top:10px;}
+.footer p { font-size:13px; line-height:22px; color:#fff; text-align:center; width:700px; margin:0 auto; padding-top:30px; }
+
+
+
+/*구조동물공고*/
+.rescue {width:1100px; height:auto; margin:0 auto 50px auto;}
+.rescue .list {width:348px; height:600px; float:left; margin:40px 8px 60px 8px; background:#fff; border:1px solid #ccc;}
+.rescue .list img {vertical-align:top;width:348px; height:261px; /*margin-bottom:25px;*/}
+.rescue .list ul {height:300px; padding:0 10px; margin-top:25px;}
+.rescue .list ul li {line-height:30px; color:#666;letter-spacing:-0.5px;font-size:14px;}
+.rescue .list ul li span.red {color:red;}
+.rescue .list ul li.full {clear:both;}
+.rescue .list ul li strong {font-family: 'NanumGothicWebBold'!important; font-weight:normal; color:#222; padding-right:5px; font-size:16px;}
+.rescue .list ul li i {font-size:16px; color:#95998A; font-style:normal;}
+.rescue .list ul li span {line-height:22px; color:#666;}
+.rescue .list ul li.half {width:50%; float:left;}
+.rescue .list button {background:#95998A; width:100%; height:55px; vertical-align:bottom; text-align:center; font-size:18px; color:#fff; line-height:55px;}
+.no-result {width:1100px; height:auto; margin:40px auto 50px auto; text-align:center; background:#fff;font-size:16px; color:#2e5fa4; border:1px solid #ccc; padding:20px 0;}
+.menu_name {padding-top: 50px;}
+
+/*페이징*/
+.pagenation {width:1100px; height:auto; margin:0 auto 50px auto; text-align:center; clear:both; padding-top: 30px;}
+.pagenation a {display:inline-block; width:40px; height:40px; line-height:40px; font-size:16px; color:#444; margin-right:10px; text-align:center; background:#f3f3f3; border:1px solid #ccc;}
+.pagenation a.img {border:0; background:none; padding-top:12px; height:28px;}
+.pagenation .select {background:#95998A;display:inline-block; width:40px; height:40px; line-height:40px; font-size:16px; color:#fff; font-family: 'NanumGothicWebBold'!important; font-weight:normal; margin-right:10px; text-align:center; border:1px solid #2e5fa4;}
+
+

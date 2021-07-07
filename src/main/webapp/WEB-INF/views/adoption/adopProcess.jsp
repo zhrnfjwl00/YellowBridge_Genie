@@ -7,23 +7,25 @@
 <meta charset="UTF-8">
 <title>입양절차</title>
 <style>
-.basic {
-	position:relative;
-}
-
-.info {
-	position::absolute;
-	vertical-align:middle;
-}
 </style>
 </head>
 <body>
-	<div class="basic">
 	<c:import url="../common/header.jsp"/>
-		<div class="info">
-<%-- 			<img src="<%= request.getContextPath() %>/resources/images/process1.png" alt="" align="center">
- --%>		</div>
-	<c:import url="../common/footer.jsp"/>
+		
+		<div class="container" >
+		<div class="row">
+			<div class="col-sm-12" style="margin-top:130px" >
+		      <h2>입양절차</h2>
+		      	<h4>보호중인 아이들을 가족으로 맞이하기 위한 "입양절차"</h4><hr><br>
+			<img src="<%=request.getContextPath()%>/resources/images/process1.png" align="right" >
+			</div>
+			
+		</div>
 	</div>
+		
+		
+		
+		
+	<c:import url="../common/footer.jsp"/>
 </body>
 </html>
