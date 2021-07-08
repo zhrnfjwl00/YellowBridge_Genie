@@ -51,7 +51,6 @@
 			      <div id="searchArea" align="center" >
 					<select id="searchCondition" name="searchCondition">
 						<option>-------</option>
-						<option value="writer">작성자</option>
 						<option value="title">제목</option>
 						<option value="content">내용</option>
 					</select>
@@ -87,7 +86,7 @@
 <%-- 									</c:if>
  --%>								</td>
 								
-								<td align="center">${ b.bWriter }</td>
+								<td align="center">${ b.nickname }</td>
 								<td align="center">${ b.bCreateDate }</td>
 								<td align="center">${ b.bView }</td>
 								</td>
@@ -156,12 +155,13 @@
 			
 			
 		});
+	   
 		// 게시글 검색
 		function searchBoard(){
 			var searchCondition = $("#searchCondition").val();
 			var searchValue = $("#searchValue").val();
 			
-			location.href="search.bo?searchCondition="+searchCondition+"&searchValue="+searchValue;
+			location.href="search.sup?searchCondition="+searchCondition+"&searchValue="+searchValue;
 		}
 		
 	</script>
