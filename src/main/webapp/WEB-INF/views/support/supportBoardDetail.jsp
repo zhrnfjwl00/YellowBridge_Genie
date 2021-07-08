@@ -17,8 +17,7 @@
 	 	<style type="text/css">
 	 		#rinsertBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
 	 		#listBtn{float: center;}
-	 		.reply{margin: auto; width: 500px;}
-			.replyTable{ margin: auto; width: 500px;}
+			.replyTable{margin: auto; width: 900px;}
 			#rSubmit {float: right;}
 	 	</style>
 	</head>
@@ -29,18 +28,28 @@
 				<h1> 게시판</h1>
 			</header>
 			<hr />
+			<c:url var="supdateView" value="supdateView.sup">
+					<c:param name="bNo" value="${ board.bNo }"/>
+					<c:param name="page" value="${ page }"/>
+			</c:url>
+				
+			<c:url var="sdelete" value="sdelete.sup">
+					<c:param name="bNo" value="${ board.bNo }"/>
+			</c:url>
 			
 			<section id="container">
 				<div class="form-group">
 					<table>
 						<tr>
-							<th> ${board.bTitle} </th>
-							<button class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
-							<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
-							
+							<th> ${board.bTitle} 
+							<%-- <c:if test="${loginUser.id eq board.bWriter}"> --%>
+							<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${sdelete}'">삭제</button>
+							<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${supdateView}'">수정</button>
+							<%-- </c:if> --%>
+							</th>
 						</tr>
 						<tr>
-							<td> ${board.bWriter} </td>
+							<td> ${board.nickname} </td>
 						</tr>
 						<tr>
 							<td> ${board.bCreateDate} &nbsp;&nbsp;
@@ -62,45 +71,138 @@
 					${ fn:replace(board.bContent, newLineChar, "<br>") }
 				</div>
 								
-				<p align="center">
-					<button class="list_btn btn btn-primary"onclick="location.href='${ slist }'">목록</button>	
-				</p>
-				
-				<c:url var="supdateView" value="supdate.sup">
-					<c:param name="bNo" value="${ board.bNo }"/>
-					<c:param name="page" value="${ page }"/>
-				</c:url>
-				
-				<c:url var="sdelete" value="sdelete.bo">
-					<c:param name="bNo" value="${ board.bNo }"/>
-				</c:url>
-				
 				<c:url var="slist" value="sList.sup">
 					<c:param name="page" value="${ page }"/>
 				</c:url>
+				<p align="center">
+					<button class="list_btn btn btn-primary" onclick="location.href='${ slist }'">목록</button>	
+				</p>
 				
 				<br>
 				
 				<table class="replyTable">
 					<tr>
-						<td><textarea cols="55" rows="3" id="rContent"></textarea></td>
-						<td><button id="rinsertBtn">등록하기</button></td>
+						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
+					</tr>
+					<tr>
+						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
+						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
 					</tr>
 				</table>
 				
+<%-- 				<c:url var="rdelete" value="rdelete.sup"> --%>
+<%-- 					<c:param name="rId" value="${rId}"/> --%>
+<%-- 				</c:url> --%>
+				
 				<table class="replyTable" id="rtb">
 					<thead>
-					<tr>
-						<td colspan="2"><b id="rCount"></b></td>
-					</tr>
-				</thead>
-				<tbody></tbody>
+						<tr><td colspan="2"><b id="rCount"></b></td></tr>
+					</thead>
+					<tbody></tbody> 
 				</table>
+				
 			</section>
 		</div>
+		
 	<c:import url="../common/footer.jsp"/>
 	</body>
 	<script type="text/javascript">
+	$(function(){
+		
+		getReplyList();
+		
+ 		setInterval(function(){
+ 			getReplyList();
+ 		}, 10000);
+		
+		$('#rinsertBtn').on('click', function(){
+			var rContent = $('#rContent').val();
+			var refBid = ${board.bNo};
+			
+			$.ajax({
+				url: 'addReply.sup',
+				data: {rContent:rContent, refBid:refBid},
+				success: function(data){
+					console.log(data);
+					
+					if(data == 'success'){
+						$('#rContent').val('');
+						getReplyList(); // 댓글 리스트 불러오기
+					}
+				}
+			});
+		});
+		
+		
+	});
+	
+	function getReplyList(){
+		var bNo = ${board.bNo};
+		
+		$.ajax({
+			url: 'rList.sup',
+			data: {bNo:bNo},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				var $tableBody = $('#rtb tbody');
+				$tableBody.html('');
+				
+				$('#rCount').text('댓글(' + data.length + ')');
+				if(data.length > 0){
+					for(var i in data){
+						var $tr = $('<tr>');
+						var $rWriter = $('<td width=100 style="font-weight: bolder;">').text(data[i].rWriter);
+						var $rContent = $('<td width=600>').text(data[i].rContent);
+						var $rCreateDate = $('<td width=100>').text(data[i].rCreateDate);
+// 						var rId = data[i].rId;
+// 						console.log(rId);
+// 						var realRId = rId.trim();
+						var bNo = ${board.bNo};
+						var page = ${page};
+						var $rdeleteBtn = $('<td width=50 id="deleteReplyBtn"><a href="rdelete.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">X</a></td>');
+																								
+						$tr.append($rWriter);
+						$tr.append($rContent);
+						$tr.append($rCreateDate);
+						$tr.append($rdeleteBtn);
+						$tableBody.append($tr);
+						
+						
+					}
+					
+					
+					
+				} else {
+					var $tr = $('<tr>');
+					var $rContent = $('<td colspan=3>').text('등록된 댓글이 없습니다.');
+					
+					$tr.append($rContent);
+					$tableBody.append($tr);
+				}
+			}
+		});
+	}
+	
+	/* $(function(){
+		$('#deleteReplyBtn').on('click', function(){
+			var $rId = $(this).parent().children.eq(0).text();
+			location.href="rdelete.sup?rId="+ $rId;
+		});
+		
+	}); */
+	
+	
+	
+	</script>
+	
+	<script type="text/javascript">
+	
+		
+		
+	
+	</script>
+	<!-- <script type="text/javascript">
 		// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
 		$(document).ready(function(){
 			var formObj = $("form[name='readForm']");
@@ -158,6 +260,32 @@
 					+ "&keyword=${scri.keyword}"
 					+ "&rno="+$(this).attr("data-rno");
 			});
-		})
-	</script>
+		});
+		
+		/* $(function(){
+			
+			getReplyList();
+			
+			setInterval(function(){
+				getReplyList();
+			}, 10000);
+			
+			$('#rSubmit').on('click', function(){
+				var rContent = $('#rContent').val();
+				var bNo = ${board.bNo};
+				
+				$.ajax({
+					url:'addReply.sup',
+					data:{rContent:rContent, bNo:bNo},
+					success: function(data){
+						console.log(data);
+						if(data == 'success'){
+							$('#rContent').val('');
+							getReplyList(); // 댓글 리스트 불러오기
+					  }
+					}
+				});
+			});
+		}); */
+	</script> -->
 </html>

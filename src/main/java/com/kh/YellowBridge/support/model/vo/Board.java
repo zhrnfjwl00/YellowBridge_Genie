@@ -12,11 +12,12 @@ public class Board {
 	private Date bModifyDate;
 	private String bStatus;
 	private int cateNo;
+	private String nickname;
 	
 	public Board() {}
 
 	public Board(int bNo, String bTitle, String bContent, String bWriter, int bView, Date bCreateDate, Date bModifyDate,
-			String bStatus, int cateNo) {
+			String bStatus, int cateNo, String nickname) {
 		super();
 		this.bNo = bNo;
 		this.bTitle = bTitle;
@@ -27,6 +28,7 @@ public class Board {
 		this.bModifyDate = bModifyDate;
 		this.bStatus = bStatus;
 		this.cateNo = cateNo;
+		this.nickname = nickname;
 	}
 
 	public int getbNo() {
@@ -101,13 +103,21 @@ public class Board {
 		this.cateNo = cateNo;
 	}
 
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [bNo=" + bNo + ", bTitle=" + bTitle + ", bContent=" + bContent + ", bWriter=" + bWriter
 				+ ", bView=" + bView + ", bCreateDate=" + bCreateDate + ", bModifyDate=" + bModifyDate + ", bStatus="
-				+ bStatus + ", cateNo=" + cateNo + "]";
+				+ bStatus + ", cateNo=" + cateNo + ", nickname=" + nickname + "]";
 	}
-	
+
 	
 
 	
