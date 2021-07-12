@@ -51,10 +51,10 @@
 					<li class=""><a href="">입양</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="process.ado">입양절차</a></li>
-								<li><a href="">입양공고</a></li>
-								<li><a href="">입양신청조회</a></li>
-								<li><a href="recode.ado">입양일지</a></li>
+								<li><a href="adopProcess.ado">입양절차</a></li>
+								<li><a href="adopNotice.ado">입양공고</a></li>
+								<li><a href="adopInfo.ado">입양신청조회</a></li>
+								<li><a href="adopRecode.ado">입양일지</a></li>
 							</ul>
 						</div></li>
 					<li class="volunteer"><a href="serviceInfo.vol">봉사</a>
