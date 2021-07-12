@@ -66,9 +66,8 @@
 </style>
 </head>
 <body>
-	
+<c:import url="../admin/header.jsp"/>
 <div class="serviceinfo">
-	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center;" class="serviceinfotext">
 		<h1 style="color:#BDCC94;"><b>Yellow Bridge와 함께 따뜻한 정을 나누어 보세요!</b></h1>
@@ -98,8 +97,8 @@
 		<div class="infotext2">3. 관리자가 확인 후 확정 메시지나 이메일을 개별로 보내드립니다.</div>
 	</div>
 	
-	<c:import url="../common/footer.jsp"/>
 </div>
+<c:import url="../common/footer.jsp"/>
 	
 	<script></script>
 </body>
