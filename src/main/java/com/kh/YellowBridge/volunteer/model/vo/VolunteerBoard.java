@@ -12,12 +12,14 @@ public class VolunteerBoard {
 	private String volContent;
 	private String volCategory;
 	private int volCateNo;
+	private String volParentCate;
 	private String originalFileName;
 	private String renameFileName;
 	private int volCount;
 	private Date volCreateDate;
 	private Date volModifyDate;
 	private String volStatus;
+	private int rCount;
 	
 	public VolunteerBoard() {}
 	
@@ -78,6 +80,53 @@ public class VolunteerBoard {
 		this.volCreateDate = volCreateDate;
 		this.volModifyDate = volModifyDate;
 		this.volStatus = volStatus;
+	}
+	
+	public VolunteerBoard(int volId, String volTitle, int volWriterNo, String volWriter, String volWriterName,
+			String volWriterNickname, String volContent, String volCategory, int volCateNo, String volParentCate,
+			String originalFileName, String renameFileName, int volCount, Date volCreateDate, Date volModifyDate,
+			String volStatus) {
+		super();
+		this.volId = volId;
+		this.volTitle = volTitle;
+		this.volWriterNo = volWriterNo;
+		this.volWriter = volWriter;
+		this.volWriterName = volWriterName;
+		this.volWriterNickname = volWriterNickname;
+		this.volContent = volContent;
+		this.volCategory = volCategory;
+		this.volCateNo = volCateNo;
+		this.volParentCate = volParentCate;
+		this.originalFileName = originalFileName;
+		this.renameFileName = renameFileName;
+		this.volCount = volCount;
+		this.volCreateDate = volCreateDate;
+		this.volModifyDate = volModifyDate;
+		this.volStatus = volStatus;
+	}
+	
+	public VolunteerBoard(int volId, String volTitle, int volWriterNo, String volWriter, String volWriterName,
+			String volWriterNickname, String volContent, String volCategory, int volCateNo, String volParentCate,
+			String originalFileName, String renameFileName, int volCount, Date volCreateDate, Date volModifyDate,
+			String volStatus, int rCount) {
+		super();
+		this.volId = volId;
+		this.volTitle = volTitle;
+		this.volWriterNo = volWriterNo;
+		this.volWriter = volWriter;
+		this.volWriterName = volWriterName;
+		this.volWriterNickname = volWriterNickname;
+		this.volContent = volContent;
+		this.volCategory = volCategory;
+		this.volCateNo = volCateNo;
+		this.volParentCate = volParentCate;
+		this.originalFileName = originalFileName;
+		this.renameFileName = renameFileName;
+		this.volCount = volCount;
+		this.volCreateDate = volCreateDate;
+		this.volModifyDate = volModifyDate;
+		this.volStatus = volStatus;
+		this.rCount = rCount;
 	}
 
 	public int getVolId() {
@@ -198,6 +247,22 @@ public class VolunteerBoard {
 
 	public void setVolStatus(String volStatus) {
 		this.volStatus = volStatus;
+	}
+	
+	public String getVolParentCate() {
+		return volParentCate;
+	}
+
+	public void setVolParentCate(String volParentCate) {
+		this.volParentCate = volParentCate;
+	}
+	
+	public int getrCount() {
+		return rCount;
+	}
+
+	public void setrCount(int rCount) {
+		this.rCount = rCount;
 	}
 
 	@Override

@@ -24,8 +24,8 @@
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="serviceBoardWrite">
-	<c:import url="../common/header.jsp"/>
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 게시판</b></h1>
 	</div>
@@ -38,12 +38,12 @@
 						<div class="form-group">
 							<label>분류</label>
 							<select name="volCateNo">
-			           			<option value="1">대구 반야월 쉼터</option>
-			           			<option value="2">구미 사랑 보호소</option>
-			           			<option value="3">양산 사랑이네 집</option>
-			           			<option value="4">창녕 쉼터</option>
-			           			<option value="5">대구 앵두네 집</option>
-			           			<option value="6">경산 아이들 쉼터</option>
+			           			<option value="21">대구 반야월 쉼터</option>
+			           			<option value="22">구미 사랑 보호소</option>
+			           			<option value="23">양산 사랑이네 집</option>
+			           			<option value="24">창녕 쉼터</option>
+			           			<option value="25">대구 앵두네 집</option>
+			           			<option value="26">경산 아이들 쉼터</option>
 			           		</select>
 						</div>
 					</td>
@@ -78,9 +78,9 @@
 			</div>
 		</form>
 	</div>
-	<c:import url="../common/footer.jsp"/>
 	
 </div>
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>
 

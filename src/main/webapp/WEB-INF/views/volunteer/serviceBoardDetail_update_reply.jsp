@@ -13,7 +13,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>게시판</title>
 <style type="text/css">
-	#rinsertBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
+	#rupdateBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
 	#listBtn{float: center;}
 	
 	.serviceBoardtext{
@@ -53,12 +53,10 @@
 			<table>
 				<tr>
 					<th id="title"> ${ volboard.volTitle } <b id="rCount"></b></th>
-					<c:if test="${ loginUser.id eq volboard.volWriter}">
-						<th>
-						<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
-						<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
-						</th>
-					</c:if>
+					<th>
+					<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
+					<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
+					</th>
 				</tr>
 				<tr>
 					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname } &nbsp;&nbsp;</td>
@@ -93,8 +91,8 @@
 		
 		<table class="replyTable">
 			<tr>
-				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
-						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control" value="${vr.volrContent}"></td>
+						<td><button id="rupdateBtn"class="replyWriteBtn btn btn-success">수정</button></td>
 			</tr>
 		</table>
 		
@@ -120,13 +118,14 @@
 			getReplyList();
 		}, 1000);
 		
-		$('#rinsertBtn').on('click', function(){
+		$('#rupdateBtn').on('click', function(){
 			var volrContent = $('#rContent').val();
 			var volrefBid = ${volboard.volId};
+			var volrId = ${vr.volrId};
 			
 			$.ajax({
-				url: 'voladdReply.vol',
-				data: {volrContent:volrContent, volrefBid:volrefBid},
+				url: 'volrUpdate.vol',
+				data: {volrContent:volrContent, volrefBid:volrefBid, volrId:volrId},
 				success: function(data){
 					console.log(data);
 					
@@ -229,48 +228,6 @@
 			
 			location.href = "serviceBoardDelete.vol?volId="+volId;
 		})
-		
-/* 		function rUpdate(rNo) {
-			location.href="volrUpdate.vol?rNo="+rNo;
-  		}
-  		
-		function rDelete() {
-			var rNo = $(this).parent().children().eq(0).text(); 
-//			System.out.println("$rNo");
-			
-			location.href="volrDelete.vol?rNo="+rNo;
-  		} */
-		
-/* 		$(".replyWriteBtn").on("click", function(){
-			var formObj = $("form[name='replyForm']");
-			formObj.attr("action", "/board/replyWrite");
-			formObj.submit();
-		});
-		
-		//댓글 수정 View
-		$(".replyUpdateBtn").on("click", function(){
-			location.href = "/board/replyUpdateView?bno=${read.bno}"
-							+ "&page=${scri.page}"
-							+ "&perPageNum=${scri.perPageNum}"
-							+ "&searchType=${scri.searchType}"
-							+ "&keyword=${scri.keyword}"
-							+ "&rno="+$(this).attr("data-rno");
-		});
-		*/
-		//댓글 삭제 View
-/*  		$(".rdeleteBtn").on("click", function(){
-			var rNo = $(this).parent().children().eq(1).text(); 
-			System.out.println("rNo");
-		
-			location.href = "volrDelete.vol?volId="+${volboard.volId} + "&rNo=" + rNo;
-		});  */
-		
-		
-/*  		$(document).ready(function(){
-			$(document).on('click','#rdeleteBtn',function(){
-					alert(" 동적 변경 감지");
-			}) 
-		})  */
 		
 </script> 
 </body>

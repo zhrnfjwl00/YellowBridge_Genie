@@ -33,9 +33,9 @@
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="serviceApplyBoard">
 
-	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center;" class="serviceApplyBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 신청 조회</b></h1>
@@ -55,76 +55,88 @@
 			            </tr>
 			        </thead>
 			        <tbody id = "listArea">
+			        <c:if test="${ empty loginUser }">
 			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">구미 사랑 보호소</td>
-			        		<td class="tableCo">구미 사랑 보호소 봉사 (6월 5일)</td>
-			        		<td class="tableTime">2021-06-21</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        </tbody>
-			    </table>
+							<td colspan="5">로그인을 먼저 해주세요</td>
+						</tr>
+			        </c:if>
+			        
+			        <c:if test="${ !empty loginUser }">
+					<c:if test="${ empty aplist }">
+						<tr>
+							<td colspan="5">조회된 봉사 신청 내역이 없습니다.</td>
+						</tr>
+					</c:if>
+					
+					<c:if test="${ !empty aplist }">
+						<c:forEach var="vol" items="${ aplist }">
+							<tr>
+								<td align="center" class="tableNo">${ vol.serviceappNo }</td>
+								<td align="center" class="tableShelter">${ vol.shelterName }</td>
+							
+								<td align="center" class="tableCo">
+									<c:url var="vApplyDetail" value="vApplyDetail.vol">
+										<c:param name="vId" value="${ vol.serviceappNo }"/>
+										<c:param name="page" value="${ pi.currentPage }"/>
+									</c:url>
+									<a href="${ vApplyDetail }">${ vol.serviceName }</a>
+								</td>
+								
+								<td align="center" class="tableTime">${ vol.volDate }</td>
+								<td align="center" class="tableStatus">${ vol.volStatus }</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<tr align="center" height="20" id="buttonTab">
+						<td colspan="6">
+						
+							<!-- [이전] -->
+							<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
+							<c:if test="${ pi.currentPage > 1 }">
+								<c:url value="${ loc }" var="blistBack">
+									<c:param name="page" value="${ pi.currentPage - 1 }"/>
+									<c:param name="no" value="${ loginUser.no }"/>
+								</c:url>
+								<a href="${ blistBack }">[이전]</a>
+							</c:if>
+							<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
+							
+							<!-- 숫자 -->
+							<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+								<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
+								<c:if test="${ p == pi.currentPage }">
+									<font color="red" size="4"><b>[${ p }]</b></font>
+								</c:if>
+								<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
+								<c:if test="${ p ne pi.currentPage }">
+									<c:url var="blistCheck" value="${ loc }">
+										<c:param name="page" value="${ p }"/>
+										<c:param name="no" value="${ loginUser.no }"/>
+									</c:url>
+									<a href="${ blistCheck }">${ p }</a>
+								</c:if>
+								<!-- loc: search.bo -->
+							</c:forEach>
+							
+							<!-- [다음] -->
+							<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
+							<c:if test="${ pi.currentPage < pi.maxPage }">
+								<c:url value="${ loc }" var="blistNext">
+									<c:param name="page" value="${ pi.currentPage + 1 }"/>
+									<c:param name="no" value="${ loginUser.no }"/>
+								</c:url>
+								<a href="${ blistNext }">[다음]</a>
+							</c:if>
+						</td>
+					</tr>
+					</c:if>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-	<c:import url="../common/footer.jsp"/>
 </div>
+<c:import url="../common/footer.jsp"/>
 	<script type="text/javascript">
 	   // 게시글 상세보기
 		$(function(){
