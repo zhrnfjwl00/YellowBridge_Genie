@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.6.0.min.js"></script>
 <style>
+
 	.serviceinfo {
 		width: 65%;
 		margin: 0px auto;
