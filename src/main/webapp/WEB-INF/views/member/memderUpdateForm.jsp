@@ -5,33 +5,113 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>YELLOWBRIDGE</title>
+<title>YELLOW BRIDGE</title>
 <style>
-	.updateArea{ width:500px; height:800px; margin-left:570px; margin-top:150px;}
-	.menu { width: 615px; height:90px;  margin-left:510px; margin-top:150px;}
-	.menu button{width:200px; height: 80px; font-size:20px; font-weight: bolder; background-color:white; border: none; 
-	             border-bottom: 2px solid black; }
-	.menu button:hover {background-color:rgb(246, 255, 222); border-bottom: 2px solid rgb(246, 255, 222); }
-	#button2{ border-bottom: 1px solid rgb(246, 255, 222); background-color:rgb(246, 255, 222);}
+
+	.area{
+	 width:100%;
+	 height: 200px; 
+	}
 	
-	.updateTable{border-collapse: separate; border-spacing: 0 20px;}
-	.updateTable th{ font-weight: bolder; font-size:15px; }
-/* 	.updateTable input{ width:200px; height:30px;} */
+	.area2{
+	width:800px;
+	height: 1050px;
+	margin: 0 auto;
 	
-	#button{width:200px; height:50px; background:rgb(246, 255, 222); border:none; font-weight: bolder; color:black; font-size:15px;}
-	#resetButton{width:200px; height:50px; background:rgb(246, 255, 222); border:none; font-weight: bolder; color:black; font-size:15px;
-	             margin-right:50px;}
+	}
 	
-	#birth{width:180px;}
-	#email{width:180px;}
-	.postcodify_address {width:250px;}
-	.postcodify_extra_info {width: 250px;}
+	.updateArea{ 
+	width:500px; 
+	height:800px; 
+	margin: 0 auto;
+	
+	}
+	
+	.menu { 
+	width: 615px; 
+	height:230px; 
+	margin: 0 auto;
+	}
+	
+	.menu button{
+	width:200px; 
+	height: 80px; 
+	font-size:20px; 
+	font-weight: bolder; 
+	background-color:white; 
+	border: none; 
+	border-bottom: 2px solid black; 
+	}
+	
+	.menu button:hover {
+	background-color:rgb(246, 255, 222); 
+	border-bottom: 2px solid rgb(246, 255, 222); 
+	}
+	
+	#button2{ 
+	border-bottom: 1px solid rgb(246, 255, 222); 
+	background-color:rgb(246, 255, 222);
+	}
+	
+	
+	.updateArea{
+	width:500px; 
+	height:900px;  
+	margin:0 auto;
+	}
+	
+	.updateTable{
+	border-collapse: separate; 
+	border-spacing: 0 20px;
+	}
+	
+	.updateTable th{ 
+	font-weight: bolder; 
+	font-size:15px; 
+	}
+
+	
+	#button{
+	width:200px; 
+	height:50px; 
+	background:rgb(246, 255, 222); 
+	border:none; 
+	font-weight: bolder; 
+	color:black; 
+	font-size:15px;
+	}
+	
+	#resetButton{
+	width:200px; 
+	height:50px; 
+	background:rgb(246, 255, 222); 
+	border:none; 
+	font-weight: bolder; 
+	color:black; 
+	font-size:15px;
+	margin-right:50px;
+	}
+	
+	#birth{
+	width:180px;
+	}
+	#email{
+	width:180px;
+	}
+	.postcodify_address {
+	width:250px;
+	}
+	.postcodify_extra_info {
+	width: 250px;
+	}
 	
 </style>
 </head>
 <body>
 <c:import url="../common/header.jsp"/>	
-	
+<div class="area">
+	</div>
+<div class="area2">
 		<div class="menu">
 			<h1> 마이페이지 </h1>
 				<!-- 활동정보 -->
@@ -44,8 +124,9 @@
 				<c:url var="mdelete" value="mdelete.me">
 					<c:param name="id" value="${ loginUser.id }"/>
 				</c:url>
-				<span><button type="button" onclick="location.href='${ mdelete }'" id="button3">회원탈퇴</button></span>
+				<span><button type="button" onclick="location.href='mdeleteView.me'" id="button3">회원탈퇴</button></span>
 			</div>	
+	
 	<div class="updateArea">
 			
 		<form action="mupdate.me" method="post">
@@ -151,6 +232,7 @@
 			</table>
 		</form>
 	</div>
+</div>
 <c:import url="../common/footer.jsp"/>
 </body>
 </html>

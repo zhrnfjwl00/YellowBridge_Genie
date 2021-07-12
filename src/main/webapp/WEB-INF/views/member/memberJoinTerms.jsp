@@ -5,22 +5,67 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>YELLOW BRIDGE</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
-	.termsArea {width:1000px; margin-left:290px; margin-top: 200px;}
-	.termsArea h1{font-size:50px;}
-	.termsArea pre{height: 350px;  overflow: auto; white-space: pre-wrap; border:1px solid black; padding-left:20px; font-size:15px;}
-	.termsArea label{ font-size:20px;}
 	
-	#button{width:200px; height:50px; background:rgb(246, 255, 222); border:none; font-weight: bolder; color:black; font-size:15px; 
-			margin-left: 290px;}
-	#resetButton{width:200px; height:50px; background:rgb(246, 255, 222); border:none; font-weight: bolder; color:black; font-size:15px;
-	             margin: 0 auto;}
+	.area{
+	 width:100%;
+	 height: 150px; 
+	}
+
+	.termsArea {
+	width:1000px;
+	margin:0 auto;
+	
+	}
+	
+	.termsArea h1{
+	font-size:50px;
+	}
+	
+	.termsArea pre{
+	height: 350px;  
+	overflow: auto; 
+	white-space: pre-wrap; 
+	border:1px solid black; 
+	padding-left:20px; 
+	font-size:15px;
+	}
+	
+	.termsArea label{ 
+	font-size:20px;
+	}
+	
+	#button{
+	width:200px; 
+	height:50px; 
+	background:rgb(246, 255, 222); 
+	border:none; 
+	font-weight: bolder; 
+	color:black; 
+	font-size:15px; 
+	margin-left: 290px;
+	}
+	
+	#resetButton{
+	width:200px; 
+	height:50px; 
+	background:rgb(246, 255, 222); 
+	border:none; 
+	font-weight: bolder; 
+	color:black; 
+	font-size:15px;
+	margin: 0 auto;}
+	
 	
 </style>
 <body>
 <c:import url="../common/header.jsp"/>
+<div class="area">
+</div>
+<form action="joinView.me" id="joinView">
 	<div class="termsArea">
 			<h1>약관동의</h1>
 				<input type="checkbox" name="check" value="check1" id="check1"><label>&nbsp;이용약관, 개인정보 수집 및 이용에 모두 동의합니다.</label><br><br>
@@ -174,25 +219,46 @@ ID, 성명, 비밀번호, 주소, 휴대폰번호, 이메일, 14세 미만 가�
 회원탈퇴 시까지 (단, 관계 법령에 보존 근거가 있는 경우 해당 기간 시까지 보유, 개인정보처리방침에서 확인 가능)
 			</pre>
 			<br><br>
-			<button id="button" id="check" onclick="agreeCheck"><a onclick="location.href ='<%=request.getContextPath()%>/joinView.me'" >회원가입</a></button>
+			<button id="button" onclick="return joinView();" >회원가입</button>
+			
+			<%-- location.href ='<%=request.getContextPath()%>/joinView.me --%>
+			
 			<input type="reset" value="취소하기" id="resetButton">
 		
 	</div>
+</form>
 <c:import url="../common/footer.jsp"/>
 
 <script>
 	
-	$(document).ready(function(){
-		$("#check1").click(function(){
-			if($("#check1").prop("checked")){
-				$("input[type=checkbox]").prop("checked",true);
-			}else{
-				$("input[type=checkbox]").prop("checked",false);
-			}
-		});
-	});
 	
+	 $("#check1").on('click', function(){
+		if($('#check1').prop('checked')){
+				$('#check2').prop('checked',true);
+				$('#check3').prop('checked',true);
+			
+		}else{
+			$('#check2').prop('checked',false);
+			$('#check3').prop('checked',false);
+		
+		}
+	}); 
 	
+	function joinView(){
+		if($('#check1').is(':checked') == false ||
+		   $('#check2').is(':checked') == false ||
+		   $('#check3').is(':checked') == false){
+			alert("이용약관 및 개인정보 처리방침에 동의하셔야 가입이 가능합니다.");
+			return false;
+		}else{
+			$('#joinView').submit();
+		}
+	}	
+	
+		
+		
+	
+
 	
 	
 	

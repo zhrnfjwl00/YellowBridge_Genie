@@ -133,6 +133,6 @@
 	
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
-		<loaction>/WEB-INF/views/common/errorPage.jsp</loaction>
+		<location>/WEB-INF/views/common/errorPage.jsp</location>
 	</error-page>
 </web-app>

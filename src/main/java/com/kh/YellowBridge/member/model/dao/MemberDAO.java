@@ -2,6 +2,7 @@ package com.kh.YellowBridge.member.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.YellowBridge.member.model.vo.Member;
 
@@ -29,6 +30,29 @@ public class MemberDAO {
 	public int deleteMember(SqlSessionTemplate sqlSession, String id) {
 		return sqlSession.update("memberMapper.deleteMember", id);
 	}
+
+
+	public int checkId(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("memberMapper.checkId", userId);
+	}
+
+
+	public int checkNickname(SqlSessionTemplate sqlSession, String nickname) {
+		return sqlSession.selectOne("memberMapper.checkNickname", nickname);
+	}
+
+
+	public int memberCheck(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("memberMapper.memberCheck", userId);
+	}
+
+
+
+
+
+	
+
+	
 
 
 
