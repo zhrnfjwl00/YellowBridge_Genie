@@ -1,5 +1,7 @@
 package com.kh.YellowBridge.member.model.service;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,28 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteMember(String id) {
 		return mDAO.deleteMember(sqlSession, id);
 	}
+
+	@Override
+	public int checkId(String userId) {
+		return mDAO.checkId(sqlSession, userId);
+	}
+
+	@Override
+	public int checkNickname(String nickname) {
+		return mDAO.checkNickname(sqlSession, nickname);
+	}
+
+	@Override
+	public int memberCheck(String userId) {
+		return mDAO.memberCheck(sqlSession, userId);
+	}
+
+
+
+	
+
+
+
 
 
 }
