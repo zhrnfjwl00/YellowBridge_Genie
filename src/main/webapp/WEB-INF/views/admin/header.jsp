@@ -32,14 +32,12 @@
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">입양관리</a>
+					<li class=""><a href="">관리</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-							</ul>
-						</div></li>
-					<li class=""><a href="">후원관리</a>
-						<div class="sub" style="display: none;">
-							<ul class="inner">
+								<li><a href="">입양관리</a></li>
+								<li><a href="">봉사관리</a></li>
+								<li><a href="">후원관리</a></li>
 							</ul>
 						</div></li>
 					<li class=""><a href="">고객사항</a>
