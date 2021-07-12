@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.YellowBridge.common.PageInfo;
+import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.volunteer.model.dao.VolBoardDAO;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
@@ -101,7 +102,6 @@ public class VolBoardServiceImpl implements VolBoardService{
 	@Override
 	public int deleteVolFile(int boardNo) {
 		return VolBoardDAO.deleteVolFile(sqlSession, boardNo);
-		
 	}
 
 	@Override
@@ -123,6 +123,82 @@ public class VolBoardServiceImpl implements VolBoardService{
 	public VolunteerApply selectAppForm(int vAppNo) {
 		return VolBoardDAO.selectAppForm(sqlSession, vAppNo);
 	}
+
+	@Override
+	public int servicerDelete(int rNo) {
+		return VolBoardDAO.servicerDelete(sqlSession, rNo);
+	}
+
+	@Override
+	public int insertadminAd(Volunteer vol) {
+		return VolBoardDAO.insertadminAd(sqlSession, vol);
+	}
+
+	@Override
+	public int insertADVolFile(VolunteerFile vF) {
+		return VolBoardDAO.insertADVolFile(sqlSession, vF);
+	}
+
+	@Override
+	public VolunteerFile selectVolAdFile(int volId) {
+		return VolBoardDAO.selectVolAdFile(sqlSession, volId);
+	}
+
+	@Override
+	public int updateVolAd(Volunteer vol) {
+		return VolBoardDAO.updateVolAd(sqlSession, vol);
+	}
+
+	@Override
+	public int deleteVolAdFile(int fileNo) {
+		return VolBoardDAO.deleteVolAdFile(sqlSession, fileNo);
+	}
+
+	@Override
+	public int updateVolAdFile(VolunteerFile vF) {
+		return VolBoardDAO.updateVolAdFile(sqlSession, vF);
+	}
+
+	@Override
+	public int deleteAd(int serviceNo) {
+		return VolBoardDAO.deleteAd(sqlSession, serviceNo);
+	}
+
+	@Override
+	public ArrayList<VolunteerApply> selectApplyList(int memberNo, PageInfo pi) {
+		return VolBoardDAO.selectApplyList(sqlSession, memberNo, pi);
+	}
+	
+	@Override
+	public VolunteerApply selectvApplyDetail(int vId) {
+		return VolBoardDAO.selectvApplyDetail(sqlSession, vId);
+	}
+
+	@Override
+	public int getApListCount(int memberNo) {
+		return VolBoardDAO.getApListCount(sqlSession, memberNo);
+	}
+
+	@Override
+	public VolReply selectVolReply(int volrId) {
+		return VolBoardDAO.selectVolReply(sqlSession, volrId);
+	}
+
+	@Override
+	public int updateVolReply(VolReply volr) {
+		return VolBoardDAO.updateVolReply(sqlSession, volr);
+	}
+
+	@Override
+	public int getadminSearchListCount() {
+		return VolBoardDAO.getadminSearchListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<VolunteerApply> selectAdminApplyList(PageInfo pi) {
+		return VolBoardDAO.selectAdminApplyList(sqlSession, pi);
+	}
+
 
 
 
