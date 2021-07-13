@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.YellowBridge.common.PageInfo;
+import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
 import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
@@ -88,7 +89,6 @@ public class VolBoardDAO {
 	}
 
 	public int updateVolFile(SqlSessionTemplate sqlSession, VolunteerFile vF) {
-		System.out.println(" DAO 넘어옴");
 		return sqlSession.insert("volunteerMapper.updateVolFile", vF);
 	}
 
@@ -102,6 +102,74 @@ public class VolBoardDAO {
 
 	public VolunteerApply selectAppForm(SqlSessionTemplate sqlSession, int vAppNo) {
 		return sqlSession.selectOne("volunteerMapper.selectAppForm", vAppNo);
+	}
+
+	public int servicerDelete(SqlSessionTemplate sqlSession, int rNo) {
+		return sqlSession.update("volunteerMapper.servicerDelete", rNo);
+	}
+
+	public int insertadminAd(SqlSessionTemplate sqlSession, Volunteer vol) {
+		return sqlSession.insert("volunteerMapper.insertadminAd", vol);
+	}
+
+	public int insertADVolFile(SqlSessionTemplate sqlSession, VolunteerFile vF) {
+		return sqlSession.insert("volunteerMapper.insertADVolFile", vF);
+	}
+
+	public VolunteerFile selectVolAdFile(SqlSessionTemplate sqlSession, int volId) {
+		return sqlSession.selectOne("volunteerMapper.selectVolAdFile", volId);
+	}
+
+	public int updateVolAd(SqlSessionTemplate sqlSession, Volunteer vol) {
+		return sqlSession.update("volunteerMapper.updateVolAd", vol);
+	}
+
+	public int deleteVolAdFile(SqlSessionTemplate sqlSession, int fileNo) {
+		return sqlSession.update("volunteerMapper.deleteVolAdFile", fileNo);
+	}
+
+	public int updateVolAdFile(SqlSessionTemplate sqlSession, VolunteerFile vF) {
+		return sqlSession.insert("volunteerMapper.updateVolAdFile", vF);
+	}
+
+	public int deleteAd(SqlSessionTemplate sqlSession, int serviceNo) {
+		return sqlSession.update("volunteerMapper.deleteAd", serviceNo);
+	}
+
+	public ArrayList<VolunteerApply> selectApplyList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		System.out.println("DAO writer : " + memberNo);
+		
+		return (ArrayList)sqlSession.selectList("volunteerMapper.selectApplyList", memberNo, rowBounds);
+	}
+
+	public VolunteerApply selectvApplyDetail(SqlSessionTemplate sqlSession, int vId) {
+		return sqlSession.selectOne("volunteerMapper.selectvApplyDetail", vId);
+	}
+
+	public int getApListCount(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectOne("volunteerMapper.getApListCount", memberNo);
+	}
+
+	public VolReply selectVolReply(SqlSessionTemplate sqlSession, int rId) {
+		return sqlSession.selectOne("volunteerMapper.selectVolReply", rId);
+	}
+
+	public int updateVolReply(SqlSessionTemplate sqlSession, VolReply volr) {
+		return sqlSession.update("volunteerMapper.updateVolReply", volr);
+	}
+
+	public int getadminSearchListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("volunteerMapper.getadminSearchListCount");
+	}
+
+	public ArrayList<VolunteerApply> selectAdminApplyList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("volunteerMapper.selectAdminApplyList", null, rowBounds);
 	}
 
 

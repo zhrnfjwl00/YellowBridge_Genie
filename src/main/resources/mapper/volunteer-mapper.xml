@@ -4,16 +4,17 @@
 	<select id="getListCount" resultType="_int">
 		select count(*)
 		from board
-		where board_status='Y'
+		where board_status='Y' and PARENT_CATE=20
 	</select>
 	
 	<select id="selectList" resultMap="volboardResultSet">
 		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, cate_no,
-				board_status, board_writer, list, member_name, member_nickname
+				board_status, board_writer, list, member_name, member_nickname, PARENT_CATE
 		from board
-		    left join category using (cate_no)
-		    left join member on (board_writer = member_id)
-		where board_status='Y'
+		left join category using (cate_no)
+		left join PARENT_CATEGORY using (PARENT_CATE)
+		left join member on (board_writer = member_id)
+		where board_status='Y' and PARENT_CATE=20 
 		order by board_no desc
 	</select>
 	
@@ -30,14 +31,11 @@
 		<result property="volWriter" column="BOARD_WRITER"/>
 		<result property="volWriterNickname" column="MEMBER_NICKNAME"/>
 		<result property="volWriterName" column="MEMBER_NAME"/>
+		<result property="volParentCate" column="PARENT_CATE"/>
+		<result property="rCount" column="COMMENTS_NO"/>
 	</resultMap> 
 	<!-- join한 것도 resultMap에 포함시켜야 함 -->
 
-	
-	<!-- <insert id="insertBoard">
-		insert into board
-		values(SEQ_BNO.nextval, #{volTitle}, #{volContent}, 0, sysdate, sysdate, default, 3, #{volWriter});)
-	</insert> -->
 	
 	<update id="addReadCount">
 		update board
@@ -47,11 +45,12 @@
 	
 	<select id="selectVolBoard" parameterType="_int" resultMap="volboardResultSet">
 		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, cate_no,
-				board_status, board_writer, list, member_name, member_nickname
+				board_status, board_writer, list, member_name, member_nickname, PARENT_CATE
 		from board
 			left join category using (cate_no)
+			left join PARENT_CATEGORY using (PARENT_CATE)
 			left join member on (board_writer = member_id)
-		WHERE board_status='Y' and BOARD_NO = #{volId}
+		WHERE board_status='Y' and BOARD_NO = #{volId} and PARENT_CATE=20
 	</select> 
 	
 	<select id="selectVolFile" parameterType="_int" resultMap="volFileResultSet">
@@ -133,10 +132,10 @@
 	</select>
 	
 	<select id="serviceApplyList" resultMap="volAdvertiseResultSet">
-		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, FILE_STATUS
 		from SERVICE_INFO
 			join FILE_INFO using (SERVICE_NO)
-		where SERVICE_STATUS='Y'
+		where SERVICE_STATUS='Y' and FILE_STATUS='Y'
 		order by SERVICE_NO desc
 	</select>
 	<resultMap type="Volunteer" id="volAdvertiseResultSet"> 
@@ -155,17 +154,17 @@
 	
 	<select id="selectAppBoard" resultMap="volAdvertiseResultSet">
 		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
-				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list
+				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list, FILE_STATUS
 		from SERVICE_INFO
 		    left join category on (SHELTER_NAME = LIST)
 		    join FILE_INFO using (SERVICE_NO)
-		where SERVICE_STATUS='Y' and SERVICE_NO = #{serviceNo}
+		where SERVICE_STATUS='Y' and SERVICE_NO = #{serviceNo} and FILE_STATUS='Y'
 		order by SERVICE_NO desc
 	</select>
 	
 	<insert id="insertVolBoard">
 		insert into board
-		values(SEQ_BNO.nextval, #{volTitle}, #{volContent},  0, sysdate, sysdate, 'Y', #{volCateNo}, 'user01')
+		values(SEQ_BNO.nextval, #{volTitle}, #{volContent},  0, sysdate, sysdate, default, #{volCateNo}, 20, 'user01')
 	</insert>
 	
 	<insert id="insertVolFile">
@@ -196,9 +195,15 @@
 		where BOARD_NO=#{volId}
 	</update>
 	
+	<update id="servicerDelete">
+		update COMMENTS
+		set COMMETS_STATUS='N'
+		where COMMENTS_NO=#{volrId}
+	</update>
+	
 	<insert id="insertAppForm">
 		insert into SERVICE_APP
-		values(SEQ_SENO.nextval, #{volReq}, #{servicepayName}, 10000, sysdate, '입금대기', 'Y', #{serviceNo}, 2)
+		values(SEQ_SENO.nextval, #{volReq}, #{servicepayName}, 10000, sysdate, '입금대기', 'Y', #{serviceNo}, #{memberNo})
 	</insert>
 	
 	<select id="selectAppForm" resultMap="volAppResultSet">
@@ -233,6 +238,95 @@
 		<result property="shelterTel" column="SHELTER_TEL"/>
 	</resultMap> 
 	
+	<insert id="insertadminAd">
+		insert into SERVICE_INFO
+		values(SEQ_SNO.NEXTVAL, #{serviceTitle}, #{shelterName}, #{shelterTel}, #{shelterInfo}, #{serviceContent}, default)
+	</insert>
 	
+	<insert id="insertADVolFile">
+		insert into FILE_INFO
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, null, SEQ_SNO.currval)
+	</insert>
+	
+	<select id="selectVolAdFile" parameterType="_int" resultMap="volFileResultSet">
+		select *
+		from FILE_INFO
+		WHERE FILE_STATUS='Y' and SERVICE_NO = #{serviceNo}
+	</select> 
+	
+	<update id="updateVolAd">
+		update SERVICE_INFO
+		set SERVICE_TITLE=#{serviceTitle}, SHELTER_NAME=#{shelterName}, SHELTER_TEL=#{shelterTel}, SHELTER_INFO=#{shelterInfo}, SERVICE_CONTENT=#{serviceContent}
+		where SERVICE_NO=#{serviceNo}
+	</update>
+	
+	<update id="deleteVolAdFile">
+		update FILE_INFO
+		set FILE_STATUS='N'
+		where FILE_NO=#{fileNo}
+	</update>
+	
+	<insert id="updateVolAdFile">
+		insert into FILE_INFO
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, null, #{serviceNo})
+	</insert>
+	
+	<update id="deleteAd">
+		update SERVICE_INFO
+		set SERVICE_STATUS='N'
+		where SERVICE_NO=#{serviceNo}
+	</update>
+	
+	<select id="selectApplyList" resultMap="volAppResultSet">
+		select *
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		where VOLUNTEER_YN='Y' and member_no=#{memberNo}
+		order by SERVICEAPP_NO desc
+	</select>
+	
+	<select id="selectvApplyDetail" parameterType="_int" resultMap="volAppResultSet">
+		select SERVICEAPP_NO, VOLUNTEER_REQ, SERVICEPAY_NAME, VOLUNTEER_PRICE, VOLUNTEER_DATE, VOLUNTEER_STATUS, VOLUNTEER_YN, SERVICE_NO, MEMBER_NO,
+				MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_ADDRESS, MEMBER_EMAIL, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		WHERE VOLUNTEER_YN='Y' and SERVICEAPP_NO = #{serviceappNo}
+	</select> 
+	
+	<select id="getApListCount" resultType="_int">
+		select count(*)
+		from SERVICE_APP
+		where VOLUNTEER_YN='Y' and MEMBER_NO=#{memberNo}
+	</select>
+	
+	<select id="selectVolReply" parameterType="_int" resultMap="ReplyResultSet">
+		select *
+		from COMMENTS
+			left join member on (MEMBER_ID = COMMETS_WRITER)
+		where COMMETS_STATUS='Y' and COMMENTS_NO=#{volrId}
+	</select> 
+	
+	<update id="updateVolReply">
+		update COMMENTS
+		set COMMETS_COTENT=#{volrContent}
+		where COMMENTS_NO=#{volrId}
+	</update>
+	
+	<select id="getadminSearchListCount" resultType="_int">
+		select count(*)
+		from SERVICE_APP
+		where VOLUNTEER_YN='Y'
+	</select>
+	
+	<select id="selectAdminApplyList" resultMap="volAppResultSet">
+		select *
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		where VOLUNTEER_YN='Y'
+		order by SERVICEAPP_NO desc
+	</select>
 	
 </mapper>

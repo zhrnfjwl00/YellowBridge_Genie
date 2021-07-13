@@ -86,11 +86,13 @@
 		margin-top: 150px;
 		letter-spacing: -1px;
 	}
+	
+	.info1-table tr td{padding-bottom: 4px;}
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="servicedetail">
-	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
@@ -99,23 +101,34 @@
 	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volad.serviceNo }" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
-				<img src="<%=request.getContextPath()%>${ volad.filePath }${ volad.fileName }">
+				<img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ volad.changeName }">
 			</div>
 			<div id="apply-info1">
-				<table>
+				<table class="info1-table">
 					<tr>
-						<td><b>${ volad.serviceTitle }</b></td>
+						<td>
+						<button type="submit" class="update_btn btn btn-warning" id="updateBtn">수정</button>
+						<button type="button" class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
+						</td>
 					</tr>
 					<tr>
-						<td>10,000원</td>
+						<td style="font-size: 20px;"><b>${ volad.serviceTitle }</b></td>
+					</tr>
+					<tr>
+						<td><b>참가비 : </b>10,000원</td>
 					</tr>
 						<td><div style="border-top:2px solid black; width:100%; margin: 20px 0;"></div></td>
 					<tr>
-						<td>${ volad.shelterInfo }</td>
+						<td><b>보호소 : </b>${ volad.shelterName }</td>
 					</tr>
 					<tr>
-						<td>${ volad.shelterTel }</td>
+						<td><b>보호소 정보 : </b>${ volad.shelterInfo }</td>
 					</tr>
+					<tr>
+						<td><b>보호소 연락처 : </b>${ volad.shelterTel }</td>
+					</tr>
+					
+					<c:if test="${ !empty sessionScope.loginUser }">
 					<tr>
 						<td>
 							<div style="text-align: center;">
@@ -123,6 +136,16 @@
 							</div>
 						</td>
 					</tr>
+					</c:if>
+					<c:if test="${ empty sessionScope.loginUser }">
+					<tr>
+						<td>
+							<div style="text-align: center; padding-top: 15px; color: red; font-size: 18px;" >
+							<b>봉사 신청은 로그인 후 가능합니다.</b>
+							</div>
+						</td>
+					</tr>
+					</c:if>
 				</table>
 			</div>
 		</div>
@@ -130,8 +153,7 @@
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				<% pageContext.setAttribute("newLineChar", "\r\n"); %>
-				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent"><c:out value="${fn:replace(volad.serviceContent, newLineChar, '<br>')}" /></textarea>
+				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent">${ volad.serviceContent }</textarea>
 				<%-- ${fn:replace(volad.serviceContent, newLineChar, "<br>")} --%>
 			</div>
 		</div>
@@ -156,7 +178,7 @@
 		</table>
 		</div>
 </div>
-	<c:import url="../common/footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 
 	<script>
 	function readImage(input) {
@@ -194,6 +216,23 @@
 		
 		location.href="serviceapplyform.vol?serId="+serId;
 	}
+  </script>
+  
+  <script>
+	$("#deleteBtn").on("click", function(){
+		var serviceNo = ${ volad.serviceNo };
+		
+		var deleteYN = confirm("삭제하시겠습니까?");
+		if(deleteYN == true){
+			location.href = "vAdDelete.vol?serviceNo=" + serviceNo;
+		}
+	})
+	
+	$("#updateBtn").on("click", function(){
+		var serviceNo = ${ volad.serviceNo };
+		
+		location.href = "adminVolUpdateForm.vol?serviceNo=" + serviceNo;
+	})
   </script>
   
   <script>

@@ -25,8 +25,8 @@
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="serviceBoardWrite">
-	<c:import url="../common/header.jsp"/>
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 게시판</b></h1>
 	</div>
@@ -34,6 +34,7 @@
     <div style="padding : 30px;">
 		<form action="serviceBoardUpdate.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
 			<input type="hidden" id="volId" name="volId" value="${volu.volId}" />
+			<input type="hidden" id="page" name="page" value="${page}" />
 			
 			<table>
 				<tr>
@@ -41,12 +42,12 @@
 						<div class="form-group">
 							<label>분류</label>
 							<select name="volCateNo">
-			           			<option value="1">대구 반야월 쉼터</option>
-			           			<option value="2">구미 사랑 보호소</option>
-			           			<option value="3">양산 사랑이네 집</option>
-			           			<option value="4">창녕 쉼터</option>
-			           			<option value="5">대구 앵두네 집</option>
-			           			<option value="6">경산 아이들 쉼터</option>
+			           			<option value="21">대구 반야월 쉼터</option>
+			           			<option value="22">구미 사랑 보호소</option>
+			           			<option value="23">양산 사랑이네 집</option>
+			           			<option value="24">창녕 쉼터</option>
+			           			<option value="25">대구 앵두네 집</option>
+			           			<option value="26">경산 아이들 쉼터</option>
 			           		</select>
 						</div>
 					</td>
@@ -63,8 +64,15 @@
 					<td>
 						<div class="form-group">
 							<label>첨부파일</label>
-							<input type="file" id="uploadFile" multiple="multiple" name="uploadFile"><button class="fileBtn" id="fileBtn">삭제</button>
-							<a href="<%= request.getContextPath() %>/resources/voluploadFiles/${ vFu.changeName }" download="${ vFu.fileName }">${ vFu.changeName }</a>
+							<input type="file" id="uploadFile" multiple="multiple" name="uploadFile">
+							<div>
+								<button type="button" class="fileBtn" id="fileBtn" onclick="location.href='${ vdeleteFile }'">삭제</button>
+								<a href="<%= request.getContextPath() %>/resources/voluploadFiles/${ vFu.changeName }" download="${ vFu.fileName }">${ vFu.changeName }</a>
+							</div>
+							<c:url var="vdeleteFile" value="vdeleteFile.vol">
+								<c:param name="fileNo" value="${ vFu.fileNo }"/>
+								<c:param name="page" value="${ page }"/>
+							</c:url>
 							
 						</div>
 					</td>
@@ -82,40 +90,24 @@
 			<button type="submit" class="btn btn-default">수정</button>
 			<c:url var="serviceBoardDelete" value="serviceBoardDelete.vol">
 				<c:param name="volId" value="${volboard.volId}"/>
+				<c:param name="page" value="${ page }"/>
 			</c:url>
 			</div>
 		</form>
 	</div>
-	<c:import url="../common/footer.jsp"/>
 	
 </div>
-
+<c:import url="../common/footer.jsp"/>
 <script type="text/javascript">
-	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
-	$(document).ready(function(){
-		/* var formObj = $("form[name='readForm']");
-		
-		// 삭제
-		$(".fileBtn").on("click", function(){
-			
-			var deleteYN = confirm("삭제하시겠습니까?");
-			if(deleteYN == true){
-				
-			formObj.attr("action", "/volunteer/delete");
-			formObj.attr("method", "post");
-			formObj.submit();
-				
-			}
-		})   */
-		
-		
-		$("#fileBtn").on("click", function(){
-			var fileNo = ${vFu.fileNo};
-			
-			location.href = "serviceBoardDelete.vol?volId="+volId;
-		})
-	}
+$("#fileBtn").on("click", function(){
+	var volId = ${volu.volId};
+	var fileNo = ${ vFu.fileNo };
+	var page = ${page};
+	
+	location.href="vdeleteFile.vol?volId=" + volId + "&fileNo="+fileNo+"&page="+page;
+})
 </script>
+
 </body>
 </html>
 
