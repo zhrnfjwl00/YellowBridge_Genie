@@ -62,14 +62,14 @@
 		INSERT 
 		INTO BOARD 
 		VALUES (SEQ_BNO.nextval, #{adopTitle}, #{adopContent},
-					 0, SYSDATE, SYSDATE, DEFAULT, null, 10, #{adopWriter})		 
+					 0, SYSDATE, SYSDATE, DEFAULT, null, 10, #{adopWriterNickname})		 
 	</insert>
 	
 	<insert id="insertAdopFile">
 		INSERT 
 		INTO FILE_INFO 
 		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{fileChangeName}, SYSDATE, 1, 
-					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL)
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL, NULL)
 	</insert>
 	
 	
@@ -83,6 +83,7 @@
 		<result property="fileStatus" column="FILE_STATUS"/>
 		<result property="boardNo" column="BOARD_NO"/>
 		<result property="serviceNo" column="SERVICE_NO"/>
+		<result property="animalNo" column="ANIMAL_NO"/>
 	</resultMap>
 	
 	
@@ -129,11 +130,18 @@
 		</select>
 	
 		<select id="selectAnimalList" resultMap="AnimalListResultSet">
-	        select *
-			from animal_info
-			where animal_status='Y'
-			order by animal_no desc
-	</select>
+		SELECT ANIMAL_NO, ANIMAL_TYPE, ANIMAL_GENDER, ANIMAL_AGE, ANIMAL_COLOR, ANIMAL_TNR, ANIMAL_CHARACTER, ANIMAL_WEIGHT, ANIMAL_CONDITION, ANIMAL_FEATURE, RESCUE_DATE, RESCUE_LOCATION, ANIMAL_STATUS, FILE_NO, FILE_CHANGE
+		FROM ANIMAL_INFO
+		JOIN FILE_INFO USING (ANIMAL_NO)
+		WHERE ANIMAL_STATUS='Y' AND FILE_STATUS='Y'
+		ORDER BY ANIMAL_NO DESC
+		</select>
+		
+		<select id="selectAnimalFile" parameterType="_int" resultMap="adoptionFileResultMap">
+			select *
+			from FILE_INFO
+			WHERE FILE_STATUS='Y' AND #{animalNo} = ANIMAL_NO
+		</select> 
 	
 	
 	<resultMap type="com.kh.YellowBridge.adoption.model.vo.AnimalInfo" id="AnimalListResultSet">
@@ -151,9 +159,33 @@
 		<result property="rescueLocation" column="RESCUE_LOCATION"/>
 		<result property="animalBoardNo" column="BOARD_NO"/>
 		<result property="animalStatus" column="ANIMAL_STATUS"/>
+		<result property="animalFile" column="FILE_CHANGE"/>
 	</resultMap>
-		
 	
+	<!-- 입양공고 등록  -->
 	
+	<insert id="insertAnimalNotice">
+		insert 
+		into animal_info
+		values(SEQ_ANO.nextval, #{animalType}, #{animalGender}, #{animalAge}, 
+		#{animalColor}, #{animalTnr}, #{animalCharacter}, #{animalWeight}, 
+		#{animalCondition}, #{animalFeature}, #{rescueDate}, #{rescueLocation}, 
+		null, default) 
+	</insert>
 	
+	<insert id="insertAnimalFile">
+		INSERT 
+		INTO FILE_INFO 
+		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{fileChangeName}, SYSDATE, 1, 
+					#{filePath}, 'Y', NULL, NULL, SEQ_ANO.CURRVAL)
+	</insert>
+	 
+	
+	<select id="selectAnimalApplyForm" resultMap="AnimalListResultSet">
+	
+        SELECT ANIMAL_NO, ANIMAL_TYPE, ANIMAL_GENDER, ANIMAL_AGE, ANIMAL_COLOR, ANIMAL_TNR, ANIMAL_CHARACTER, ANIMAL_WEIGHT, ANIMAL_CONDITION, ANIMAL_FEATURE, RESCUE_DATE, RESCUE_LOCATION, ANIMAL_STATUS
+		FROM ANIMAL_INFO
+		WHERE ANIMAL_STATUS='Y'AND ANIMAL_NO = #{animalNo}
+	
+	</select>
 </mapper>

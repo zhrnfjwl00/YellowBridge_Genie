@@ -12,11 +12,12 @@ public class AdoptionFile {
 	private String fileStatus;
 	private int boardNo;
 	private int serviceNo;
+	private int animalNo;
 	
 	public AdoptionFile() {}
 
 	public AdoptionFile(int fileNo, String fileName, String fileChangeName, Date fileCreateDate, int fileLevel,
-			String filePath, String fileStatus, int boardNo, int serviceNo) {
+			String filePath, String fileStatus, int boardNo, int serviceNo, int animalNo) {
 		super();
 		this.fileNo = fileNo;
 		this.fileName = fileName;
@@ -27,6 +28,7 @@ public class AdoptionFile {
 		this.fileStatus = fileStatus;
 		this.boardNo = boardNo;
 		this.serviceNo = serviceNo;
+		this.animalNo = animalNo;
 	}
 
 	public int getFileNo() {
@@ -101,13 +103,23 @@ public class AdoptionFile {
 		this.serviceNo = serviceNo;
 	}
 
+	public int getAnimalNo() {
+		return animalNo;
+	}
+
+	public void setAnimalNo(int animalNo) {
+		this.animalNo = animalNo;
+	}
+
 	@Override
 	public String toString() {
 		return "AdoptionFile [fileNo=" + fileNo + ", fileName=" + fileName + ", fileChangeName=" + fileChangeName
 				+ ", fileCreateDate=" + fileCreateDate + ", fileLevel=" + fileLevel + ", filePath=" + filePath
-				+ ", fileStatus=" + fileStatus + ", boardNo=" + boardNo + ", serviceNo=" + serviceNo + "]";
+				+ ", fileStatus=" + fileStatus + ", boardNo=" + boardNo + ", serviceNo=" + serviceNo + ", animalNo="
+				+ animalNo + "]";
 	}
 	
 	
+
 
 }

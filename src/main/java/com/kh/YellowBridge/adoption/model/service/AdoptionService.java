@@ -41,6 +41,12 @@ public interface AdoptionService {
 
 	AdoptionFile selectAdopFile(int adopId);
 
+	int insertAnimal(AnimalInfo a, AdoptionFile af);
+
+	AdoptionFile selectAnimalFile(int animalNo);
+
+	AnimalInfo selectAnimal(int animalNo);
+
 
 
 
