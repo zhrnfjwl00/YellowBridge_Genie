@@ -44,6 +44,18 @@ public class AdoptionServiceImpl implements AdoptionService{
 	public ArrayList<AnimalInfo> selectAnimalList(PageInfo pi) {
 		return aDAO.selectAnimalList(sqlSession, pi);
 	}
+
+	// 입양공고 등록 
+	@Override
+	public int insertAnimal(AnimalInfo a, AdoptionFile af) {
+		int result = aDAO.insertAnimal(sqlSession, a);
+		
+		if(result > 0) {
+			return aDAO.insertAnimalFile(sqlSession, af);
+		}
+		return result;
+	}
+	
 	
 	
 	//입양일지-Board 
@@ -75,7 +87,7 @@ public class AdoptionServiceImpl implements AdoptionService{
 		int result = aDAO.insertAdopBoard(sqlSession, a);
 		
 		if(result > 0) {
-			return aDAO.insertFile(sqlSession, af);
+			return aDAO.insertAnimalFile(sqlSession, af);
 		}
 		return result;
 	}
@@ -99,8 +111,22 @@ public class AdoptionServiceImpl implements AdoptionService{
 		return aDAO.selectReplyList(sqlSession, adopId);
 	}
 
+	@Override
+	public AdoptionFile selectAnimalFile(int animalNo) {
+		return aDAO.selectAnimalFile(sqlSession, animalNo);
+	}
 
-	
+
+	@Override
+	public AnimalInfo selectAnimal(int animalNo) {
+		return aDAO.selectAnimal(sqlSession, animalNo);
+	}
+
+
+
+
+
+    
 
 
 

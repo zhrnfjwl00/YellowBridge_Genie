@@ -15,12 +15,13 @@
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">
-				<h2>입양신청</h2>
+				<h2>입양공고등록</h2>
 				<hr>
 			</div>
 <!--글쓰기-->
 <div class="board_request">
-	<form method="post" name="form" action="animalInsert.ado" enctype="multipart/form-data" accept-charset="utf-8">
+	<c:forEach items="animallist" var="animal">
+	<form method="post" name="form" action="animalApply.ado" enctype="multipart/form-data" accept-charset="utf-8">
 		<!-- <input type="hidden" name="animalNo" value="">
 		<input type="hidden" name="animalType" value="">
 		<input type="hidden" name="animalGender" value="">
@@ -47,11 +48,10 @@
 			<tbody>
 				<tr>
 					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>축종</span></th>
-					<td><input type="text" id="animalType" name="animalType" value=""></td>
+					<td><input type="text" id="animalType" name="animalType" value="#{ animal.animalType }"></td>
 					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>성별</span></th>
 					<td colspan="3">
-						<input type="radio" name="animalGender" value="F">HTML
-						<input type="radio" name="animalGender" value="M" checked>수컷
+						<input type="text" name="animalGender" value="#{ }">HTML
 					</td>
 				</tr>
 				<tr>
@@ -115,6 +115,7 @@
 		</div><!--E:btn_area-->
 
 	</form>
+	</c:forEach>
 
 	<div class="request_info">
 		<strong>입양절차 안내</strong><br>

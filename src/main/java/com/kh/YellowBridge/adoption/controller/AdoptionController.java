@@ -2,6 +2,7 @@ package com.kh.YellowBridge.adoption.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,8 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,8 +34,10 @@ import com.kh.YellowBridge.adoption.model.vo.AdoptionBoard;
 import com.kh.YellowBridge.adoption.model.vo.AdoptionFile;
 import com.kh.YellowBridge.adoption.model.vo.AdoptionReply;
 import com.kh.YellowBridge.adoption.model.vo.AnimalInfo;
-import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.adoption.model.vo.AnimalPagination;
+import com.kh.YellowBridge.common.PageInfo;
+import com.kh.YellowBridge.member.model.vo.Member;
+import com.sun.tracing.dtrace.Attributes;
 
 @Controller
 public class AdoptionController {
@@ -58,6 +65,7 @@ public class AdoptionController {
 			
 			// 페이징 처리를 위한 연산 : Pagination
 			PageInfo pi = AnimalPagination.getPageInfo(currentPage, listCount);
+//			AdoptionFile af = aService.selectAnimalile(animalNo);
 			
 			ArrayList<AnimalInfo> animallist = aService.selectAnimalList(pi);
 			
@@ -73,15 +81,89 @@ public class AdoptionController {
 		}
 		
 		
-	// 입양공고 등록 폼 이동 
+		// 입양공고 등록 폼 이동 
 		@RequestMapping("animalNoticeWriterForm.ado")
 		public String animalNoticeWriterForm() {
 			return "animalNoticeWriterForm";
 		}
 		
-		
-		
+		// 아래 animalInsert.ado에서 Date를 받아오지 못하는 믹스매치 오류때문에 설정해줌.
+		@InitBinder
+	    protected void initBinder(WebDataBinder binder){
+	        DateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat,true));
+	    }
 
+		
+		@RequestMapping("animalInsert.ado")
+		public String animalInsert(@ModelAttribute AnimalInfo a, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, @DateTimeFormat(pattern="yyyy-MM-dd") Date fromDate) {
+				AdoptionFile af = new AdoptionFile();
+				
+				System.out.println("AnimalInfo : " + a);
+
+				System.out.println("uploadFile : " + uploadFile);
+				System.out.println("uploadFile.getOriginalFilename() : " + uploadFile.getOriginalFilename());
+				// [파일을 넣었을 떄]
+				// uploadFileMultipartFile : [field="uploadFile", filename=스크린샷 2021-06-17 오후 2.50.26.png, contentType=image/png, size=231792]
+				// uploadFile.getOriginalFilename() : 스크린샷 2021-06-17 오후 2.50.26.png
+				
+				// [파일을 넣지 않았을 떄]
+				// uploadFileMultipartFile : [field="uploadFile", filename=, contentType=application/octet-stream, size=0]
+				// uploadFile.getOriginalFilename() : 
+				
+				// 파일을 넣은지 안넣은지의 여부는 getOriginalFilename() 이 있vs없다로 구분(확인 가능함)
+				
+//				if(!uploadFile.getOriginalFilename().equals("")) {
+				if(uploadFile != null && !uploadFile.isEmpty()) {
+					//getOriginalFilename이 "" <-- 아무것도 들어오지 않은 것과 같지 않다면!
+					AdoptionFile affi = saveFile(uploadFile, request);
+					
+					if(affi.getFileChangeName() != null) {
+						af.setFileName(uploadFile.getOriginalFilename());
+						af.setFileChangeName(affi.getFileChangeName());
+						af.setFilePath(affi.getFilePath());
+						
+						System.out.println("AdoptionFile : " + af);
+						
+					}
+				}
+				
+				int result = aService.insertAnimal(a, af);		
+				
+				if(result > 0) {
+					return "redirect:adopNotice.ado";
+				} else { 
+					throw new AdoptionException("입양 공고 등록에 실패하였습니다.");
+				}
+			
+		}
+		
+		
+		
+		
+		// 입양 신청서 폼 이동	
+		@RequestMapping("animalApplyWriterForm.ado")
+		public String animalApplyWriterForm(AnimalInfo a, HttpSession session,  Model model) {
+			// session에 저장된 userId를 writer에 저장
+//			String nickname = ((Member)session.getAttribute("loginUser")).getNickname();
+			// vo에 writer를 세팅 
+			// 현재 로그인 서비스가 없어 임의로 작성자 삽입
+			
+			System.out.println("AnimalInfo : " + a);
+			
+			
+//			AnimalInfo animallist = aService.selectAnimal(animalNo);
+//			System.out.println(animallist);
+//			
+//			model.addAttribute("animallist", animallist);
+			
+			return "animalApply";	
+			
+			
+			
+		}
+		
+		
 		
 	//입양신청조회
 		@RequestMapping("adopInfo.ado")
@@ -140,7 +222,8 @@ public class AdoptionController {
 	
 	// 작성버튼 클릭시 adopinsert.ado 로 이동 
 	@RequestMapping("adopinsert.ado") 
-	public String adopInsertBoard(@ModelAttribute AdoptionBoard a, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request) {
+	public String adopInsertBoard(@ModelAttribute AdoptionBoard a, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) {
+		
 		AdoptionFile af = new AdoptionFile();
 		
 		
@@ -172,10 +255,13 @@ public class AdoptionController {
 				
 			}
 		}
+		
+		// session에 저장된 userId를 writer에 저장
+				String nickname = ((Member)session.getAttribute("loginUser")).getNickname();
+				// vo에 writer를 세팅 
 		// 현재 로그인 서비스가 없어 임의로 작성자 삽입
-			a.setAdopWriter("user01");
-		
-		
+				a.setAdopWriterNickname(nickname);
+				
 		int result = aService.insertAdopBoard(a, af);		
 		
 		if(result > 0) {
@@ -279,13 +365,10 @@ public class AdoptionController {
 		// String을 반환하니까 	@ResponseBody도 필요 
 		
 		
-		
-		
-//		String rWriter = ((Member)session.getAttribute("loginUser")).getId();
-//		r.setrWriter(rWerter);
-		
-		// 일단 로그인 기능이 없으니까
-		r.setrWriter("user01");
+		// session에 저장된 userId를 writer에 저장
+		String rWriter = ((Member)session.getAttribute("loginUser")).getNickname();
+		// vo에 writer를 세팅 
+		r.setrWriter(rWriter);
 		
 		int result = aService.insertReply(r);
 		
