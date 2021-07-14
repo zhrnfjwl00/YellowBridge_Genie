@@ -68,6 +68,7 @@
 		<result property="fileStatus" column="FILE_STATUS"/>
 		<result property="boardNo" column="BOARD_NO"/>
 		<result property="serviceNo" column="SERVICE_NO"/>
+		<result property="animalNo" column="ANIMAL_NO"/>
 	</resultMap> 
 	
 	<insert id="insertVolReply">
@@ -169,7 +170,7 @@
 	
 	<insert id="insertVolFile">
 		insert into FILE_INFO
-		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, SEQ_BNO.currval, null)
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, SEQ_BNO.currval, null, null)
 	</insert>
 	
 	<update id="updateVolBoard">
@@ -186,7 +187,7 @@
 	
 	<insert id="updateVolFile">
 		insert into FILE_INFO
-		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, #{boardNo}, null)
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, #{boardNo}, null, null)
 	</insert>
 	
 	<update id="deleteVolBoard">
@@ -245,7 +246,7 @@
 	
 	<insert id="insertADVolFile">
 		insert into FILE_INFO
-		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, null, SEQ_SNO.currval)
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, null, SEQ_SNO.currval, null)
 	</insert>
 	
 	<select id="selectVolAdFile" parameterType="_int" resultMap="volFileResultSet">
@@ -268,7 +269,7 @@
 	
 	<insert id="updateVolAdFile">
 		insert into FILE_INFO
-		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, null, #{serviceNo})
+		values(SEQ_FNO.nextval, #{fileName}, #{changeName}, default, 0, #{filePath}, default, null, #{serviceNo}, null)
 	</insert>
 	
 	<update id="deleteAd">
@@ -328,5 +329,11 @@
 		where VOLUNTEER_YN='Y'
 		order by SERVICEAPP_NO desc
 	</select>
+	
+	<update id="updateApply">
+		update SERVICE_APP
+		set VOLUNTEER_STATUS=#{select}
+		where SERVICEAPP_NO=#{check}
+	</update>
 	
 </mapper>

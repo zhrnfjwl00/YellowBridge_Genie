@@ -10,6 +10,7 @@ import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.VolUpdateApply;
 import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerApply;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
@@ -170,6 +171,10 @@ public class VolBoardDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("volunteerMapper.selectAdminApplyList", null, rowBounds);
+	}
+
+	public int updateApply(SqlSessionTemplate sqlSession, VolUpdateApply va) {
+		return sqlSession.update("volunteerMapper.updateApply", va);
 	}
 
 

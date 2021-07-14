@@ -11,6 +11,7 @@ import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.volunteer.model.dao.VolBoardDAO;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.VolUpdateApply;
 import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerApply;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
@@ -197,6 +198,11 @@ public class VolBoardServiceImpl implements VolBoardService{
 	@Override
 	public ArrayList<VolunteerApply> selectAdminApplyList(PageInfo pi) {
 		return VolBoardDAO.selectAdminApplyList(sqlSession, pi);
+	}
+
+	@Override
+	public int updateApply(VolUpdateApply va) {
+		return VolBoardDAO.updateApply(sqlSession, va);
 	}
 
 

@@ -32,6 +32,50 @@
 	.tableStatus{width:10%;}
 	
 	#listArea{padding: 5px;}
+	
+	#bottom {
+	padding-top: 10px;
+	text-align: center;
+	}
+	
+	#update {
+		padding-left: 10px;
+		text-align: left;
+		padding-bottom: 25px;
+	}
+	
+	#update button {
+		height: 30px;
+		width: 50px;
+		margin-top: 1px;
+		font-size: 12px;
+		color: white;
+		background: orange;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        width: auto;
+        border-radius: 5px;
+        font-size: 0.9375em;
+	}
+	
+	#updateBtn:hover {
+		background: #ffa500d9;
+		cursor: pointer;
+	}
+	
+	#update p {
+		font-size: 15px;
+		font-weight: 600;
+		display: inline-block;
+		padding-right: 10px;
+	}
+	
+	#update select {
+		width: 150px !important;
+	}
 </style>
 </head>
 <body>
@@ -58,13 +102,13 @@
 		<tbody id = "listArea">
 		<c:if test="${ empty adminaplist }">
 			<tr>
-				<td colspan="5">작성된 게시물이 없습니다.</td>
+				<td colspan="5">작성된 봉사 신청서가 없습니다.</td>
 			</tr>
 		</c:if>
 		
 		<c:forEach var="vol" items="${ adminaplist }">
 			<tr>
-				<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
+				<td class="selected"><input type="checkbox" name="checkbox" id="oneSelected" value="${ vol.serviceappNo }"></td>
 				<td align="center" class="tableNo">${ vol.serviceappNo }</td>
 				<td align="center" class="tableShelter">${ vol.shelterName }</td>
 			
@@ -81,60 +125,108 @@
 				<td align="center" class="tableStatus">${ vol.volStatus }</td>
 			</tr>
 		</c:forEach>
-			<tr align="center" height="20" id="buttonTab">
-				<td colspan="7">
-				
-					<!-- [이전] -->
-					<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
-					<c:if test="${ pi.currentPage > 1 }">
-						<c:url value="${ loc }" var="blistBack">
-							<c:param name="page" value="${ pi.currentPage - 1 }"/>
-						</c:url>
-						<a href="${ blistBack }">[이전]</a>
-					</c:if>
-					<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
-					
-					<!-- 숫자 -->
-					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-						<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
-						<c:if test="${ p == pi.currentPage }">
-							<font color="red" size="4"><b>[${ p }]</b></font>
-						</c:if>
-						<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
-						<c:if test="${ p ne pi.currentPage }">
-							<c:url var="blistCheck" value="${ loc }">
-								<c:param name="page" value="${ p }"/>
-							</c:url>
-							<a href="${ blistCheck }">${ p }</a>
-						</c:if>
-						<!-- loc: search.bo -->
-					</c:forEach>
-					
-					<!-- [다음] -->
-					<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
-					<c:if test="${ pi.currentPage < pi.maxPage }">
-						<c:url value="${ loc }" var="blistNext">
-							<c:param name="page" value="${ pi.currentPage + 1 }"/>
-						</c:url>
-						<a href="${ blistNext }">[다음]</a>
-					</c:if>
-				</td>
-			</tr>
 		</tbody>
+	</table>
+	<div id="bottom">
+		<div id="update">
+			<p>선택한 신청건을</p>
+			<select id="selectUpdate">
+				<option>신청상태선택</option>
+				<option value="신청확정">신청확정</option>
+				<option value="확정대기">확정대기</option>
+				<option value="신청취소">신청취소</option>
+				<option value="신청대기">신청대기</option>
+				<option value="입금미확인">입금미확인</option>
+				<option value="입금확인">입금확인</option>
+			</select>
+			<p>으로</p>
+			<button id="updateBtn">변경</button>
+		</div>
+	</div>
+	
+	
+	<table id="serviceApplyBoardTable" class="display" style="width:100%">
+		<tr align="center" height="20" id="buttonTab">
+			<td colspan="7">
+			
+				<!-- [이전] -->
+				<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
+				<c:if test="${ pi.currentPage > 1 }">
+					<c:url value="${ loc }" var="blistBack">
+						<c:param name="page" value="${ pi.currentPage - 1 }"/>
+					</c:url>
+					<a href="${ blistBack }">[이전]</a>
+				</c:if>
+				<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
+				
+				<!-- 숫자 -->
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
+					<c:if test="${ p == pi.currentPage }">
+						<font color="red" size="4"><b>[${ p }]</b></font>
+					</c:if>
+					<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
+					<c:if test="${ p ne pi.currentPage }">
+						<c:url var="blistCheck" value="${ loc }">
+							<c:param name="page" value="${ p }"/>
+						</c:url>
+						<a href="${ blistCheck }">${ p }</a>
+					</c:if>
+					<!-- loc: search.bo -->
+				</c:forEach>
+				
+				<!-- [다음] -->
+				<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+					<c:url value="${ loc }" var="blistNext">
+						<c:param name="page" value="${ pi.currentPage + 1 }"/>
+					</c:url>
+					<a href="${ blistNext }">[다음]</a>
+				</c:if>
+			</td>
+		</tr>
 	</table>
 </div>
 <c:import url="../common/footer.jsp"/>
 
-	<script type="text/javascript">
-	   // 게시글 상세보기
-		$(function(){
-			$('#listArea td').on({'mouseenter':function(){
-				$(this).parent().css({'background' : 'lightgray', 'cursor':'pointer'});					
-			}, 'mouseout':function(){
-				$(this).parent().css({'background' : 'none'});
-			}});
-		});
-		
-	</script>
+<script type="text/javascript">
+   // 게시글 상세보기
+	$(function(){
+		$('#listArea td').on({'mouseenter':function(){
+			$(this).parent().css({'background' : 'lightgray', 'cursor':'pointer'});					
+		}, 'mouseout':function(){
+			$(this).parent().css({'background' : 'none'});
+		}});
+	});
+	
+	$('#updateBtn').on('click', function() {
+		if ($('input[name=checkbox]:checked').length < 1) {
+			alert('선택된 주문이 없습니다.')
+		} else if ($('#selectUpdate').val() == '신청상태선택') {
+			alert('주문 상태를 선택해주세요.');
+		} else {
+			var checkArr = [];
+			$('input[name="checkbox"]:checked').each(function() {
+				checkArr.push($(this).val());
+			});
+
+			$.ajax({
+				url : 'updateApply.vol',
+				data : {
+					check : checkArr,
+					select : $('#selectUpdate').val()
+				},
+				success : function(data) {
+					alert(data);
+					window.location.reload();
+				},
+				error : function() {
+					console.log('신청 상태 수정에 실패했습니다.');
+				}
+			});
+		}
+	});
+   
+</script>
 </body>
 </html>
