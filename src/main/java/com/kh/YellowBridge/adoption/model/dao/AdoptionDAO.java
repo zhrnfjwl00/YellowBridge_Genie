@@ -74,6 +74,29 @@ public class AdoptionDAO {
 		return (ArrayList)sqlSession.selectList("adoptionMapper.selectAnimalList", null, rowBounds);
 	}
 
+	// 입양 공고 등록
+	public int insertAnimal(SqlSessionTemplate sqlSession, AnimalInfo a) {
+		return sqlSession.insert("adoptionMapper.insertAnimalNotice", a);
+	}
+	
+	// 입양일지 파일 추가 
+		public int insertAnimalFile(SqlSessionTemplate sqlSession, AdoptionFile af) {
+			return sqlSession.insert("adoptionMapper.insertAnimalFile", af);
+		}
+
+		public AdoptionFile selectAnimalFile(SqlSessionTemplate sqlSession, int animalNo) {
+			return sqlSession.selectOne("adoptionMapper.selectAnimalFile", animalNo);
+		}
+
+		public ArrayList<AnimalInfo> selectAnimalList(SqlSessionTemplate sqlSession) {
+			return (ArrayList)sqlSession.selectOne("adoptionMapper.selectAnimalApplyForm");
+		}
+
+		public AnimalInfo selectAnimal(SqlSessionTemplate sqlSession, int animalNo) {
+			return sqlSession.selectOne("adoptionMapper.selectAnimalApplyForm", animalNo);
+		}
+	
+
 
 
 
