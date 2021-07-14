@@ -12,6 +12,7 @@ public class VolunteerFile {
 	private String fileStatus;
 	private int boardNo;
 	private int serviceNo;
+	private int animalNo;
 	
 	public VolunteerFile() {}
 
@@ -40,6 +41,21 @@ public class VolunteerFile {
 		this.fileStatus = fileStatus;
 		this.boardNo = boardNo;
 		this.serviceNo = serviceNo;
+	}
+	
+	public VolunteerFile(int fileNo, String fileName, String changeName, Date fCreateDate, int fileLevel,
+			String filePath, String fileStatus, int boardNo, int serviceNo, int animalNo) {
+		super();
+		this.fileNo = fileNo;
+		this.fileName = fileName;
+		this.changeName = changeName;
+		this.fCreateDate = fCreateDate;
+		this.fileLevel = fileLevel;
+		this.filePath = filePath;
+		this.fileStatus = fileStatus;
+		this.boardNo = boardNo;
+		this.serviceNo = serviceNo;
+		this.animalNo = animalNo;
 	}
 
 	public int getFileNo() {
@@ -112,6 +128,14 @@ public class VolunteerFile {
 
 	public void setFileStatus(String fileStatus) {
 		this.fileStatus = fileStatus;
+	}
+	
+	public int getAnimalNo() {
+		return animalNo;
+	}
+
+	public void setAnimalNo(int animalNo) {
+		this.animalNo = animalNo;
 	}
 
 	@Override

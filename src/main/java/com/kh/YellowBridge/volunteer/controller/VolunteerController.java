@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import com.kh.YellowBridge.volunteer.model.service.VolBoardService;
 import com.kh.YellowBridge.volunteer.model.vo.VolPagination;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.VolUpdateApply;
 import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerApply;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
@@ -134,11 +136,15 @@ public class VolunteerController {
 	
 	// 봉사신청조회 리스트
 	@RequestMapping("serviceApplyBoard.vol")
-	public ModelAndView vApplyList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session) {
+	public ModelAndView vApplyList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session, HttpServletRequest request) {
 
 		int currentPage = 1; // 연산에 사용될 변수
 		if(page != null) {
 			currentPage = page;
+		}
+		
+		if((Member)session.getAttribute("loginUser") == null) {
+			request.setAttribute("msg", "로그인 후 이용하세요");
 		}
 		
 		int memberNo = ((Member)session.getAttribute("loginUser")).getNo();
@@ -148,9 +154,6 @@ public class VolunteerController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		
-		if(memberNo == 0) {
-			throw new VolunteerException("로그인을 먼저 하십시오.");
-		}
 		
 		ArrayList<VolunteerApply> aplist = volBoardService.selectApplyList(memberNo, pi);
 		System.out.println("검색 결과 : " + aplist);
@@ -721,6 +724,35 @@ public class VolunteerController {
 			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
 		}
 
+	}
+	
+	@RequestMapping("updateApply.vol")
+	@ResponseBody
+	public void updateApply(@RequestParam("check[]") List<String> check, @RequestParam("select") String select, HttpServletResponse response) throws JsonIOException, IOException{
+		System.out.println("check : " + check);
+		System.out.println("select : " + select);
+		
+		ArrayList<VolUpdateApply> app = new ArrayList<VolUpdateApply>();
+		int result = 0;
+		for(int i = 0; i < check.size(); i++) {
+			System.out.println("check.get(i) : " + check.get(i));
+			app.add(new VolUpdateApply(Integer.parseInt(check.get(i)), select));
+			System.out.println("app : " + app);
+			VolUpdateApply va = app.get(i);
+			result = volBoardService.updateApply(va);
+		}
+		
+		
+		String msg = "";
+		if (result > 0) {
+			msg = "신청서 상태를 수정했습니다.";
+		} else {
+			msg = "신청서 상태 수정 중 오류가 발생했습니다.";
+		}
+
+		response.setContentType("application/json; charset=UTF-8");
+		new Gson().toJson(msg, response.getWriter());
+		
 	}
 	
 	

@@ -6,6 +6,7 @@ import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
+import com.kh.YellowBridge.volunteer.model.vo.VolUpdateApply;
 import com.kh.YellowBridge.volunteer.model.vo.Volunteer;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerApply;
 import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
@@ -78,6 +79,8 @@ public interface VolBoardService {
 	int getadminSearchListCount();
 
 	ArrayList<VolunteerApply> selectAdminApplyList(PageInfo pi);
+
+	int updateApply(VolUpdateApply va);
 
 
 	
