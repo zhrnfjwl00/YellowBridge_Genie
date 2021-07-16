@@ -88,6 +88,22 @@
 	}
 	
 	.info1-table tr td{padding-bottom: 4px;}
+	
+	#goMain{
+		background: lightgray;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 15px 15px;
+	}
+	
+	.buttonDiv{padding-top:100px;}
+	
+	.tableTitle{width: 40%;}
+	.tableWriter{width: 10%;}
+	.tableDate{width: 15%;}
+	.tableCount{width: 10%;}
 </style>
 </head>
 <body>
@@ -160,14 +176,6 @@
 		
 		
 		<br>
-		<div class="container">
-		<table class="replyTable">
-			<tr>
-				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
-				<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
-			</tr>
-		</table>
-		
 		<table class="replyTable" id="rtb">
 			<thead>
 				<tr>
@@ -176,6 +184,9 @@
 			</thead>
 			<tbody></tbody>
 		</table>
+			
+		<div align="center" class="buttonDiv">
+			<input type="button" onclick="location.href='<%= request.getContextPath() %>/serviceApplyBoard.vol'" id="goMain" value="메인으로">
 		</div>
 </div>
 <c:import url="../common/footer.jsp"/>
@@ -234,7 +245,7 @@
 		location.href = "adminVolUpdateForm.vol?serviceNo=" + serviceNo;
 	})
   </script>
-  
+<!-- 
   <script>
 	$(function(){
 		
@@ -244,31 +255,15 @@
 			getReplyList();
 		}, 1000);
 		
-		$('#rinsertBtn').on('click', function(){
-			var volrContent = $('#rContent').val();
-			var volrefBid = ${ volad.serviceNo };
-			
-			$.ajax({
-				url: 'voladdReply.vol',
-				data: {volrContent:volrContent, volrefBid:volrefBid},
-				success: function(data){
-					console.log(data);
-					
-					if(data == 'success'){
-						$('#rContent').val('');
-						getReplyList(); // 댓글 리스트 불러오기
-					}
-				}
-			});
-		});
 	});
 	
 	function getReplyList(){
-		var volId = ${ volad.serviceNo };
+		var cateNo = ${ volad.cateNo };
+		var serviceNo = ${ volad.serviceNo };
 		
 		$.ajax({
-			url: 'volrList.vol',
-			data: {volId:volId},
+			url: 'reviewList.vol',
+			data: {cateNo:cateNo},
 			dataType: 'json',
 			success: function(data){
 				console.log(data);
@@ -290,7 +285,7 @@
 					for(var i in data){
 						var $tr = $('<tr>');
 						var $rWriter = $('<td>').text(data[i].volrNickname);
-						var $rContent = $('<td colspan=3>').text(data[i].volrContent);
+						var $rContent = $('<td width=50><a href="reviewDetail.vol?volCateNo='+ data[i].volCateNo + '&vId=' + data[i].volCateNo + '&page=' + page + '">' + data[i].volTitle + '</a></td>');
 						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
 						
 						$tr.append($rWriter);
@@ -309,6 +304,6 @@
 		});
 	}
 	</script>
-
+-->
 </body>
 </html>

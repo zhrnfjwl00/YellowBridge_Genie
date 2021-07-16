@@ -27,25 +27,17 @@
 <c:import url="../common/header.jsp"/>
 <div class="serviceBoardWrite">
 	<div style="text-align:center;" class="serviceBoardtext">
-		<h1 style="color:#BDCC94;"><b>봉사 게시판</b></h1>
+		<h1 style="color:#BDCC94;"><b>봉사 후기 작성</b></h1>
 	</div>
 	
     <div style="padding : 30px;">
-		<form action="serviceBoardWrite.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
+		<form action="writeReview.vol" method="post" id="writeReview" enctype="Multipart/form-data">
 			<table>
 				<tr>
 					<td>
 						<div class="form-group">
 							<label>분류</label>
-							<select name="volCateNo" id="category">
-			           			<option value="카테고리선택">카테고리선택</option>
-			           			<option value="21">대구 반야월 쉼터</option>
-			           			<option value="22">구미 사랑 보호소</option>
-			           			<option value="23">양산 사랑이네 집</option>
-			           			<option value="24">경남 창녕 쉼터</option>
-			           			<option value="25">대구 앵두네 집</option>
-			           			<option value="26">경산 아이들 쉼터</option>
-			           		</select>
+							<input type="hidden" name="volCategory" class="volCategory" value="${ va.shelterName}">${ va.shelterName }
 						</div>
 					</td>
 				</tr>
@@ -75,22 +67,13 @@
 				</tr>
 			</table>
 			<div class="btnDiv">
-			<button type="submit" onclick="return cate();" name="writeBtn" id="writeBtn" class="btn btn-default">작성</button>
+			<button type="submit" class="btn btn-default">작성</button>
 			</div>
 		</form>
 	</div>
 	
 </div>
 <c:import url="../common/footer.jsp"/>
-<script type="text/javascript">
-	function cate(){
-		if($('#category').val() == '카테고리선택'){
-			alert('카테고리를 선택해주세요.');
-			$('#category').focus();
-			return false;
-		}
-	}
-</script>
 </body>
 </html>
 

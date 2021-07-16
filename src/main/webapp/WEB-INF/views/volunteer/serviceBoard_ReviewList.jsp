@@ -51,7 +51,7 @@
 	}
 	#navDiv{width: 600px; margin-left: auto; margin-right: auto;}
 	.volmenu:hover {background: beige; color:orangered; font-weight:bold; cursor:pointer;}
-	#serviceBoardList{background: #F6FFDE; color:green; border:1px solid green;}
+	#volreview{background: #F6FFDE; color:green; border:1px solid green;}
 </style>
 
 </head>
@@ -60,7 +60,8 @@
 <div class="serviceBoard">
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 게시판</b></h1>
-		<h5><b>봉사 하면서 필요한 물품이나 문제점, 개선방안, 아픈 아이 치료 요청 등 상세하게 작성해주세요.</b></h5>
+		<h5 style="color:grey;"><b>봉사자분들이 봉사하면서 겪었던 에피소드나 느낀 점을 자유롭게 작성한 후기를 열람할 수 있습니다.</b></h5>
+		<h5 style="color:navy;"><b>후기 작성은 봉사 신청 이력이 있는 분들만 가능하며 봉사 - 봉사신청조회 - 후기쓰기를 통해 작성할 수 있습니다.</b></h5>
 	</div>
 	
 	<br clear="all">
@@ -105,24 +106,24 @@
 						</tr>
 					</thead>
 					<tbody id = "listArea">
-					<c:if test="${ empty vollist }">
+					<c:if test="${ empty reviewlist }">
 						<tr>
 							<td colspan="6">작성된 게시물이 없습니다.</td>
 						</tr>
 					</c:if>
 					
-					<c:if test="${ !empty vollist }">
-						<c:forEach var="vol" items="${ vollist }">
+					<c:if test="${ !empty reviewlist }">
+						<c:forEach var="vol" items="${ reviewlist }">
 							<tr>
 								<td align="center" class="tableNo">${ vol.volId }</td>
 								<td align="center" class="tablecate">${ vol.volCategory }</td>
 							
 								<td align="center" class="tableTitle">
-									<c:url var="volBoardDetail" value="volBoardDetail.vol">
+									<c:url var="ReviewDetail" value="ReviewDetail.vol">
 										<c:param name="volId" value="${ vol.volId }"/>
 										<c:param name="page" value="${ pi.currentPage }"/>
 									</c:url>
-									<a href="${ volBoardDetail }">${ vol.volTitle }</a>
+									<a href="${ ReviewDetail }">${ vol.volTitle }</a>
 								</td>
 								
 								<td align="center" class="tableWriter">${ vol.volWriterNickname }</td>
@@ -131,7 +132,6 @@
 							</tr>
 						</c:forEach>
 					</c:if>
-
 					<tr align="center" height="20" id="buttonTab">
 						<td colspan="6">
 						
@@ -185,11 +185,6 @@
 					</tr>
 					</tbody>
 				</table>
-				<c:if test="${ !empty sessionScope.loginUser }">
-				<div class="btnDiv">
-					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/serviceBoardWriteForm.vol'">글쓰기</button>
-				</div>
-				</c:if>
 			</div>
 		</div>
 		
@@ -210,7 +205,7 @@
 			var searchCondition = $("#searchCondition").val();
 			var searchValue = $("#searchValue").val();
 			
-			location.href="search.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
+			location.href="searchReview.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
 		}
 		
 	</script>

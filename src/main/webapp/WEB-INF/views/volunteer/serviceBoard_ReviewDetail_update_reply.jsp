@@ -125,14 +125,14 @@
 			var page = ${page};
 			
 			$.ajax({
-				url: 'volrUpdate.vol',
+				url: 'reviewrUpdate.vol',
 				data: {volrContent:volrContent, volrefBid:volrefBid, volrId:volrId},
 				success: function(data){
 					console.log(data);
 					
 					if(data == 'success'){
 						$('#rContent').val('');
-						location.href='<%=request.getContextPath()%>/volBoardDetail.vol?volId=' + volrefBid + '&page=' + page;
+						location.href='<%=request.getContextPath()%>/ReviewDetail.vol?volId=' + volrefBid + '&page=' + page;
 						getReplyList(); // 댓글 리스트 불러오기
 					}
 				}
@@ -144,7 +144,7 @@
 		var volId = ${volboard.volId};
 		
 		$.ajax({
-			url: 'volrList.vol',
+			url: 'reviewrList.vol',
 			data: {volId:volId},
 			dataType: 'json',
 			success: function(data){
@@ -175,8 +175,8 @@
 						var $rContent = $('<td colspan=7>').text(data[i].volrContent);
 						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
 						var page = ${page};
-						var $rUpdateBtn = $('<td width=50 id="deleteReplyBtn"><a href="volrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
-						var $rdeleteBtn = $('<td width=50 id="deleteReplyBtn"><a href="volrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
+						var $rUpdateBtn = $('<td width=50><a href="reviewrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
+						var $rdeleteBtn = $('<td width=50><a href="reviewrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
 						
 						$tr.append($rWriter);
 						$tr.append($rContent);
@@ -203,32 +203,19 @@
 		// 목록
 		$(".list_btn").on("click", function(){
 			
-			location.href = "/YellowBridge/serviceBoardList.vol";
+			location.href = "/YellowBridge/volreview.vol";
 		})
 		$("#updateBtn").on("click", function(){
 			var volId = ${volboard.volId};
 			var page = ${page};
 			
-			location.href="serviceBoardUpdateForm.vol?volId="+volId+"&page="+page;
+			location.href="reviewUpdateForm.vol?volId="+volId+"&page="+page;
 		})
 		
 		$("#deleteBtn").on("click", function(){
 			var volId = ${volboard.volId};
 			
-			location.href = "serviceBoardDelete.vol?volId="+volId;
-		})
-		
-		$("#updateBtn").on("click", function(){
-			var volId = ${volboard.volId};
-			var page = ${page};
-			
-			location.href="serviceBoardUpdateForm.vol?volId="+volId+"&page="+page;
-		})
-		
-		$("#deleteBtn").on("click", function(){
-			var volId = ${volboard.volId};
-			
-			location.href = "serviceBoardDelete.vol?volId="+volId;
+			location.href = "ReviewDelete.vol?volId="+volId;
 		})
 		
 </script> 
