@@ -39,13 +39,13 @@
 	
 	<section id="container">
 		<form name="readForm" role="form" method="post">
-			<input type="hidden" id="volId" name="volId" value="${volboard.volId}" />
-			<input type="hidden" id="volTitle" name="volTitle" value="${volboard.volTitle}"> 
-			<input type="hidden" id="volWriter" name="volWriter" value="${volboard.volWriter}"> 
-			<input type="hidden" id="volContent" name="volContent" value="${volboard.volContent}"> 
-			<input type="hidden" id="volCategory" name="volCategory" value="${volboard.volCategory}"> 
-			<input type="hidden" id="volCount" name="volCount" value="${volboard.volCount}"> 
-			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${volboard.volCreateDate}"> 
+			<input type="hidden" id="volId" name="volId" value="${review.volId}" />
+			<input type="hidden" id="volTitle" name="volTitle" value="${review.volTitle}"> 
+			<input type="hidden" id="volWriter" name="volWriter" value="${review.volWriter}"> 
+			<input type="hidden" id="volContent" name="volContent" value="${review.volContent}"> 
+			<input type="hidden" id="volCategory" name="volCategory" value="${review.volCategory}"> 
+			<input type="hidden" id="volCount" name="volCount" value="${review.volCount}"> 
+			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${review.volCreateDate}"> 
 			<input type="hidden" id="id" name="id" value="${ sessionScope.loginUser }"> 
 			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
@@ -53,8 +53,8 @@
 		<div class="form-group">
 			<table>
 				<tr>
-					<th id="title"> ${ volboard.volTitle } <b id="rCount"></b></th>
-					<c:if test="${ loginUser.id eq volboard.volWriter}">
+					<th id="title"> ${ review.volTitle } <b id="rCount"></b></th>
+					<c:if test="${ loginUser.id eq review.volWriter}">
 						<th>
 						<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
 						<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
@@ -62,12 +62,12 @@
 					</c:if>
 				</tr>
 				<tr>
-					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname } &nbsp;&nbsp;</td>
-					<td>| <b>보호소</b> &nbsp;&nbsp;${ volboard.volCategory } </td>
+					<td><b>작성자</b>&nbsp;&nbsp;${ review.volWriterNickname } &nbsp;&nbsp;</td>
+					<td>| <b>보호소</b> &nbsp;&nbsp;${ review.volCategory } </td>
 				</tr>
 				<tr>
-					<td><b>작성일</b>&nbsp;&nbsp;${ volboard.volCreateDate } &nbsp;&nbsp;</td> 
-					<td>| <b>조회수</b> &nbsp;&nbsp;${ volboard.volCount } </td>
+					<td><b>작성일</b>&nbsp;&nbsp;${ review.volCreateDate } &nbsp;&nbsp;</td> 
+					<td>| <b>조회수</b> &nbsp;&nbsp;${ review.volCount } </td>
 				</tr>
 			</table>
 			
@@ -83,7 +83,7 @@
 		
 		<div class="form-group">
 			<label for="content" class="col-sm-2 control-label"><b>내용</b></label>
-			<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none">${volboard.volContent}</textarea>
+			<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none">${review.volContent}</textarea>
 		</div>
 						
 		<div align="center">
@@ -126,10 +126,10 @@
 		
 		$('#rinsertBtn').on('click', function(){
 			var volrContent = $('#rContent').val();
-			var volrefBid = ${volboard.volId};
+			var volrefBid = ${review.volId};
 			
 			$.ajax({
-				url: 'voladdReply.vol',
+				url: 'reviewaddReply.vol',
 				data: {volrContent:volrContent, volrefBid:volrefBid},
 				success: function(data){
 					console.log(data);
@@ -159,10 +159,10 @@
 		
 		$('#rinsertBtn').on('click', function(){
 			var volrContent = $('#rContent').val();
-			var volrefBid = ${volboard.volId};
+			var volrefBid = ${review.volId};
 			
 			$.ajax({
-				url: 'voladdReply.vol',
+				url: 'reviewaddReply.vol',
 				data: {volrContent:volrContent, volrefBid:volrefBid},
 				success: function(data){
 					console.log(data);
@@ -180,10 +180,10 @@
 	
 	<script>
 	function getReplyList(){
-		var volId = ${volboard.volId};
+		var volId = ${review.volId};
 		
 		$.ajax({
-			url: 'volrList.vol',
+			url: 'reviewrList.vol',
 			data: {volId:volId},
 			dataType: 'json',
 			success: function(data){
@@ -214,8 +214,8 @@
 						var $rContent = $('<td colspan=7>').text(data[i].volrContent);
 						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
 						var page = ${page};
-						var $rUpdateBtn = $('<td width=50><a href="volrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
-						var $rdeleteBtn = $('<td width=50><a href="volrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
+						var $rUpdateBtn = $('<td width=50><a href="reviewrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
+						var $rdeleteBtn = $('<td width=50><a href="reviewrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
 						
 						$tr.append($rWriter);
 						$tr.append($rContent);
@@ -236,10 +236,10 @@
 	}
 	
 	function getReplyList2(){
-		var volId = ${volboard.volId};
+		var volId = ${review.volId};
 		
 		$.ajax({
-			url: 'volrList.vol',
+			url: 'reviewrList.vol',
 			data: {volId:volId},
 			dataType: 'json',
 			success: function(data){
@@ -290,76 +290,20 @@
 		// 목록
 		$(".list_btn").on("click", function(){
 			
-			location.href = "/YellowBridge/serviceBoardList.vol";
+			location.href = "/YellowBridge/volreview.vol";
 		})
 		$("#updateBtn").on("click", function(){
-			var volId = ${volboard.volId};
+			var volId = ${review.volId};
 			var page = ${page};
 			
-			location.href="serviceBoardUpdateForm.vol?volId="+volId+"&page="+page;
+			location.href="reviewUpdateForm.vol?volId="+volId+"&page="+page;
 		})
 		
 		$("#deleteBtn").on("click", function(){
-			var volId = ${volboard.volId};
+			var volId = ${review.volId};
 			
-			location.href = "serviceBoardDelete.vol?volId="+volId;
+			location.href = "ReviewDelete.vol?volId="+volId;
 		})
-		
-		$("#updateBtn").on("click", function(){
-			var volId = ${volboard.volId};
-			var page = ${page};
-			
-			location.href="serviceBoardUpdateForm.vol?volId="+volId+"&page="+page;
-		})
-		
-		$("#deleteBtn").on("click", function(){
-			var volId = ${volboard.volId};
-			
-			location.href = "serviceBoardDelete.vol?volId="+volId;
-		})
-		
-/* 		function rUpdate(rNo) {
-			location.href="volrUpdate.vol?rNo="+rNo;
-  		}
-  		
-		function rDelete() {
-			var rNo = $(this).parent().children().eq(0).text(); 
-//			System.out.println("$rNo");
-			
-			location.href="volrDelete.vol?rNo="+rNo;
-  		} */
-		
-/* 		$(".replyWriteBtn").on("click", function(){
-			var formObj = $("form[name='replyForm']");
-			formObj.attr("action", "/board/replyWrite");
-			formObj.submit();
-		});
-		
-		//댓글 수정 View
-		$(".replyUpdateBtn").on("click", function(){
-			location.href = "/board/replyUpdateView?bno=${read.bno}"
-							+ "&page=${scri.page}"
-							+ "&perPageNum=${scri.perPageNum}"
-							+ "&searchType=${scri.searchType}"
-							+ "&keyword=${scri.keyword}"
-							+ "&rno="+$(this).attr("data-rno");
-		});
-		*/
-		//댓글 삭제 View
-/*  		$(".rdeleteBtn").on("click", function(){
-			var rNo = $(this).parent().children().eq(1).text(); 
-			System.out.println("rNo");
-		
-			location.href = "volrDelete.vol?volId="+${volboard.volId} + "&rNo=" + rNo;
-		});  */
-		
-		
-/*  		$(document).ready(function(){
-			$(document).on('click','#rdeleteBtn',function(){
-					alert(" 동적 변경 감지");
-			}) 
-		})  */
-		
 </script> 
 </body>
 </html>
