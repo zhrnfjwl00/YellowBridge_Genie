@@ -6,7 +6,7 @@
 <title>게시판 리스트 출력</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleavpis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
@@ -77,7 +77,7 @@
 								<td align="center" class="tableCo">
 									<c:url var="vApplyDetail" value="vApplyDetail.vol">
 										<c:param name="vId" value="${ vol.serviceappNo }"/>
-										<c:param name="page" value="${ pi.currentPage }"/>
+										<c:param name="page" value="${ vol.currentPage }"/>
 									</c:url>
 									<a href="${ vApplyDetail }">${ vol.serviceName }</a>
 								</td>
@@ -91,10 +91,10 @@
 						<td colspan="6">
 						
 							<!-- [이전] -->
-							<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
-							<c:if test="${ pi.currentPage > 1 }">
+							<c:if test="${ vpi.currentPage <= 1 }">[이전]</c:if>
+							<c:if test="${ vpi.currentPage > 1 }">
 								<c:url value="${ loc }" var="blistBack">
-									<c:param name="page" value="${ pi.currentPage - 1 }"/>
+									<c:param name="page" value="${ vol.currentPage - 1 }"/>
 									<c:param name="no" value="${ loginUser.no }"/>
 								</c:url>
 								<a href="${ blistBack }">[이전]</a>
@@ -102,13 +102,13 @@
 							<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
 							
 							<!-- 숫자 -->
-							<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+							<c:forEach var="p" begin="${ vpi.startPage }" end="${ vpi.endPage }">
 								<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
-								<c:if test="${ p == pi.currentPage }">
+								<c:if test="${ p == vpi.currentPage }">
 									<font color="red" size="4"><b>[${ p }]</b></font>
 								</c:if>
 								<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
-								<c:if test="${ p ne pi.currentPage }">
+								<c:if test="${ p ne vpi.currentPage }">
 									<c:url var="blistCheck" value="${ loc }">
 										<c:param name="page" value="${ p }"/>
 										<c:param name="no" value="${ loginUser.no }"/>
@@ -119,10 +119,10 @@
 							</c:forEach>
 							
 							<!-- [다음] -->
-							<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
-							<c:if test="${ pi.currentPage < pi.maxPage }">
+							<c:if test="${ vpi.currentPage >= vpi.maxPage }">[다음]</c:if>
+							<c:if test="${ vpi.currentPage < vpi.maxPage }">
 								<c:url value="${ loc }" var="blistNext">
-									<c:param name="page" value="${ pi.currentPage + 1 }"/>
+									<c:param name="page" value="${ vpi.currentPage + 1 }"/>
 									<c:param name="no" value="${ loginUser.no }"/>
 								</c:url>
 								<a href="${ blistNext }">[다음]</a>

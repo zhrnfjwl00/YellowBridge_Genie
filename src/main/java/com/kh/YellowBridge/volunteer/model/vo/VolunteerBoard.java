@@ -20,6 +20,7 @@ public class VolunteerBoard {
 	private Date volModifyDate;
 	private String volStatus;
 	private int rCount;
+	private int serviceNo;
 	
 	public VolunteerBoard() {}
 	

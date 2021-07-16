@@ -31,6 +31,7 @@ import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.volunteer.model.exception.VolunteerException;
 import com.kh.YellowBridge.volunteer.model.service.VolBoardService;
+import com.kh.YellowBridge.volunteer.model.vo.VolCategory;
 import com.kh.YellowBridge.volunteer.model.vo.VolPagination;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
@@ -55,7 +56,7 @@ public class VolunteerController {
 			currentPage = page;
 		}
 		
-		int listCount = volBoardService.getListCount();
+		int listCount = volBoardService.getListAdvertiseCount();
 		
 		// 페이징 처리를 위한 연산 : Pagination
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
@@ -197,7 +198,7 @@ public class VolunteerController {
 		}
 	}
 	
-	// 봉사 공고 보기
+	// 봉사 공고 목록
 	@RequestMapping("serviceapply.vol")
 	public ModelAndView serviceApplyList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
 		int currentPage = 1; // 연산에 사용될 변수
@@ -205,7 +206,7 @@ public class VolunteerController {
 			currentPage = page;
 		}
 		
-		int listCount = volBoardService.getListCount();
+		int listCount = volBoardService.getListAdvertiseCount();
 		
 		PageInfo vpi = VolPagination.getPageInfo(currentPage, listCount);
 		
@@ -224,6 +225,36 @@ public class VolunteerController {
 		
 		return mv;
 		
+	}
+	
+	// 봉사공고 검색
+	@RequestMapping("searchAdvertise.vol")
+	public ModelAndView searchAdvertise(@RequestParam(value="page", required=false) Integer page,@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
+		
+		VolSearchCondition vsc = new VolSearchCondition();	
+		if(searchCondition.equals("title")) vsc.setTitle(searchValue);
+		else if(searchCondition.equals("category")) vsc.setCategory(searchValue);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getSearchResultAdvertiseListCount(vsc);
+		System.out.println("listCount : " + listCount);
+		
+		PageInfo vpi = VolPagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Volunteer> volad = volBoardService.selectSearchResultAdvertiseList(vsc, vpi);
+		
+		
+		if(volad != null) {
+			mv.addObject("volad", volad).addObject("vpi", vpi).addObject("searchCondition", searchCondition).addObject("searchValue", searchValue).setViewName("apply_advertise_list");
+		} else {
+			throw new VolunteerException("게시글 검색에 실패하였습니다.");
+		}
+		
+		return mv;
 	}
 	
 	// 봉사 신청서 페이지
@@ -322,15 +353,15 @@ public class VolunteerController {
 	
 	// 게시판 글 작성
 	@RequestMapping("serviceBoardWrite.vol")
-	public String serviceBoardWrite(@ModelAttribute VolunteerBoard volb, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request) {
-		
+	public String serviceBoardWrite(@ModelAttribute VolunteerBoard volb, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) {
+		String rWriter = ((Member)session.getAttribute("loginUser")).getId(); 
+		volb.setVolWriter(rWriter);
 		int result = volBoardService.insertVolBoard(volb);
 		
 		VolunteerFile vF = new VolunteerFile();
 		
 		if(uploadFile != null && !uploadFile.isEmpty()) {
 			VolunteerFile vFile = saveFile(uploadFile, request);
-			
 			if(vFile != null) {
 				vF.setFileName(uploadFile.getOriginalFilename());
 				vF.setChangeName(vFile.getChangeName());
@@ -513,10 +544,12 @@ public class VolunteerController {
 	@ResponseBody
 	public String insertReply(@ModelAttribute VolReply r, HttpSession session) {
 		System.out.println("들어온 r : " + r);
-		/*
-		 * int rWriter = ((Member)session.getAttribute("loginUser")).getId(); //
-		 * import해줘야 빨간 줄 사라짐 r.setVolrWriter(rWriter);
-		 */
+		
+		String rWriter = ((Member)session.getAttribute("loginUser")).getId(); 
+		System.out.println(rWriter);
+		
+		
+		r.setVolrWriter(rWriter);
 		
 		int result = volBoardService.insertVolReply(r);
 		System.out.println("댓글 작성 결과 : " + result);
@@ -540,8 +573,6 @@ public class VolunteerController {
 			throw new VolunteerException("댓글 수정에 실패하였습니다.");
 		}
 		return mv;
-		
-		
 	}
 	
 	// 게시판 댓글 수정
@@ -575,7 +606,7 @@ public class VolunteerController {
 	
 	// 봉사게시판 검색
 	@RequestMapping("search.vol")
-	public ModelAndView searchVol(@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView searchVol(@RequestParam(value="page", required=false) Integer page,@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
 		
 		VolSearchCondition vsc = new VolSearchCondition();	
 		if(searchCondition.equals("writer")) vsc.setWriter(searchValue);
@@ -583,17 +614,16 @@ public class VolunteerController {
 		else if(searchCondition.equals("category")) vsc.setCategory(searchValue);
 		
 		int currentPage = 1;
-		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		if(page != null) {
+			currentPage = page;
 		}
 		
 		int listCount = volBoardService.getSearchResultListCount(vsc);
-		System.out.println("검색 결과 개수 : " + listCount);
+		System.out.println("공고 검색 결과 개수 : " + listCount);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<VolunteerBoard> vsclist = volBoardService.selectSearchResultList(vsc, pi);
-		System.out.println("검색결과 : " + vsclist);
 			
 		if(vsclist != null) {
 			mv.addObject("vollist", vsclist).addObject("pi", pi).addObject("searchCondition", searchCondition).addObject("searchValue", searchValue).setViewName("serviceBoardList");
@@ -601,7 +631,6 @@ public class VolunteerController {
 			throw new VolunteerException("게시글 검색에 실패하였습니다.");
 		}
 		
-		System.out.println(" =================== ");
 		return mv;
 	}
 	
@@ -726,6 +755,7 @@ public class VolunteerController {
 
 	}
 	
+	// 관리자: 봉사상세조회 상태 수정
 	@RequestMapping("updateApply.vol")
 	@ResponseBody
 	public void updateApply(@RequestParam("check[]") List<String> check, @RequestParam("select") String select, HttpServletResponse response) throws JsonIOException, IOException{
@@ -755,7 +785,309 @@ public class VolunteerController {
 		
 	}
 	
+	// 후기 게시판 리스트
+	@RequestMapping("volreview.vol")
+	public ModelAndView volreview(@RequestParam(value="page", required=false) Integer page, ModelAndView mv) {
+
+		int currentPage = 1; // 연산에 사용될 변수
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getReviewListCount();
+		
+		// 페이징 처리를 위한 연산 : Pagination
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<VolunteerBoard> reviewlist = volBoardService.selectReviewList(pi);
+		
+		if(reviewlist != null) {
+			// Model or ModelAndView 사용하기
+			mv.addObject("reviewlist", reviewlist).addObject("pi", pi).setViewName("serviceBoard_ReviewList");
+			// setViewName은 반환값이 void이기 때문에 맨 뒤에 와야함
+		} else {
+			throw new VolunteerException("게시글 전체 조회에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
 	
+	@RequestMapping("searchReview.vol")
+	public ModelAndView searchReview(@RequestParam(value="page", required=false) Integer page,@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
+		
+		VolSearchCondition vsc = new VolSearchCondition();	
+		if(searchCondition.equals("writer")) vsc.setWriter(searchValue);
+		else if(searchCondition.equals("title")) vsc.setTitle(searchValue);
+		else if(searchCondition.equals("category")) vsc.setCategory(searchValue);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getSearchReviewResultListCount(vsc);
+		System.out.println("검색 결과 개수 : " + listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<VolunteerBoard> reviewlist = volBoardService.selectSearchReviewResultList(vsc, pi);
+			
+		if(reviewlist != null) {
+			mv.addObject("reviewlist", reviewlist).addObject("pi", pi).addObject("searchCondition", searchCondition).addObject("searchValue", searchValue).setViewName("serviceBoard_ReviewList");
+		} else {
+			throw new VolunteerException("게시글 검색에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
 	
+	@RequestMapping("writeReviewForm.vol")
+	public ModelAndView writeReviewForm(@RequestParam("shelterName") String shelterName, ModelAndView mv){
+		System.out.println("shelterName : " + shelterName);
+		VolunteerApply va = new VolunteerApply();
+		va.setShelterName(shelterName);
+		
+		mv.addObject("va", va).setViewName("serviceBoard_ReviewWrite");
+		return mv;
+	}
+	
+	// 후기 게시판 글 작성
+	@RequestMapping("writeReview.vol")
+	public String writeReview(@ModelAttribute VolunteerBoard volb, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) {
+		String list = volb.getVolCategory();
+		
+		VolCategory vc = new VolCategory();
+		vc.setList(list);
+		
+		VolCategory vca =  volBoardService.selectCateNo(vc);
+		
+		int cateNo = vca.getCate_no();
+		volb.setVolCateNo(cateNo);
+		
+		String rWriter = ((Member)session.getAttribute("loginUser")).getId(); 
+		volb.setVolWriter(rWriter);
+		
+		
+		int result = volBoardService.writeReview(volb);
+		
+		VolunteerFile vF = new VolunteerFile();
+		
+		if(uploadFile != null && !uploadFile.isEmpty()) {
+			VolunteerFile vFile = saveFile(uploadFile, request);
+			
+			if(vFile != null) {
+				vF.setFileName(uploadFile.getOriginalFilename());
+				vF.setChangeName(vFile.getChangeName());
+				vF.setFilePath(vFile.getFilePath());
+				int result2 = volBoardService.insertReviewFile(vF);
+			}
+		}
+		
+		if(result > 0) {
+			return "redirect:volreview.vol";
+		} else {
+			throw new VolunteerException("후기 등록에 실패하였습니다.");
+		}
+		
+	}
+	
+	// 후기 게시판 글 상세보기
+	@RequestMapping("ReviewDetail.vol")
+	public ModelAndView ReviewDetail(@RequestParam("page") int page, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request) {
+		VolunteerBoard review = volBoardService.selectReviewBoard(volId);
+		VolunteerFile vFile = volBoardService.selectReviewFile(volId);
+		System.out.println("review : " + review);
+		
+		if(review != null) {
+			mv.addObject("page", page).addObject("review", review).addObject("vFile", vFile).setViewName("serviceBoard_ReviewDetail");
+		} else {
+			throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
+	
+	// 후기 게시판 댓글 작성
+	@RequestMapping("reviewaddReply.vol")
+	@ResponseBody
+	public String insertreviewReply(@ModelAttribute VolReply r, HttpSession session) {
+		System.out.println("들어온 r : " + r);
+		
+		String rWriter = ((Member)session.getAttribute("loginUser")).getId(); 
+		System.out.println(rWriter);
+		
+		
+		r.setVolrWriter(rWriter);
+		
+		int result = volBoardService.insertreviewReply(r);
+		System.out.println("댓글 작성 결과 : " + result);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new VolunteerException("댓글 등록에 실패했습니다.");
+		}
+	}
+	
+	// 게시판 댓글 목록
+	@RequestMapping(value="reviewrList.vol")
+	public void selectReviewReplyList(@RequestParam("volId") int volId, HttpServletResponse response) throws JsonIOException, IOException {
+		
+		ArrayList<VolReply> list = volBoardService.selectReviewReplyList(volId);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		GsonBuilder gb = new GsonBuilder();
+		GsonBuilder dateGb = gb.setDateFormat("yyyy-MM-dd");
+		Gson gson = dateGb.create();
+		gson.toJson(list, response.getWriter());
+	}
+	
+	// 후기 게시판 댓글 삭제
+	@RequestMapping("reviewrDelete.vol")
+	public String reviewrDelete(@RequestParam("rId") int rId, @RequestParam("volId") int volId, @RequestParam("page") int page){
+		int result = volBoardService.reviewrDelete(rId);
+		
+		if(result > 0) {
+			return "redirect:ReviewDetail.vol?volId=" + volId + "&page=" + page;
+		} else {
+			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
+		}
+	}
+	
+	// 게시판 댓글 수정 폼
+	@RequestMapping("reviewrUpdateForm.vol")
+	public ModelAndView reviewrUpdateForm(@RequestParam("page") int page, @RequestParam("rId") int rId, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request){
+		VolunteerBoard volboard = volBoardService.selectReviewBoard(volId);
+		VolReply vr = volBoardService.selectReviewReply(rId);
+		
+		if(volboard != null) {
+			mv.addObject("page", page).addObject("volboard", volboard).addObject("vr", vr).setViewName("serviceBoard_ReviewDetail_update_reply");
+		} else {
+			throw new VolunteerException("댓글 수정에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
+	// 게시판 댓글 수정
+	@RequestMapping(value="reviewrUpdate.vol")
+	@ResponseBody
+	public String reviewrUpdate(@ModelAttribute VolReply volr, HttpServletRequest request, Model model) {
+		int result = volBoardService.updateReviewReply(volr);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new VolunteerException("댓글 수정에 실패했습니다.");
+		}
+	}
+	
+	// 게시판 글 수정 폼
+	@RequestMapping("reviewUpdateForm.vol")
+	public String reviewUpdateForm(@RequestParam("page") int page, @RequestParam("volId") int volId, Model model, HttpServletRequest request){
+		VolunteerBoard volu = volBoardService.selectReviewBoard(volId);
+		VolunteerFile vFu = volBoardService.selectReviewFile(volId);
+		
+		if(volu != null) {
+			model.addAttribute("page", page).addAttribute("volu", volu).addAttribute("vFu", vFu);
+		}
+		
+		return "serviceBoard_ReviewUpdate";
+	}
+	
+	// 게시판 글 수정
+	@RequestMapping(value="reviewUpdate.vol", method=RequestMethod.POST)
+	public String reviewUpdate(@RequestParam("page") int page, @ModelAttribute VolunteerBoard volb, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, Model model) {
+		int boardNo = volb.getVolId();
+		
+		int result = volBoardService.updateReviewBoard(volb);
+		
+		VolunteerFile vF = new VolunteerFile();
+		VolunteerFile vFu = volBoardService.selectReviewFile(boardNo);
+		
+		if(vFu != null) {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				vFu = volBoardService.selectReviewFile(boardNo);
+				int fileNo = vFu.getFileNo();
+				
+				int result2 = volBoardService.deleteReviewFile(fileNo);
+				
+				if(result2 > 0) {
+					VolunteerFile vFile = saveFile(uploadFile, request);
+					System.out.println(vFile);
+					
+					if(vFile != null) {
+						vF.setFileName(uploadFile.getOriginalFilename());
+						vF.setChangeName(vFile.getChangeName());
+						vF.setFilePath(vFile.getFilePath());
+						vF.setBoardNo(boardNo);
+						int result3 = volBoardService.updateReviewFile(vF);
+					}
+				}
+			}
+		} else {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				VolunteerFile vFile = saveFile(uploadFile, request);
+				
+				if(vFile != null) {
+					vF.setFileName(uploadFile.getOriginalFilename());
+					vF.setChangeName(vFile.getChangeName());
+					vF.setFilePath(vFile.getFilePath());
+					vF.setBoardNo(boardNo);
+					int result4 = volBoardService.updateReviewFile(vF);
+				}
+			}
+		}
+			
+		if(result > 0) {
+			return "redirect:ReviewDetail.vol?volId=" + boardNo + "&page=" + page;
+		} else {
+			throw new VolunteerException("게시글 수정에 실패하였습니다.");
+		}
+	}
+	
+	// 게시판 수정 중 파일 삭제
+	@RequestMapping("vReviewdeleteFile.vol")
+	public String vReviewdeleteFile(@RequestParam("fileNo") int fileNo, @RequestParam("volId") int volId, @RequestParam("page") int page){
+		VolunteerFile vF = new VolunteerFile();
+		VolunteerFile vFu = volBoardService.selectReviewFile(volId);
+		System.out.println("삭제할 파일 검색결과 : " + vFu);
+		
+		int result = 0;
+		
+		if(vFu != null) {
+			result = volBoardService.deleteReviewFile(fileNo);
+		}
+		
+		
+		if(result > 0) {
+			return "redirect:reviewUpdateForm.vol?volId=" + volId + "&page=" + page;
+		} else {
+			throw new VolunteerException("파일 삭제에 실패하였습니다.");
+		}
+		
+	}
+	
+	// 후기 게시판 글 삭제
+	@RequestMapping("ReviewDelete.vol")
+	public String ReviewDelete(@RequestParam("volId") int volId){
+		int result = volBoardService.ReviewDelete(volId);
+		VolunteerFile vF = new VolunteerFile();
+		VolunteerFile vFu = volBoardService.selectReviewFile(volId);
+		
+		if(vFu != null) {
+			vFu = volBoardService.selectReviewFile(volId);
+			int fileNo = vFu.getFileNo();
+			
+			int result2 = volBoardService.deleteReviewFile(fileNo);
+		}
+		
+		
+		if(result > 0) {
+			return "redirect:volreview.vol";
+		} else {
+			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
+		}
+
+	}
 	
 }

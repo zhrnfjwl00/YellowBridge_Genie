@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.member.model.vo.Member;
+import com.kh.YellowBridge.volunteer.model.vo.VolCategory;
 import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 import com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition;
 import com.kh.YellowBridge.volunteer.model.vo.VolUpdateApply;
@@ -81,6 +82,52 @@ public interface VolBoardService {
 	ArrayList<VolunteerApply> selectAdminApplyList(PageInfo pi);
 
 	int updateApply(VolUpdateApply va);
+
+	int insertReview(VolunteerBoard volb);
+
+	ArrayList<VolunteerBoard> selectReviewList(PageInfo pi);
+
+	VolunteerBoard reviewDetail(int volCateNo);
+
+	int getReviewListCount();
+
+	int getSearchReviewResultListCount(VolSearchCondition vsc);
+
+	ArrayList<VolunteerBoard> selectSearchReviewResultList(VolSearchCondition vsc, PageInfo pi);
+
+	int writeReview(VolunteerBoard volb);
+
+	int insertReviewFile(VolunteerFile vF);
+
+	VolCategory selectCateNo(VolCategory vc);
+
+	VolunteerBoard selectReviewBoard(int volId);
+
+	VolunteerFile selectReviewFile(int volId);
+
+	int insertreviewReply(VolReply r);
+
+	ArrayList<VolReply> selectReviewReplyList(int volId);
+
+	VolReply selectReviewReply(int rId);
+
+	int reviewrDelete(int rId);
+
+	int updateReviewReply(VolReply volr);
+
+	int updateReviewBoard(VolunteerBoard volb);
+
+	int deleteReviewFile(int fileNo);
+
+	int updateReviewFile(VolunteerFile vF);
+
+	int ReviewDelete(int volId);
+
+	int getSearchResultAdvertiseListCount(VolSearchCondition vsc);
+
+	ArrayList<Volunteer> selectSearchResultAdvertiseList(VolSearchCondition vsc, PageInfo vpi);
+
+	int getListAdvertiseCount();
 
 
 	

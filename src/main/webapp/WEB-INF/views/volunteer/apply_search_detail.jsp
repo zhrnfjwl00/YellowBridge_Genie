@@ -59,6 +59,15 @@
     	padding: 15px 15px;
 	}
 	
+	#goReview{
+		background: red;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 15px 15px;
+	}
+	
 	#goOrderDetail{
 		background: rgb(189, 204, 148);
     	border: 1px solid white;
@@ -115,9 +124,14 @@
 		</tr>
 	</table>
 	</div>
+	
+	<c:url var="writeReview" value="writeReviewForm.vol">
+		<c:param name="shelterName" value="${ vApply.shelterName }"/>
+	</c:url>
 						
-	<div align="center" class="pay button">
-		<input type="button" onclick="location.href='<%= request.getContextPath() %>/gomain'" id="goMain" value="메인으로">
+	<div align="center" class="button">
+		<input type="button" onclick="location.href='<%= request.getContextPath() %>/serviceApplyBoard.vol'" id="goMain" value="메인으로">
+		<input type="button" onclick="location.href='${ writeReview }'" id="goReview" value="후기쓰기">
 	</div>
 </div>	
 <c:import url="../common/footer.jsp"/>
