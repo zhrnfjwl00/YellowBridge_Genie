@@ -47,6 +47,17 @@ public interface AdoptionService {
 
 	AnimalInfo selectAnimal(int animalNo);
 
+	ArrayList<AnimalInfo> selectAList();
+
+
+	
+
+
+
+
+
+	
+
 
 
 

@@ -95,7 +95,13 @@ public class AdoptionDAO {
 		public AnimalInfo selectAnimal(SqlSessionTemplate sqlSession, int animalNo) {
 			return sqlSession.selectOne("adoptionMapper.selectAnimalApplyForm", animalNo);
 		}
-	
+
+		public ArrayList<AnimalInfo> selectAlist(SqlSessionTemplate sqlSession) {
+			return (ArrayList)sqlSession.selectList("adoptionMapper.selectAlist");
+		}
+
+		
+
 
 
 

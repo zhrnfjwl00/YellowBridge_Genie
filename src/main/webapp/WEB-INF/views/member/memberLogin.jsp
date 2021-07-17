@@ -116,6 +116,7 @@
 	</div>
 <c:import url="../common/footer.jsp"/>
 <script>
+
 	function IdPwdCheck(){
 		var userId = $('#id_text').val().trim();
 		var userPwd = $('#pwd_text').val().trim();
@@ -140,7 +141,8 @@
 				console.log(data);
 				if(data != 1){
 					alert("잘못된 아이디 또는 비밀번호 입니다.");
-					return false;
+					
+					
 				}else if(data == 1){
 					$('#formLogin').submit();
 				}

@@ -22,7 +22,7 @@
 <!-- 헤더 시작 -->
 <header class="gnbFixed main">
 <div class="inner">
-	<h1><a href=""><img src="<%= request.getContextPath() %>/resources/images/logo.png"></a></h1>
+	<h1><a onclick="location.href ='<%=request.getContextPath()%>/index.jsp'" style="cursor:pointer;"><img src="<%= request.getContextPath() %>/resources/images/logo.png"></a></h1>
 	<div class="innerMenu">
 	
 		<span class="util">

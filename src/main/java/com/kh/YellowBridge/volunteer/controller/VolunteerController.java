@@ -1090,4 +1090,25 @@ public class VolunteerController {
 
 	}
 	
+	
+	//메인 게시판 리스트 불러오기 
+		@RequestMapping("serviceList.vol")
+		@ResponseBody
+		public void serviceListSelect(HttpServletResponse response) throws JsonIOException, IOException {
+			
+
+			
+			ArrayList<Volunteer> vList = volBoardService.selectvList();
+			
+
+		
+			
+			response.setContentType("application/json; charset=UTF-8");
+		
+			
+			new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(vList, response.getWriter());
+
+			
+		}
+	
 }
