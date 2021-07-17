@@ -8,10 +8,13 @@
 	</select>
 	
 	<select id="selectList" resultMap="boardResultSet">
-		SELECT *
-		FROM BOARD 
-		WHERE BOARD_STATUS='Y'
-		ORDER BY BOARD_NO DESC
+		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, PARENT_CATE,
+				board_status, board_writer, member_nickname
+		from board
+		    left join PARENT_CATEGORY using (PARENT_CATE)
+		    left join member on (board_writer = member_id)
+		where board_status='Y' and PARENT_CATE=30
+		order by board_no desc
 	</select>
 
 	<resultMap type="Board" id="boardResultSet">
@@ -23,14 +26,15 @@
 		<result property="bCreateDate" column="BOARD_CREATE_DATE"/>
 		<result property="bModifyDate" column="BOARD_MODIFY_DATE"/>
 		<result property="bStatus" column="BOARD_STATUS"/>
-		<result property="cateNo" column="CATE_NO"/>
+		<result property="cateNo" column="PARENT_CATE"/>
+		<result property="nickname" column="MEMBER_NICKNAME"/>
 	</resultMap>
 	
 	<insert id="insertBoard">
 		INSERT 
 		INTO BOARD 
 		VALUES (SEQ_BNO.nextval, #{bTitle}, #{bContent},
-					 0, SYSDATE, SYSDATE, 'Y', 1, #{bWriter})
+					 0, SYSDATE, SYSDATE, 'Y', NULL, 30, #{bWriter})
 	</insert>
 	
 	<insert id="insertFile">
@@ -44,21 +48,23 @@
 	<update id="updateView">
 		UPDATE BOARD
 		SET BOARD_VIEW = BOARD_VIEW + 1
-		WHERE BOARD_NO=#{bNo} AND CATE_NO=1	
+		WHERE BOARD_NO=#{bNo} AND PARENT_CATE=30
 	</update>
 	
 	<select id="detailBoard" resultMap="boardResultSet">
-		SELECT *
+		SELECT board_no, board_title, board_content, board_view, board_create_date, board_modify_date, PARENT_CATE,
+				board_status, board_writer, member_nickname
 		FROM BOARD 
-		WHERE BOARD_STATUS='Y' AND BOARD_NO=#{bNo} AND CATE_NO=1
-		ORDER BY BOARD_NO DESC
+            left join PARENT_CATEGORY using (PARENT_CATE)
+			left join member on (board_writer = member_id)
+		WHERE BOARD_STATUS='Y' AND BOARD_NO=#{bNo} AND PARENT_CATE=30
 	</select>
 	
 	<select id="detailFile" resultMap="fileInfoResultMap">
 		SELECT FILE_NO,FILE_NAME,FILE_CHANGE,FILE_CREATE_DATE,FILE_LEVEL,
 				FILE_PATH,FILE_STATUS,BOARD_NO
 		FROM FILE_INFO
-		WHERE BOARD_NO=#{bNo}
+		WHERE BOARD_NO=#{BoardNo}
 	</select>
 	
 	<resultMap type="FileInfo" id="fileInfoResultMap">
@@ -71,4 +77,89 @@
 		<result property="fileStatus" column="FILE_STATUS"/>
 		<result property="BoardNo" column="BOARD_NO"/>
 	</resultMap>
+	
+	<select id="getSearchListCount" parameterType="com.kh.YellowBridge.support.model.vo.SearchCondition" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+			LEFT JOIN PARENT_CATEGORY USING (PARENT_CATE)
+		WHERE BOARD_STATUS='Y' AND PARENT_CATE=30
+		<if test="title != null">
+			AND BOARD_TITLE like '%' || #{title} || '%'
+		</if>
+		<if test="content != null">
+			AND BOARD_CONTENT like '%' || #{content} || '%'
+		</if>
+	</select>
+	
+	<select id="selectSearchList" parameterType="com.kh.YellowBridge.support.model.vo.SearchCondition" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARD
+			LEFT JOIN PARENT_CATEGORY USING (PARENT_CATE)
+		WHERE BOARD_STATUS='Y' AND PARENT_CATE=30
+		<choose>
+			<when test="title != null">
+				AND BOARD_TITLE like '%' || #{title} || '%'
+			</when>
+			<when test="content != null">
+				AND BOARD_CONTENT like '%' || #{content} || '%'
+			</when>
+		</choose>
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<insert id="insertReply">
+		INSERT INTO COMMENTS
+		VALUES(SEQ_COMMNO.nextval, #{rContent}, SYSDATE, 'Y', #{rWriter}, DEFAULT, #{refBid})
+	</insert>
+	
+	<select id="selectReplyList" resultMap="ReplyResultSet">
+		SELECT COMMENTS_NO, COMMETS_COTENT, COMMETS_DATE, COMMETS_STATUS, COMMETS_WRITER, MEMBER_NO, 
+				 BOARD_NO, MEMBER_NICKNAME
+		FROM COMMENTS
+    		LEFT JOIN MEMBER USING(MEMBER_NO) 
+    		LEFT JOIN BOARD USING(BOARD_NO)
+		WHERE COMMETS_STATUS='Y' and BOARD_NO=#{bNo} AND PARENT_CATE=30
+		ORDER BY COMMENTS_NO DESC
+	</select>
+	
+	<resultMap type="com.kh.YellowBridge.support.model.vo.Reply" id="ReplyResultSet">
+		<id property="rId" column="COMMENTS_NO"/>
+		<result property="rContent" column="COMMETS_COTENT"/>
+		<result property="rCreateDate" column="COMMETS_DATE"/>
+		<result property="rStatus" column="COMMETS_STATUS"/>
+		<result property="rWriter" column="COMMETS_WRITER"/>
+		<result property="refBid" column="MEMBER_NO"/>
+		<result property="memberNo" column="BOARD_NO"/>
+		<result property="memberNick" column="MEMBER_NICKNAME"/>
+	</resultMap>
+	
+	<update id="updateBoard">
+		UPDATE BOARD
+		SET BOARD_TITLE=#{bTitle}, BOARD_CONTENT=#{bContent}, BOARD_MODIFY_DATE=SYSDATE
+		WHERE BOARD_NO=#{bNo}
+	</update>
+	
+	<update id="updateFile">
+		UPDATE FILE_INFO
+		<set>
+		FILE_LEVEL=1,
+			<if test="fileName != null">
+				FILE_NAME=#{fileName}, FILE_CHANGE=#{changeName}, FILE_PATH=#{filePath}
+			</if>
+		</set>
+		WHERE BOARD_NO=#{BoardNo}
+	</update>
+	
+	<update id="deleteBoard">
+		UPDATE BOARD
+		SET BOARD_STATUS='N'
+		WHERE BOARD_NO=#{bNO}
+	</update>
+	
+	<update id="deleteReply">
+		UPDATE COMMENTS
+		SET COMMETS_STATUS = 'N'
+		WHERE COMMENTS_NO=#{rId}
+	</update>
+	
 </mapper>

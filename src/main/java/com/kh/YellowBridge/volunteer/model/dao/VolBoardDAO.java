@@ -281,4 +281,9 @@ public class VolBoardDAO {
 		return sqlSession.selectOne("volunteerMapper.getListAdvertiseCount");
 	}
 	
+	
+	public ArrayList<Volunteer> selectvList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("volunteerMapper.selectvList");
+	}
+
 }

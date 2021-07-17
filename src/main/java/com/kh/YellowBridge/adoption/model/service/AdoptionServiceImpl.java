@@ -122,6 +122,14 @@ public class AdoptionServiceImpl implements AdoptionService{
 		return aDAO.selectAnimal(sqlSession, animalNo);
 	}
 
+	@Override
+	public ArrayList<AnimalInfo> selectAList() {
+		return aDAO.selectAlist(sqlSession);
+	}
+
+
+
+	
 
 
 

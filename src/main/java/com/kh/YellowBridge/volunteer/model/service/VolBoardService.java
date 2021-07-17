@@ -130,5 +130,6 @@ public interface VolBoardService {
 	int getListAdvertiseCount();
 
 
+	ArrayList<Volunteer> selectvList();
 	
 }

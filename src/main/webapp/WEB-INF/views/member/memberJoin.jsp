@@ -124,9 +124,9 @@
 						<th><sup>*</sup>닉네임</th>
 						<td>
 							<input type="text" name="nickname" id="nickname"><br>
-							<span class="nick_guide ok">사용 가능합니다.</span>
-							<span class="nick_guide error">사용 불가능합니다.</span>
-							<input type="hidden" name="nick_DuplicateCheck" id="nick_DuplicateCheck" value="0">
+							<span class="nickGuide ok">사용 가능합니다.</span>
+							<span class="nickGuide error">사용 불가능합니다.</span>
+							<input type="hidden" name="nick_DuplicateCheck" id="nickDuplicateCheck" value="0">
 						</td>
 					</tr>
 						<tr>
@@ -223,8 +223,8 @@
 			var nickname = $(this).val().trim();
 			
 			if(nickname.length < 4){
-				$('.nick_guide').hide();
-				$('#nick_DuplicateCheck').val(0);
+				$('.nickGuide').hide();
+				$('#nickDuplicateCheck').val(0);
 				
 				return;
 			}
@@ -234,13 +234,13 @@
 				success: function(data){
 					console.log(data);
 					if(data == 0){
-						$('.nick_guide.error').hide();
-						$('.nick_guide.ok').show();
-						$('#nick_DuplicateCheck').val(1);
+						$('.nickGuide.error').hide();
+						$('.nickGuide.ok').show();
+						$('#nickDuplicateCheck').val(1);
 					}else{
-						$('.nick_guide.error').show();
-						$('.nick_guide.ok').hide();
-						$('#nick_DuplicateCheck').val(0);
+						$('.nickGuide.error').show();
+						$('.nickGuide.ok').hide();
+						$('#nickDuplicateCheck').val(0);
 					}
 				}
 			});
@@ -252,7 +252,7 @@
 				alert("사용가능한 아이디를 입력해주세요.");
 				$('#userId').focus();
 				return false;
-			}else if($('#nick_DuplicateCheck').val() == 0){
+			}else if($('#nickDuplicateCheck').val() == 0){
 				alert("사용가능한 닉네임을 입력해주세요.");
 				$('#nickname').focus();
 				return false;	
