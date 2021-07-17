@@ -60,6 +60,9 @@
 		from member
 		where member_id=#{id} and status='Y'
 	</select>
+	
+	
+	
 
 
 </mapper>

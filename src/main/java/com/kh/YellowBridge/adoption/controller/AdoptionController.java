@@ -402,5 +402,22 @@ public class AdoptionController {
 		
 	}
 	
+
+	//메인페이지 입양공고 게시
+	@RequestMapping("animalList.ado")
+	@ResponseBody
+	public void adopList(HttpServletResponse response) throws JsonIOException, IOException{
+		
+		
+		ArrayList<AnimalInfo> aList = aService.selectAList();
 	
+				
+		response.setContentType("application/json; charset=UTF-8");
+		
+		new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(aList, response.getWriter());
+
+		
+		
+	}	
 }
+	

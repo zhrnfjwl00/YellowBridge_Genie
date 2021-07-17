@@ -330,6 +330,11 @@ public class VolBoardServiceImpl implements VolBoardService{
 		return VolBoardDAO.getListAdvertiseCount(sqlSession);
 	}
 
+	@Override
+	public ArrayList<Volunteer> selectvList() {
+		return VolBoardDAO.selectvList(sqlSession);
+	}
+
 
 
 
