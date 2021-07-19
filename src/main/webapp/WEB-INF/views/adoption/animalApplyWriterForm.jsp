@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,28 +17,19 @@
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">
-				<h2>입양공고등록</h2>
+				<h2>입양신청서</h2>
 				<hr>
 			</div>
 <!--글쓰기-->
+<%-- <c:forEach var="animal" items="${ animallist }"> --%>
+<fmt:formatDate var="formatRegDate" value="${rescueDate}" pattern="yyyy.MM.dd"/>
 <div class="board_request">
-	<c:forEach items="animallist" var="animal">
-	<form method="post" name="form" action="animalApply.ado" enctype="multipart/form-data" accept-charset="utf-8">
-		<!-- <input type="hidden" name="animalNo" value="">
-		<input type="hidden" name="animalType" value="">
-		<input type="hidden" name="animalGender" value="">
-		<input type="hidden" name="animalAge" value="">
-		<input type="hidden" name="animalColor" value="">
-		<input type="hidden" name="animalTnr" value="">
-		<input type="hidden" name="animalCharacter" value="">
-		<input type="hidden" name="animalWeight" value="">
-		<input type="hidden" name="animalCondition" value="">
-		<input type="hidden" name="animalFeature" value="">
-		<input type="hidden" name="rescueDate" value="">
-		<input type="hidden" name="rescueLocation" value="">
-		<input type="hidden" name="rescueLocation" value=""> -->
+					<form method="post" action="animalApplyInsert.ado" enctype="multipart/form-data" accept-charset="utf-8">
+					<fmt:formatDate var="formatRegDate" value="${rescueDate}" pattern="yyyy.MM.dd"/>
+		<input type="hidden" name="animalType" value="${ animal.animalType }">
+		<input type="hidden" name="requestAnimalNo" value="${ animal.animalNo }">
 		<table cellpadding="0" cellspacing="0" summary="입양상담신청 게시판">
-			<caption>입양공고등록 게시판</caption>
+			<caption>입양신청서</caption>
 			<colgroup>
 <%-- 				<col width="25%">
 				<col width="75%"> --%>
@@ -47,75 +40,72 @@
 			</colgroup>
 			<tbody>
 				<tr>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>축종</span></th>
-					<td><input type="text" id="animalType" name="animalType" value="#{ animal.animalType }"></td>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>성별</span></th>
-					<td colspan="3">
-						<input type="text" name="animalGender" value="#{ }">HTML
+					<th scope="row"><span>축종</span></th>
+					<td>${ animal.animalType }</td>
+					<th scope="row"><span>일련번호</span></th>
+					<td>${ animal.animalNo }</td>
+				</tr>
+				<tr>
+					<th scope="row"><span>입양사유</span></th>
+					<td colspan="3"><input type="text" id="requestReason" name="requestReason"></td>
+				</tr>
+				<tr>
+					<th scope="row"><span>가족 동의</span></th>
+					<td colspan="3"> 
+						<input type="radio" name="requestAgreement" value="Y" checked> 동의 
+						<input type="radio" name="requestAgreement" value="N"> 동의하지않음
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><span>연령</span></th>
-					<td><input type="number" id="animalAge" name="animalAge"></td>
-					<th scope="row"><span>모색</span></th>
-					<td><input type="text" id="animalColor" name="animalColor"></td>
-				</tr>
-				<tr>
-					<th scope="row"><span>중성화수술여부</span></th>
-					<td>
-						<input type="radio" id="animalTnr1" name="animalTnr" value="Y" checked><label for="animalTnr1">했음</label>
-						<input type="radio" id="animalTnr2" name="animalTnr" value="N"><label for="animalTnr2">안했음</label>
+					<th scope="row"><span>반려동물 입양경험</span></th>
+					<td colspan="3"> 
+						<input type="radio" name="requestExperience" value="Y" checked> 있음
+						<input type="radio" name="requestExperience" value="N"> 없음
 					</td>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>성격</span></th>
-					<td><input type="text" id="animalCharacter" name="animalCharacter"></td>
 				</tr>
 				<tr>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>체중</span></th>
-					<td><input type="text" id="animalWeight" name="animalWeight"></td>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>건강상태</span></th>
-					<td><input type="text" id="animalCondition" name="animalCondition"></td>
-				</tr>
-				<tr>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>특징</span></th>
-					<td colspan="3"> <input type="text" id="animalFeature" name="animalFeature"></td>
+					<th scope="row"><span>현재 반려동물을 키우고 계십니까?</span></th>
+					<td colspan="3"> 
+						<input type="radio" name="requestPoss" value="Y" checked> 예
+						<input type="radio" name="requestPoss" value="N"> 아니오 
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		
 
-		<table cellpadding="0" cellspacing="0" summary="입양상담신청 게시판">
-			<caption>입양상담신청 게시판</caption>
-			<colgroup>
-				<col width="25%">
-				<col width="75%">
-			</colgroup>
-			<tbody>
+		<table>
 				<tr>
-					<th scope="row"><span>구조일</span></th>
-					<td><input type="date" id="rescueDate" name="rescueDate"></td>
+					<th scope="row"><span>과거에 입양했던 반려동물의 종류와 수량은?</span></th>
 				</tr>
+				<tr>
+					<td><input type="text" id="requestQuestion1" name="requestQuestion1"></td>
+				<tr>
 				
 				<tr>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>구조장소</span></th>
-					<td> <input type="text" id="rescueLocation" name="rescueLocation"></td>
+					<th scope="row"><span>과거에 입양했던 반려동물은 현재 어떻게 되었습니까?</span></th>
 				</tr>
+				<tr>
+					<td><input type="text" id="requestQuestion2" name="requestQuestion2"></td>
+				<tr>
 				
 				<tr>
-					<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>이미지첨부</span></th>
-					<td><input type="file" id="uploadFile" multiple="multiple" name="uploadFile"></td>
+					<th scope="row"><span>중성화수술에 동의하십니까? *미동의시 입양불가</span></th>
 				</tr>
-			</tbody>
+				<tr>
+					<td>
+						<input type="radio" name="requestTnrAgree" value="Y" checked> 예
+						<input type="radio" name="requestTnrAgree" value="N"> 아니오 
+				<tr>
 		</table>
 		
 		<div class="btn_area">
 <!-- 			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a> -->
-			<button type="submit">신청서 등록</button>
- 			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a>
-			<a href="javascript:void(0);" onclick="location.href=''">취소</a>
+			<button type="submit">제출하기</button>
+<!--  			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a>
+			<a href="javascript:void(0);" onclick="location.href=''">취소</a> -->
 		</div><!--E:btn_area-->
-
 	</form>
-	</c:forEach>
 
 	<div class="request_info">
 		<strong>입양절차 안내</strong><br>
@@ -129,7 +119,8 @@
 
 
 	</div><!--E:board_request-->
-	</div><!--E:wrap_sub-->
+<%-- 	</c:forEach>
+ --%>	</div><!--E:wrap_sub-->
 	</div>
 	<c:import url="../common/footer.jsp" />
 	

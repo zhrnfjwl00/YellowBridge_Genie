@@ -35,9 +35,10 @@ import com.kh.YellowBridge.adoption.model.vo.AdoptionFile;
 import com.kh.YellowBridge.adoption.model.vo.AdoptionReply;
 import com.kh.YellowBridge.adoption.model.vo.AnimalInfo;
 import com.kh.YellowBridge.adoption.model.vo.AnimalPagination;
+import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
 import com.kh.YellowBridge.common.PageInfo;
+import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.vo.Member;
-import com.sun.tracing.dtrace.Attributes;
 
 @Controller
 public class AdoptionController {
@@ -52,10 +53,9 @@ public class AdoptionController {
 		return "adopProcess";
 	}
 
-	
 	//입양공고리스트 , 페이징
 		@RequestMapping("adopNotice.ado")
-		public ModelAndView adopNotice(@RequestParam(value="page", required=false) Integer page, ModelAndView mv) {
+		public ModelAndView adopNotice(@RequestParam(value="page", required=false) Integer page, ModelAndView mv, @DateTimeFormat(pattern="yyyy-MM-dd") Date fromDate) {
 			int currentPage = 1; // 연산에서 사용할 변수
 			
 			if(page != null) {
@@ -68,6 +68,7 @@ public class AdoptionController {
 //			AdoptionFile af = aService.selectAnimalile(animalNo);
 			
 			ArrayList<AnimalInfo> animallist = aService.selectAnimalList(pi);
+			System.out.println(animallist);
 			
 			if(animallist != null) {
 				
@@ -143,60 +144,118 @@ public class AdoptionController {
 		
 		// 입양 신청서 폼 이동	
 		@RequestMapping("animalApplyWriterForm.ado")
-		public String animalApplyWriterForm(AnimalInfo a, HttpSession session,  Model model) {
+		public String animalApplyWriterForm(@RequestParam("animalNo") int animalNo, Model model) {
 			// session에 저장된 userId를 writer에 저장
 //			String nickname = ((Member)session.getAttribute("loginUser")).getNickname();
 			// vo에 writer를 세팅 
-			// 현재 로그인 서비스가 없어 임의로 작성자 삽입
+			AnimalInfo animal = aService.selectApplyAnimal(animalNo);
 			
-			System.out.println("AnimalInfo : " + a);
-			
-			
-//			AnimalInfo animallist = aService.selectAnimal(animalNo);
-//			System.out.println(animallist);
-//			
-//			model.addAttribute("animallist", animallist);
-			
-			return "animalApply";	
-			
-			
-			
+			if( animal != null) {
+				model.addAttribute("animal", animal);
+				return "animalApplyWriterForm";
+			} else {
+				throw new AdoptionException("입양신청에 실패하였습니다.");
+			}
 		}
 		
 		
 		
-	//입양신청조회
-		@RequestMapping("adopInfo.ado")
-		public String adopInfo() {
-			return "adopInfo";
-		}
-	
-	
-	//입양일지 리스트, 페이징처리
-	@RequestMapping("adopRecode.ado")
-	public ModelAndView boardList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
-		int currentPage = 1; // 연산에서 사용할 변수
-		
-		if(page != null) {
-			currentPage = page;
-		}
-		int listCount = aService.getListCount();
-		
-		// 페이징 처리를 위한 연산 : Pagination
-		PageInfo pi = AnimalPagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<AdoptionBoard> adoplist = aService.selectList(pi);
-		
-		if(adoplist != null) {
+		// 입양신청서 작성
+		@RequestMapping("animalApplyInsert.ado")
+		public String animalApplyInsert(@ModelAttribute AnimalRequest ar, HttpSession session) {
+			int memberNo = ((Member)session.getAttribute("loginUser")).getNo();
+			ar.setRequestMemberNo(memberNo);
 			
-			mv.addObject("adoplist", adoplist).addObject("pi", pi).setViewName("adoptionRecodeList");
+			System.out.println("입력할 폼 정보 : " + ar);
+			System.out.println("로그인 정보 : "+ memberNo);
+			int result = aService.insertAppForm(ar);
 
-		} else {
-			throw new AdoptionException("입양일지리스트 조회에 실패하였습니다.");
+			System.out.println("폼 작성 성공 : " + result);
+			
+			if(result > 0) {
+				return "redirect:animalApplyComplete.ado";
+			} else {
+				throw new AdoptionException("입양 신청서 작성에 실패하였습니다.");
+			}
+			
 		}
 		
-		return mv;
-	}
+		// 입양신청서 작성 완료페이지 : 필요시 내용 노출 예정
+		@RequestMapping("animalApplyComplete.ado")
+		public ModelAndView animalApplyComplete(ModelAndView mv, HttpSession session) {
+			int memberNo = ((Member)session.getAttribute("loginUser")).getNo();
+			AnimalRequest ar = aService.selectAppForm(memberNo);
+			
+			System.out.println("ar : "+ar);
+			
+			if(ar != null) {
+				mv.addObject("ar", ar).setViewName("animalApplyComplete");
+			} else {
+				throw new AdoptionException("신청완료 페이지 보기에 실패하였습니다.");
+			}
+			return mv;
+		}
+		
+		
+		
+		//입양신청조회 리스트 
+			@RequestMapping("adopInfo.ado")
+			public ModelAndView adopInfo(@RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session, HttpServletRequest request) {
+				int currentPage = 1;
+				if(page != null) {
+					currentPage = page;
+				}
+				if((Member)session.getAttribute("loginUser") == null) {
+					request.setAttribute("msg", "로그인 후 이용하세요");
+				}
+				
+				int memberNo = ((Member)session.getAttribute("loginUser")).getNo();
+				int listCount = aService.getRequestListCount(memberNo);
+				
+				Member member = aService.selectMember(memberNo);
+				
+				PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+				
+				ArrayList<AnimalRequest> requestlist = aService.selectRequestList(memberNo, pi);
+				System.out.println(requestlist);
+				
+				if(requestlist != null) {
+					mv.addObject("requestlist", requestlist).addObject("pi", pi).addObject("member", member).setViewName("adopInfo");
+				} else {
+					throw new AdoptionException("입양신청조회 리스트 조회에 실패하였습니다.");
+				}
+				return mv;
+			}
+	
+	
+			
+			
+			
+		//입양일지 리스트, 페이징처리
+		@RequestMapping("adopRecode.ado")
+		public ModelAndView boardList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
+			int currentPage = 1; // 연산에서 사용할 변수
+			
+			if(page != null) {
+				currentPage = page;
+			}
+			int listCount = aService.getListCount();
+			
+			// 페이징 처리를 위한 연산 : Pagination
+			PageInfo pi = AnimalPagination.getPageInfo(currentPage, listCount);
+			
+			ArrayList<AdoptionBoard> adoplist = aService.selectList(pi);
+			
+			if(adoplist != null) {
+				
+				mv.addObject("adoplist", adoplist).addObject("pi", pi).setViewName("adoptionRecodeList");
+	
+			} else {
+				throw new AdoptionException("입양일지리스트 조회에 실패하였습니다.");
+			}
+			
+			return mv;
+		}
 	
 	
 	//입양 일지 상세보기
@@ -401,7 +460,6 @@ public class AdoptionController {
 		gson.toJson(list, response.getWriter());
 		
 	}
-	
 
 	//메인페이지 입양공고 게시
 	@RequestMapping("animalList.ado")
@@ -416,8 +474,8 @@ public class AdoptionController {
 		
 		new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(aList, response.getWriter());
 
-		
-		
-	}	
-}
+	}
 	
+	
+	}
+		
