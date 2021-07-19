@@ -27,6 +27,7 @@
 	#rtb td{padding: 3px;}
 	
 	#rdeleteBtn{background-color: yellow;}
+	
 </style>
 </head>
 <body>
@@ -46,7 +47,7 @@
 			<input type="hidden" id="volCategory" name="volCategory" value="${review.volCategory}"> 
 			<input type="hidden" id="volCount" name="volCount" value="${review.volCount}"> 
 			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${review.volCreateDate}"> 
-			<input type="hidden" id="id" name="id" value="${ sessionScope.loginUser }"> 
+			<input type="hidden" id="id" name="id" value="${ loginUser.id }"> 
 			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
 	
@@ -112,10 +113,8 @@
 </div>
 <c:import url="../common/footer.jsp"/>
 
-<c:if test="${ !empty sessionScope.loginUser }">
 <script>
 	$(function(){
-		var id = $('#id').val().trim();
 		
 		getReplyList();
 		
@@ -143,44 +142,11 @@
 		});
 	});
 	</script>
-</c:if>	
 
-<c:if test="${ empty sessionScope.loginUser }">
 <script>
-	$(function(){
-		var id = $('#id').val().trim();
-		
-		getReplyList2();
-		
-		setInterval(function(){
-			getReplyList2();
-		}, 1000);
-		
-		
-		$('#rinsertBtn').on('click', function(){
-			var volrContent = $('#rContent').val();
-			var volrefBid = ${review.volId};
-			
-			$.ajax({
-				url: 'reviewaddReply.vol',
-				data: {volrContent:volrContent, volrefBid:volrefBid},
-				success: function(data){
-					console.log(data);
-					
-					if(data == 'success'){
-						$('#rContent').val('');
-						getReplyList2(); // 댓글 리스트 불러오기
-					}
-				}
-			});
-		});
-	});
-	</script>
-</c:if>	
-	
-	<script>
 	function getReplyList(){
 		var volId = ${review.volId};
+		var id = $('#id').val();
 		
 		$.ajax({
 			url: 'reviewrList.vol',
@@ -214,9 +180,15 @@
 						var $rContent = $('<td colspan=7>').text(data[i].volrContent);
 						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
 						var page = ${page};
-						var $rUpdateBtn = $('<td width=50><a href="reviewrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
-						var $rdeleteBtn = $('<td width=50><a href="reviewrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
-						
+						var $writerId = data[i].volrWriter;
+						var $userId = id;
+						if( $userId.trim() == $writerId.trim() ){
+							var $rUpdateBtn = $('<td width=50><a href="reviewrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
+							var $rdeleteBtn = $('<td width=50><a href="reviewrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
+						} else {
+							var $rUpdateBtn = $('<td>').text('수정');
+							var $rdeleteBtn = $('<td>').text('삭제');
+						}
 						$tr.append($rWriter);
 						$tr.append($rContent);
 						$tr.append($rCreateDate);
@@ -235,53 +207,6 @@
 		});
 	}
 	
-	function getReplyList2(){
-		var volId = ${review.volId};
-		
-		$.ajax({
-			url: 'reviewrList.vol',
-			data: {volId:volId},
-			dataType: 'json',
-			success: function(data){
-				console.log(data);
-				var $tableBody = $('#rtb tbody');
-				$tableBody.html('');
-				
-				$('#rCount').text('(' + data.length + ')');
-				if(data.length > 0){
-					var $tr = $('<tr>');
-					var $a = $('<a>');
-					var $trWriter = $('<th>').text('작성자');
-					var $trContent = $('<th colspan=7>').text('내용');
-					var $trCreateDate = $('<th>').text('작성일');
-					
-					$tr.append($trWriter);
-					$tr.append($trContent);
-					$tr.append($trCreateDate);
-					$tableBody.append($tr);
-					
-					for(var i in data){
-						var $tr = $('<tr>');
-						var $rWriter = $('<td>').text(data[i].volrNickname);
-						var $rContent = $('<td colspan=7>').text(data[i].volrContent);
-						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
-						var page = ${page};
-						
-						$tr.append($rWriter);
-						$tr.append($rContent);
-						$tr.append($rCreateDate);
-						$tableBody.append($tr);
-					}
-				} else {
-					var $tr = $('<tr>');
-					var $rContent = $('<td colspan=10>').text('등록된 댓글이 없습니다.');
-					
-					$tr.append($rContent);
-					$tableBody.append($tr);
-				}
-			}
-		});
-	}
 </script>
 	
  <script type="text/javascript">

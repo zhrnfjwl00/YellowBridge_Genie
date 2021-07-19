@@ -87,7 +87,7 @@
 				<select id="searchCondition" name="searchCondition">
 					<option>-------</option>
 					<option value="title">제목</option>
-					<option value="category">카테고리</option>
+					<option value="category">보호소</option>
 				</select>
 				
 				<input id="searchValue" type="search">
@@ -102,14 +102,14 @@
 						<div class="shelter-img">
 							<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
 								<c:param name="volId" value="${ shel.serviceNo }"/>
-								<c:param name="page" value="${ vvpi.currentPage }"/>
+								<c:param name="page" value="${ vpi.currentPage }"/>
 							</c:url>
 							<a href="${ serviceAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.fileName }" ></a>
 						</div>
 						<div id="shelter-info">
 						<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
 							<c:param name="volId" value="${ shel.serviceNo }"/>
-							<c:param name="page" value="${ vvpi.currentPage }"/>
+							<c:param name="page" value="${ vpi.currentPage }"/>
 						</c:url>
 							<a href="${ serviceAdDetail }" class="shelter-name">${ shel.serviceTitle }</a>
 						</div>

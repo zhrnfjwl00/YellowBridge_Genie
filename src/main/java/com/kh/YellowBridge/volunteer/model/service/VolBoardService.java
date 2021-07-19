@@ -129,6 +129,9 @@ public interface VolBoardService {
 
 	int getListAdvertiseCount();
 
+	int getAdminSearchApplyResultListCount(VolSearchCondition vsc);
+
+	ArrayList<VolunteerApply> selectAdminSearchApplyResultList(VolSearchCondition vsc, PageInfo pi);
 
 	ArrayList<Volunteer> selectvList();
 	
