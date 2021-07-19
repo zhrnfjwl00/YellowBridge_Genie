@@ -121,6 +121,7 @@
 									<c:url var="volBoardDetail" value="volBoardDetail.vol">
 										<c:param name="volId" value="${ vol.volId }"/>
 										<c:param name="page" value="${ pi.currentPage }"/>
+										<c:param name="loginId" value="${ loginUser.id }"/>
 									</c:url>
 									<a href="${ volBoardDetail }">${ vol.volTitle }</a>
 								</td>

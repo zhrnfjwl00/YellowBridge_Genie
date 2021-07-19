@@ -131,7 +131,9 @@
 						
 	<div align="center" class="button">
 		<input type="button" onclick="location.href='<%= request.getContextPath() %>/serviceApplyBoard.vol'" id="goMain" value="메인으로">
-		<input type="button" onclick="location.href='${ writeReview }'" id="goReview" value="후기쓰기">
+		<c:if test="${ vApply.volStatus eq '신청확정' }">
+			<input type="button" onclick="location.href='${ writeReview }'" id="goReview" value="후기쓰기">
+		</c:if>
 	</div>
 </div>	
 <c:import url="../common/footer.jsp"/>

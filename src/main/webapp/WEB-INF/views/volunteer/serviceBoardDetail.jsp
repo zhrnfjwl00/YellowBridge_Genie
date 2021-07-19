@@ -41,12 +41,13 @@
 		<form name="readForm" role="form" method="post">
 			<input type="hidden" id="volId" name="volId" value="${volboard.volId}" />
 			<input type="hidden" id="volTitle" name="volTitle" value="${volboard.volTitle}"> 
-			<input type="hidden" id="volWriter" name="volWriter" value="${volboard.volWriter}"> 
+			<input type="hidden" id="volWriter" name="volWriter" value="${volboard.volWriter}">
+			<input type="hidden" id="id" name="id" value="${loginId}">
 			<input type="hidden" id="volContent" name="volContent" value="${volboard.volContent}"> 
 			<input type="hidden" id="volCategory" name="volCategory" value="${volboard.volCategory}"> 
 			<input type="hidden" id="volCount" name="volCount" value="${volboard.volCount}"> 
 			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${volboard.volCreateDate}"> 
-			<input type="hidden" id="id" name="id" value="${ sessionScope.loginUser }"> 
+			<%-- <input type="hidden" id="id" name="id" value="${ sessionScope.loginUser }">  --%>
 			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
 	
@@ -112,10 +113,8 @@
 </div>
 <c:import url="../common/footer.jsp"/>
 
-<c:if test="${ !empty sessionScope.loginUser }">
 <script>
 	$(function(){
-		var id = $('#id').val().trim();
 		
 		getReplyList();
 		
@@ -136,52 +135,18 @@
 					
 					if(data == 'success'){
 						$('#rContent').val('');
-						getReplyList(); // 댓글 리스트 불러오기
+						getReplyList(id); // 댓글 리스트 불러오기
 					}
 				}
 			});
 		});
 	});
 	</script>
-</c:if>	
-
-<c:if test="${ empty sessionScope.loginUser }">
-<script>
-	$(function(){
-		var id = $('#id').val().trim();
-		
-		getReplyList2();
-		
-		setInterval(function(){
-			getReplyList2();
-		}, 1000);
-		
-		
-		$('#rinsertBtn').on('click', function(){
-			var volrContent = $('#rContent').val();
-			var volrefBid = ${volboard.volId};
-			
-			$.ajax({
-				url: 'voladdReply.vol',
-				data: {volrContent:volrContent, volrefBid:volrefBid},
-				success: function(data){
-					console.log(data);
-					
-					if(data == 'success'){
-						$('#rContent').val('');
-						getReplyList2(); // 댓글 리스트 불러오기
-					}
-				}
-			});
-		});
-	});
-	</script>
-</c:if>	
-	
 	<script>
 	function getReplyList(){
 		var volId = ${volboard.volId};
-		
+		var id = $('#id').val();
+
 		$.ajax({
 			url: 'volrList.vol',
 			data: {volId:volId},
@@ -210,14 +175,21 @@
 					
 					for(var i in data){
 						var $tr = $('<tr>');
-						var $rWriter = $('<td>').text(data[i].volrNickname);
+						var $rWriterNickname = $('<td>').text(data[i].volrNickname);
 						var $rContent = $('<td colspan=7>').text(data[i].volrContent);
 						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
 						var page = ${page};
-						var $rUpdateBtn = $('<td width=50><a href="volrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
-						var $rdeleteBtn = $('<td width=50><a href="volrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
+						var $writerId = data[i].volrWriter;
+						var $userId = id;
+						if( $userId.trim() == $writerId.trim() ){
+							var $rUpdateBtn = $('<td width=50><a href="volrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
+							var $rdeleteBtn = $('<td width=50><a href="volrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
+						} else {
+							var $rUpdateBtn = $('<td>').text('수정');
+							var $rdeleteBtn = $('<td>').text('삭제');
+						}
 						
-						$tr.append($rWriter);
+						$tr.append($rWriterNickname);
 						$tr.append($rContent);
 						$tr.append($rCreateDate);
 						$tr.append($rUpdateBtn);
@@ -234,56 +206,7 @@
 			}
 		});
 	}
-	
-	function getReplyList2(){
-		var volId = ${volboard.volId};
-		
-		$.ajax({
-			url: 'volrList.vol',
-			data: {volId:volId},
-			dataType: 'json',
-			success: function(data){
-				console.log(data);
-				var $tableBody = $('#rtb tbody');
-				$tableBody.html('');
-				
-				$('#rCount').text('(' + data.length + ')');
-				if(data.length > 0){
-					var $tr = $('<tr>');
-					var $a = $('<a>');
-					var $trWriter = $('<th>').text('작성자');
-					var $trContent = $('<th colspan=7>').text('내용');
-					var $trCreateDate = $('<th>').text('작성일');
-					
-					$tr.append($trWriter);
-					$tr.append($trContent);
-					$tr.append($trCreateDate);
-					$tableBody.append($tr);
-					
-					for(var i in data){
-						var $tr = $('<tr>');
-						var $rWriter = $('<td>').text(data[i].volrNickname);
-						var $rContent = $('<td colspan=7>').text(data[i].volrContent);
-						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
-						var page = ${page};
-						
-						$tr.append($rWriter);
-						$tr.append($rContent);
-						$tr.append($rCreateDate);
-						$tableBody.append($tr);
-					}
-				} else {
-					var $tr = $('<tr>');
-					var $rContent = $('<td colspan=10>').text('등록된 댓글이 없습니다.');
-					
-					$tr.append($rContent);
-					$tableBody.append($tr);
-				}
-			}
-		});
-	}
-</script>
-	
+	</script>
  <script type="text/javascript">
 	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
 		
@@ -305,7 +228,7 @@
 			location.href = "serviceBoardDelete.vol?volId="+volId;
 		})
 		
-		$("#updateBtn").on("click", function(){
+/* 		$("#updateBtn").on("click", function(){
 			var volId = ${volboard.volId};
 			var page = ${page};
 			
@@ -316,49 +239,7 @@
 			var volId = ${volboard.volId};
 			
 			location.href = "serviceBoardDelete.vol?volId="+volId;
-		})
-		
-/* 		function rUpdate(rNo) {
-			location.href="volrUpdate.vol?rNo="+rNo;
-  		}
-  		
-		function rDelete() {
-			var rNo = $(this).parent().children().eq(0).text(); 
-//			System.out.println("$rNo");
-			
-			location.href="volrDelete.vol?rNo="+rNo;
-  		} */
-		
-/* 		$(".replyWriteBtn").on("click", function(){
-			var formObj = $("form[name='replyForm']");
-			formObj.attr("action", "/board/replyWrite");
-			formObj.submit();
-		});
-		
-		//댓글 수정 View
-		$(".replyUpdateBtn").on("click", function(){
-			location.href = "/board/replyUpdateView?bno=${read.bno}"
-							+ "&page=${scri.page}"
-							+ "&perPageNum=${scri.perPageNum}"
-							+ "&searchType=${scri.searchType}"
-							+ "&keyword=${scri.keyword}"
-							+ "&rno="+$(this).attr("data-rno");
-		});
-		*/
-		//댓글 삭제 View
-/*  		$(".rdeleteBtn").on("click", function(){
-			var rNo = $(this).parent().children().eq(1).text(); 
-			System.out.println("rNo");
-		
-			location.href = "volrDelete.vol?volId="+${volboard.volId} + "&rNo=" + rNo;
-		});  */
-		
-		
-/*  		$(document).ready(function(){
-			$(document).on('click','#rdeleteBtn',function(){
-					alert(" 동적 변경 감지");
-			}) 
-		})  */
+		}) */
 		
 </script> 
 </body>

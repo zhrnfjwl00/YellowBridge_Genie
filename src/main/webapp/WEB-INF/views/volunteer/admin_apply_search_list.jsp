@@ -26,8 +26,9 @@
 	.selected{width:5%;}
 	.tableNo{width: 5%;}
 	.tableShelter{width: 20%;}
-	.tableCo{width:35%;}
-	.tableName{width:10%;}
+	.tableCo{width:30%;}
+	.tableName{width:7%;}
+	.tableId{width:8%;}
 	.tableTime{width:10%;}
 	.tableStatus{width:10%;}
 	
@@ -87,6 +88,18 @@
 		<h1 style="color:#BDCC94;"><b>봉사 신청 조회</b></h1>
 	</div>
 	
+	<div id="searchArea" align="center">
+		<select id="searchCondition" name="searchCondition">
+			<option>-------</option>
+			<option value="writer">작성자아이디</option>
+			<option value="title">제목</option>
+			<option value="category">보호소</option>
+		</select>
+		
+		<input id="searchValue" type="search">
+		<button onclick="searchBoard();">검색</button>
+	</div>
+	
 	<table id="serviceApplyBoardTable" class="display" style="width:100%">
 		<thead>
 			<tr>
@@ -94,7 +107,8 @@
 				<th align="center" class="tableNo">NO.</th>
                 <th align="center" class="tableShelter">보호소</th>
                 <th align="center" class="tableCo">신청내역</th>
-                <th align="center" class="tableName">봉사자 성함</th>
+                <th align="center" class="tableName">이름</th>
+                <th align="center" class="tableId">아이디</th>
                 <th align="center" class="tableTime">신청시각</th>
                 <th align="center" class="tableStatus">상태</th>
 			</tr>
@@ -121,6 +135,7 @@
 				</td>
 				
 				<td align="center" class="tableName">${ vol.mName }</td>
+				<td align="center" class="tableId">${ vol.mId }</td>
 				<td align="center" class="tableTime">${ vol.volDate }</td>
 				<td align="center" class="tableStatus">${ vol.volStatus }</td>
 			</tr>
@@ -154,6 +169,10 @@
 				<c:if test="${ pi.currentPage > 1 }">
 					<c:url value="${ loc }" var="blistBack">
 						<c:param name="page" value="${ pi.currentPage - 1 }"/>
+						<c:if test="${ searchValue ne null }">
+							<c:param name="searchCondition" value="${ searchCondition }"/>
+							<c:param name="searchValue" value="${ searchValue }"/>
+						</c:if>
 					</c:url>
 					<a href="${ blistBack }">[이전]</a>
 				</c:if>
@@ -169,6 +188,10 @@
 					<c:if test="${ p ne pi.currentPage }">
 						<c:url var="blistCheck" value="${ loc }">
 							<c:param name="page" value="${ p }"/>
+							<c:if test="${ searchValue ne null }">
+								<c:param name="searchCondition" value="${ searchCondition }"/>
+								<c:param name="searchValue" value="${ searchValue }"/>
+							</c:if>
 						</c:url>
 						<a href="${ blistCheck }">${ p }</a>
 					</c:if>
@@ -180,6 +203,10 @@
 				<c:if test="${ pi.currentPage < pi.maxPage }">
 					<c:url value="${ loc }" var="blistNext">
 						<c:param name="page" value="${ pi.currentPage + 1 }"/>
+						<c:if test="${ searchValue ne null }">
+							<c:param name="searchCondition" value="${ searchCondition }"/>
+							<c:param name="searchValue" value="${ searchValue }"/>
+						</c:if>
 					</c:url>
 					<a href="${ blistNext }">[다음]</a>
 				</c:if>
@@ -198,6 +225,14 @@
 			$(this).parent().css({'background' : 'none'});
 		}});
 	});
+   
+	// 게시글 검색
+	function searchBoard(){
+		var searchCondition = $("#searchCondition").val();
+		var searchValue = $("#searchValue").val();
+		
+		location.href="adminApplysearch.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
+	}
 	
 	$('#updateBtn').on('click', function() {
 		if ($('input[name=checkbox]:checked').length < 1) {
