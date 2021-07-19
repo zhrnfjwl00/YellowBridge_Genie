@@ -10,30 +10,27 @@ import com.kh.YellowBridge.adoption.model.dao.AdoptionDAO;
 import com.kh.YellowBridge.adoption.model.vo.AdoptionBoard;
 import com.kh.YellowBridge.adoption.model.vo.AdoptionFile;
 import com.kh.YellowBridge.adoption.model.vo.AdoptionReply;
-import com.kh.YellowBridge.adoption.model.vo.AdoptionSearchCondition;
 import com.kh.YellowBridge.adoption.model.vo.AnimalInfo;
+import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
 import com.kh.YellowBridge.common.PageInfo;
-import com.kh.YellowBridge.support.model.vo.Board;
-import com.kh.YellowBridge.volunteer.model.vo.VolReply;
-import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
+import com.kh.YellowBridge.member.model.vo.Member;
 
 @Service("aService")
-public class AdoptionServiceImpl implements AdoptionService{
-	
-	//의존성주입 
+public class AdoptionServiceImpl implements AdoptionService {
+
+	// 의존성주입
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
+
 	@Autowired
 	private AdoptionDAO aDAO;
-	
 
 	@Override
 	public int getListCount() {
 		return aDAO.getListCount(sqlSession);
 	}
-	
-	// 입양공고 리스트 카운트 
+
+	// 입양공고 리스트 카운트
 	@Override
 	public int getAnimalListCount() {
 		return aDAO.getAnimalListCount(sqlSession);
@@ -45,20 +42,18 @@ public class AdoptionServiceImpl implements AdoptionService{
 		return aDAO.selectAnimalList(sqlSession, pi);
 	}
 
-	// 입양공고 등록 
+	// 입양공고 등록
 	@Override
 	public int insertAnimal(AnimalInfo a, AdoptionFile af) {
 		int result = aDAO.insertAnimal(sqlSession, a);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			return aDAO.insertAnimalFile(sqlSession, af);
 		}
 		return result;
 	}
-	
-	
-	
-	//입양일지-Board 
+
+	// 입양일지-Board
 	@Override
 	public ArrayList<AdoptionBoard> selectList(PageInfo pi) {
 		return aDAO.selectList(sqlSession, pi);
@@ -68,38 +63,37 @@ public class AdoptionServiceImpl implements AdoptionService{
 	public AdoptionBoard selectAdopBoard(int adopId) {
 		AdoptionBoard ab = null;
 		int result = aDAO.addReadCount(sqlSession, adopId);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			ab = aDAO.selectAdopBoard(sqlSession, adopId);
 		}
 		return ab;
-		
+
 	}
+
 	@Override
 	public AdoptionFile selectAdopFile(int adopId) {
 		return aDAO.selectAdopFile(sqlSession, adopId);
 	}
 
-	
-	//입양일지 게시물 추가
+	// 입양일지 게시물 추가
 	@Override
 	public int insertAdopBoard(AdoptionBoard a, AdoptionFile af) {
 		int result = aDAO.insertAdopBoard(sqlSession, a);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			return aDAO.insertAnimalFile(sqlSession, af);
 		}
 		return result;
 	}
-	
-	//입양일지 게시물 삭제
+
+	// 입양일지 게시물 삭제
 	@Override
 	public int deleteAdopBoard(int adopId) {
 		return aDAO.deleteAdopBoard(sqlSession, adopId);
 	}
 
-	
-	// 댓글등록 
+	// 댓글등록
 	@Override
 	public int insertReply(AdoptionReply r) {
 		return aDAO.insertReply(sqlSession, r);
@@ -116,10 +110,40 @@ public class AdoptionServiceImpl implements AdoptionService{
 		return aDAO.selectAnimalFile(sqlSession, animalNo);
 	}
 
-
 	@Override
 	public AnimalInfo selectAnimal(int animalNo) {
 		return aDAO.selectAnimal(sqlSession, animalNo);
+	}
+
+	// 입양신청서 폼 정보
+	@Override
+	public AnimalInfo selectApplyAnimal(int animalNo) {
+		return aDAO.selectApplyAnimal(sqlSession, animalNo);
+	}
+
+	@Override
+	public int insertAppForm(AnimalRequest ar) {
+		return aDAO.insertAppForm(sqlSession, ar);
+	}
+
+	@Override
+	public AnimalRequest selectAppForm(int memberNo) {
+		return aDAO.selectAppForm(sqlSession, memberNo);
+	}
+
+	@Override
+	public int getRequestListCount(int memberNo) {
+		return aDAO.getAnimalListCount(sqlSession, memberNo);
+	}
+
+	@Override
+	public ArrayList<AnimalRequest> selectRequestList(int memberNo, PageInfo pi) {
+		return aDAO.selectRequestList(sqlSession, memberNo, pi);
+	}
+
+	@Override
+	public Member selectMember(int memberNo) {
+		return aDAO.selectMember(sqlSession, memberNo);
 	}
 
 	@Override
@@ -127,19 +151,4 @@ public class AdoptionServiceImpl implements AdoptionService{
 		return aDAO.selectAlist(sqlSession);
 	}
 
-
-
-	
-
-
-
-
-    
-
-
-
-
-
-
-	
 }

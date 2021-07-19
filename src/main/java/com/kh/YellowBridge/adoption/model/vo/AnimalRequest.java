@@ -1,6 +1,6 @@
 package com.kh.YellowBridge.adoption.model.vo;
 
-public class AnimalReqest {
+public class AnimalRequest {
 	private int requestNo;
 	private String requestReason;
 	private String requestAgreement;
@@ -10,25 +10,14 @@ public class AnimalReqest {
 	private String requestQuestion2;
 	private String requestTnrAgree;
 	private int requestMemberNo;
+	private int requestAnimalNo;
+	private String requestState;
 	
-	public AnimalReqest() {}
+	public AnimalRequest() {}
 
-	public AnimalReqest(int requestNo, String requestReason, String requestAgreement, String requestExperience,
-			String requestPoss, String requestQuestion1, String requestQuestion2, String requestTnrAgree) {
-		super();
-		this.requestNo = requestNo;
-		this.requestReason = requestReason;
-		this.requestAgreement = requestAgreement;
-		this.requestExperience = requestExperience;
-		this.requestPoss = requestPoss;
-		this.requestQuestion1 = requestQuestion1;
-		this.requestQuestion2 = requestQuestion2;
-		this.requestTnrAgree = requestTnrAgree;
-	}
-
-	public AnimalReqest(int requestNo, String requestReason, String requestAgreement, String requestExperience,
+	public AnimalRequest(int requestNo, String requestReason, String requestAgreement, String requestExperience,
 			String requestPoss, String requestQuestion1, String requestQuestion2, String requestTnrAgree,
-			int requestMemberNo) {
+			int requestMemberNo, int requestAnimalNo, String requestState) {
 		super();
 		this.requestNo = requestNo;
 		this.requestReason = requestReason;
@@ -39,6 +28,8 @@ public class AnimalReqest {
 		this.requestQuestion2 = requestQuestion2;
 		this.requestTnrAgree = requestTnrAgree;
 		this.requestMemberNo = requestMemberNo;
+		this.requestAnimalNo = requestAnimalNo;
+		this.requestState = requestState;
 	}
 
 	public int getRequestNo() {
@@ -113,16 +104,31 @@ public class AnimalReqest {
 		this.requestMemberNo = requestMemberNo;
 	}
 
-	@Override
-	public String toString() {
-		return "AnimalReqest [requestNo=" + requestNo + ", requestReason=" + requestReason + ", requestAgreement="
-				+ requestAgreement + ", requestExperience=" + requestExperience + ", requestPoss=" + requestPoss
-				+ ", requestQuestion1=" + requestQuestion1 + ", requestQuestion2=" + requestQuestion2
-				+ ", requestTnrAgree=" + requestTnrAgree + ", requestMemberNo=" + requestMemberNo + "]";
+	public int getRequestAnimalNo() {
+		return requestAnimalNo;
 	}
 
-	
-	
+	public void setRequestAnimalNo(int requestAnimalNo) {
+		this.requestAnimalNo = requestAnimalNo;
+	}
+
+	public String getRequestState() {
+		return requestState;
+	}
+
+	public void setRequestState(String requestState) {
+		this.requestState = requestState;
+	}
+
+	@Override
+	public String toString() {
+		return "AnimalRequest [requestNo=" + requestNo + ", requestReason=" + requestReason + ", requestAgreement="
+				+ requestAgreement + ", requestExperience=" + requestExperience + ", requestPoss=" + requestPoss
+				+ ", requestQuestion1=" + requestQuestion1 + ", requestQuestion2=" + requestQuestion2
+				+ ", requestTnrAgree=" + requestTnrAgree + ", requestMemberNo=" + requestMemberNo + ", requestAnimalNo="
+				+ requestAnimalNo + ", requestState=" + requestState + "]";
+	}
+
 	
 
 }
