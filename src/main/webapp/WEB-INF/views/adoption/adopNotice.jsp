@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,28 +21,30 @@
 				<hr>
 			</div>
 				<c:forEach var="animal" items="${ animallist }">
+				<fmt:formatDate var="formatRegDate" value="${rescueDate}" pattern="yyyy.MM.dd"/>
 			<div class="list">
-				<form name="animalApply" action="animalApplyWriterForm.ado" method="post" enctype="multipart/form-data">
+				<form action="animalApplyWriterForm.ado" method="post" enctype="multipart/form-data">
 				<%-- <c:foreach items="${list}" var="list" varstatus="status"> --%>
-						<!-- <input type="hidden" name="animalNo" value="">  -->
+<%-- 						<fmt:formatDate pattern="yyyy-MM-dd" values="${ animal.rescueDate }"/> --%>
+						<input type="hidden" name="animalNo" value="${ animal.animalNo }">
 						<input type="hidden" name="animalType" value="${ animal.animalType }"> 
-						<input type="hidden" name="animalAge" value=""> 
-						<input type="hidden" name="animalColor" value=""> 
-						<input type="hidden" name="animalTnr" value=""> 
-						<input type="hidden" name="animalCharacter" value=""> 
-						<input type="hidden" name="animalWeight" value="">
-						<input type="hidden" name="animalCondition" value="">
-						<input type="hidden" name="animalFeature" value="">
+						<input type="hidden" name="animalAge" value="${ animal.animalAge }"> 
+						<input type="hidden" name="animalColor" value="${ animal.animalColor }"> 
+						<input type="hidden" name="animalTnr" value="${ animalanimalTnr }"> 
+						<input type="hidden" name="animalCharacter" value="${ animalanimalCharacter }"> 
+						<input type="hidden" name="animalWeight" value="${ animal.animalWeight }">
+						<input type="hidden" name="animalCondition" value="${ animal.animalCondition }">
+						<input type="hidden" name="animalFeature" value="${ animal.animalFeature }">
 						<input type="hidden" name="rescueLocation" value="${ animal.rescueLocation }">
-						<input type="hidden" name="rescueDate" value="${ animal.rescueDate }">
-						<input type="hidden" name="animalWeight" value="">
-						<input type="hidden" name="animalBoardNo" value="">
-						<input type="hidden" name="animalStatus" value=""> 
+						<input type="hidden" name="rescueDate" value="${ formatRegDate }">
+						<input type="hidden" name="animalWeight" value="${ animal.animalWeight }">
+						<input type="hidden" name="animalBoardNo" value="${ animal.animalBoardNo }">
+						<input type="hidden" name="animalStatus" value="${ animal.animalStatus }"> 
 					<img src="<%=request.getContextPath()%>/resources/auploadFiles/${ animal.animalFile }"  width="348" height="261" border="0/">
 					<ul>
 						<li class="full"><strong>No.</strong>${ animal.animalNo }</li>
 						<li class="full"><strong>구조일</strong> <i>
-								${ animal.rescueDate }
+								${ formatRegDate }
 						</i></li>
 						<li class="full"><strong>구조장소</strong></li>
 						<li class="full">${ animal.rescueLocation }</li>
