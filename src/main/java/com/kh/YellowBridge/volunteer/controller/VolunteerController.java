@@ -304,7 +304,6 @@ public class VolunteerController {
 		return mv;
 	}
 
-	
 	// 관리자 봉사신청 검색
 	@RequestMapping("adminApplysearch.vol")
 	public ModelAndView adminApplysearch(@RequestParam(value="page", required=false) Integer page,@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request, HttpSession session) {
