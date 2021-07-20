@@ -22,6 +22,14 @@
 	}
 	.form-group{padding-bottom: 5px;}
 	.btnDiv{padding-top:25px; float: right;}
+	#fileBtn{
+		background: #BDCC94;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 5px 5px;
+	}
 </style>
 </head>
 <body>

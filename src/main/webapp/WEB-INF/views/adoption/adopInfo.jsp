@@ -50,85 +50,21 @@
 			            <tr>
 			            	<th class="selected"><input type="checkbox" name="selected" id="allSelected">
 			                <th class="tableNo">NO.</th>
-			                <th class="tableShelter">일련번호</th>
-			                <th class="tableCo">축종</th>
-			                <th class="tableTime">진행상황</th>
-			                <th class="tableStatus">-</th>
+			                <th class="tableShelter">동물번호</th>
+			                <th class="tableCo">신청내역</th>
+			                <th class="tableStatus">상태</th>
 			            </tr>
 			        </thead>
 			        <tbody id = "listArea">
+			        	<c:forEach var="requestlist" items="${ requestlist }">
 			        	<tr>
 			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
+			        		<td class="tableNo">${requestlist.requestNo }</td>
+			        		<td class="tableShelter">${requestlist.requestAnimalNo }</td>
+			        		<td class="tableCo">${member.nickname }</td>
+			        		<td class="tableStatus" style="color:red;">${requestlist.requestState }</td>
 			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">고양이 / 페르시안</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">담당자 확인중</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
-			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
-			        		<td class="tableNo">1</td>
-			        		<td class="tableShelter">210531-1344</td>
-			        		<td class="tableCo">개 / Mix</td>
-			        		<td class="tableTime">입양완료</td>
-			        		<td class="tableStatus" style="color:red;">신청확정</td>
-			        	</tr>
+			        	</c:forEach>
 			        </tbody>
 			    </table>
 			</div>

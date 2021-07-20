@@ -48,6 +48,7 @@ public class VolunteerController {
 	@Autowired
 	private VolBoardService volBoardService;
 	
+	
 	@RequestMapping("volAdminAdList.vol")
 	public ModelAndView serviceAdminAdList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv) {
 
@@ -302,6 +303,36 @@ public class VolunteerController {
 		
 		return mv;
 	}
+
+	// 관리자 봉사신청 검색
+	@RequestMapping("adminApplysearch.vol")
+	public ModelAndView adminApplysearch(@RequestParam(value="page", required=false) Integer page,@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request, HttpSession session) {
+		
+		VolSearchCondition vsc = new VolSearchCondition();	
+		if(searchCondition.equals("title")) vsc.setTitle(searchValue);
+		else if(searchCondition.equals("writer")) vsc.setWriter(searchValue);
+		else if(searchCondition.equals("category")) vsc.setCategory(searchValue);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getAdminSearchApplyResultListCount(vsc);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<VolunteerApply> adminaplist = volBoardService.selectAdminSearchApplyResultList(vsc, pi);
+			
+		if(adminaplist != null) {
+			mv.addObject("adminaplist", adminaplist).addObject("pi", pi).addObject("searchCondition", searchCondition).addObject("searchValue", searchValue).setViewName("admin_apply_search_list");
+		} else {
+			throw new VolunteerException("게시글 검색에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
+	
 	
 	// 게시판 리스트
 	@RequestMapping("serviceBoardList.vol")
@@ -332,16 +363,26 @@ public class VolunteerController {
 	
 	// 게시판 글 상세보기
 	@RequestMapping("volBoardDetail.vol")
-	public ModelAndView serviceBoardDetail(@RequestParam("page") int page, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView serviceBoardDetail(@RequestParam("page") int page, @RequestParam("loginId") String loginId, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request, HttpSession session) {
 		VolunteerBoard volboard = volBoardService.selectVolBoard(volId);
 		VolunteerFile vFile = volBoardService.selectVolFile(volId);
 		
-		if(volboard != null) {
-			mv.addObject("page", page).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("serviceBoardDetail");
-		} else {
-			throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
+		if(loginId == null) {
+			request.setAttribute("msg", "로그인 후 이용하세요");
 		}
-		
+			
+			if(volboard != null) {
+				mv.addObject("page", page).addObject("loginId", loginId).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("serviceBoardDetail");
+			} else {
+				throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
+			}
+//		} else {
+//			if(volboard != null) {
+//				mv.addObject("page", page).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("serviceBoardDetail");
+//			} else {
+//				throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
+//			}
+//		}
 		return mv;
 	}
 	
@@ -1090,25 +1131,17 @@ public class VolunteerController {
 
 	}
 	
-	
 	//메인 게시판 리스트 불러오기 
-		@RequestMapping("serviceList.vol")
-		@ResponseBody
-		public void serviceListSelect(HttpServletResponse response) throws JsonIOException, IOException {
-			
-
-			
-			ArrayList<Volunteer> vList = volBoardService.selectvList();
-			
-
+	@RequestMapping("serviceList.vol")
+	@ResponseBody
+	public void serviceListSelect(HttpServletResponse response) throws JsonIOException, IOException {
 		
-			
-			response.setContentType("application/json; charset=UTF-8");
+		ArrayList<Volunteer> vList = volBoardService.selectvList();
 		
-			
-			new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(vList, response.getWriter());
+		response.setContentType("application/json; charset=UTF-8");
+	
+		new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(vList, response.getWriter());
 
-			
-		}
+	}
 	
 }

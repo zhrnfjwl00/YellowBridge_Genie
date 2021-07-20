@@ -51,6 +51,23 @@
 		padding: 15px;
 		text-align: center;
 	}
+	
+	#searchArea{padding-bottom:30px;}
+	
+	#searchValue{
+    	border: 1px solid lightgray;
+    	border-radius: 5px;
+    	padding: 8px 20px;
+	}
+	
+	#searchBtn{
+		background: #BDCC94;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 8px 10px;
+	}
 </style>
 </head>
 <body>
@@ -66,7 +83,18 @@
 	</div>
 	<div id="service">
 		<div id="service-list" class="service-list" align="center">
-		
+			<div id="searchArea" align="center">
+				<select id="searchCondition" name="searchCondition">
+					<option>-------</option>
+					<option value="title">제목</option>
+					<option value="category">보호소</option>
+				</select>
+				
+				<input id="searchValue" type="search">
+				<button type="button" onclick="searchBoard();" id="searchBtn">검색</button>
+			</div>
+			
+			
 			<c:forEach var="shel" items="${ volad }">
 				<div class="shelter">
 					<input type="hidden" id="shelNo" name="shelNo" value="${ shel.serviceNo }">
@@ -149,7 +177,14 @@
 				$(this).parent().css({'background' : 'none'});
 			}});
 		});
-
+   
+	// 게시글 검색
+	function searchBoard(){
+		var searchCondition = $("#searchCondition").val();
+		var searchValue = $("#searchValue").val();
+		
+		location.href="searchAdvertise.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
+	}
 	
 </script>
 </body>

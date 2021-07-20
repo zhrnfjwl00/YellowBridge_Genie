@@ -518,7 +518,6 @@
 		where SERVICE_STATUS='Y'
 	</select>
 	
-	
 	<select id="selectvList" resultMap="volAdvertiseResultSet">
 	select service_no, service_title, shelter_name, shelter_tel, shelter_info, service_content, service_status, 
        file_no, file_name, file_change
@@ -527,6 +526,44 @@
      		 	   join file_info using(service_no)
              order by service_no desc)
         where 4 >= rownum 
-        
+	</select>
+	
+	<select id="selectAdminSearchApplyResultList" parameterType="com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition" resultMap="volAppResultSet">
+		select *
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		where VOLUNTEER_YN='Y'
+		<choose>
+			<when test="title != null">
+				and SERVICE_TITLE like '%' || #{title} || '%'
+			</when>
+			<when test="writer != null">
+				and MEMBER_ID like '%' || #{writer} || '%'
+			</when>
+			<otherwise>
+				and SHELTER_NAME like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
+		order by SERVICEAPP_NO desc
+	</select>
+	
+	<select id="getAdminSearchApplyResultListCount" resultType="_int">
+		select count(*)
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		where VOLUNTEER_YN='Y'
+		<choose>
+			<when test="title != null">
+				and SERVICE_TITLE like '%' || #{title} || '%'
+			</when>
+			<when test="writer != null">
+				and MEMBER_ID like '%' || #{writer} || '%'
+			</when>
+			<otherwise>
+				and SHELTER_NAME like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
 	</select>
 </mapper>

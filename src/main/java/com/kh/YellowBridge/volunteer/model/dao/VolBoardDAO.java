@@ -280,10 +280,21 @@ public class VolBoardDAO {
 	public int getListAdvertiseCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("volunteerMapper.getListAdvertiseCount");
 	}
-	
+
+	public int getAdminSearchApplyResultListCount(SqlSessionTemplate sqlSession, VolSearchCondition vsc) {
+		return sqlSession.selectOne("volunteerMapper.getAdminSearchApplyResultListCount", vsc);
+	}
+
+	public ArrayList<VolunteerApply> selectAdminSearchApplyResultList(SqlSessionTemplate sqlSession,
+			VolSearchCondition vsc, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("volunteerMapper.selectAdminSearchApplyResultList", vsc, rowBounds);
+	}
 	
 	public ArrayList<Volunteer> selectvList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("volunteerMapper.selectvList");
 	}
-
+	
 }

@@ -331,11 +331,19 @@ public class VolBoardServiceImpl implements VolBoardService{
 	}
 
 	@Override
+	public int getAdminSearchApplyResultListCount(VolSearchCondition vsc) {
+		return VolBoardDAO.getAdminSearchApplyResultListCount(sqlSession, vsc);
+	}
+
+	@Override
+	public ArrayList<VolunteerApply> selectAdminSearchApplyResultList(VolSearchCondition vsc, PageInfo pi) {
+		return VolBoardDAO.selectAdminSearchApplyResultList(sqlSession, vsc, pi);
+	}
+
+	@Override
 	public ArrayList<Volunteer> selectvList() {
 		return VolBoardDAO.selectvList(sqlSession);
 	}
-
-
 
 
 	
