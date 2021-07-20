@@ -18,12 +18,15 @@ public class AnimalInfo {
 	private int animalBoardNo;
 	private String animalStatus;
 	private String animalFile;
+	private String requestMemberNickname;
+	private String animalRequestState;
 	
 	public AnimalInfo() {}
 
 	public AnimalInfo(int animalNo, String animalType, String animalGender, int animalAge, String animalColor,
 			String animalTnr, String animalCharacter, String animalWeight, String animalCondition, String animalFeature,
-			Date rescueDate, String rescueLocation, int animalBoardNo, String animalStatus, String animalFile) {
+			Date rescueDate, String rescueLocation, int animalBoardNo, String animalStatus, String animalFile,
+			String requestMemberNickname, String animalRequestState) {
 		super();
 		this.animalNo = animalNo;
 		this.animalType = animalType;
@@ -40,6 +43,8 @@ public class AnimalInfo {
 		this.animalBoardNo = animalBoardNo;
 		this.animalStatus = animalStatus;
 		this.animalFile = animalFile;
+		this.requestMemberNickname = requestMemberNickname;
+		this.animalRequestState = animalRequestState;
 	}
 
 	public int getAnimalNo() {
@@ -162,6 +167,22 @@ public class AnimalInfo {
 		this.animalFile = animalFile;
 	}
 
+	public String getRequestMemberNickname() {
+		return requestMemberNickname;
+	}
+
+	public void setRequestMemberNickname(String requestMemberNickname) {
+		this.requestMemberNickname = requestMemberNickname;
+	}
+
+	public String getAnimalRequestState() {
+		return animalRequestState;
+	}
+
+	public void setAnimalRequestState(String animalRequestState) {
+		this.animalRequestState = animalRequestState;
+	}
+
 	@Override
 	public String toString() {
 		return "AnimalInfo [animalNo=" + animalNo + ", animalType=" + animalType + ", animalGender=" + animalGender
@@ -169,11 +190,11 @@ public class AnimalInfo {
 				+ ", animalCharacter=" + animalCharacter + ", animalWeight=" + animalWeight + ", animalCondition="
 				+ animalCondition + ", animalFeature=" + animalFeature + ", rescueDate=" + rescueDate
 				+ ", rescueLocation=" + rescueLocation + ", animalBoardNo=" + animalBoardNo + ", animalStatus="
-				+ animalStatus + ", animalFile=" + animalFile + "]";
+				+ animalStatus + ", animalFile=" + animalFile + ", requestMemberNickname=" + requestMemberNickname
+				+ ", animalRequestState=" + animalRequestState + "]";
 	}
-	
-	
 
 
+	
 
 }
