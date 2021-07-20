@@ -11,7 +11,7 @@
 		<h1>Error</h1>
 		<h2 style="color:red;">${ msg }</h2>
 		<h2 style="color:red;">${ requestScope['javax.servlet.error.message'] }</h2>
-		<a href="../../../index.jsp">메인으로</a>
+		<a href="<%= request.getContextPath() %>">메인으로</a>
 	</div>
 </body>
 </html>
