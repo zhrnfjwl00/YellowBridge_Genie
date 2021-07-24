@@ -154,6 +154,19 @@ public class AdoptionDAO {
 		
 	}
 
+	public AdoptionReply selectAdopReply(SqlSessionTemplate sqlSession, int rId) {
+		return sqlSession.selectOne("adoptionMapper.selectAdopReply", rId);
+	}
+
+	public int updateAdopReply(SqlSessionTemplate sqlSession, AdoptionReply adopr) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("adoptionMapper.updateAdopReply", adopr);
+	}
+
+	public int adoptionrDelete(SqlSessionTemplate sqlSession, int rId) {
+		return sqlSession.update("adoptionMapper.adoptionrDelete", rId);
+	}
+
 
 	
 }

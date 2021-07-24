@@ -40,6 +40,9 @@ import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.vo.Member;
+import com.kh.YellowBridge.volunteer.model.exception.VolunteerException;
+import com.kh.YellowBridge.volunteer.model.vo.VolReply;
+import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Controller
 public class AdoptionController {
@@ -303,18 +306,23 @@ public class AdoptionController {
 
 	// 입양 일지 상세보기
 	@RequestMapping("adoptionRecodeDetail.ado")
-	public String adoptionRecodeDetail(@RequestParam("page") int page, @RequestParam("adopId") int adopId,
-			Model model) {
-
+	public ModelAndView adoptionRecodeDetail(@RequestParam("page") int page,  @RequestParam(value="loginId", required = false) String loginId, @RequestParam("adopId") int adopId, ModelAndView mv, HttpServletRequest request, HttpSession session) {
 		AdoptionBoard adopboard = aService.selectAdopBoard(adopId);
 		AdoptionFile af = aService.selectAdopFile(adopId);
 
+		//비로그인시 오류문구 출력
+//		if(loginId == null) {
+//			request.setAttribute("msg", "로그인 후 이용하세요");
+//		}
+		
+		
 		if (adopboard != null) {
-			model.addAttribute("page", page).addAttribute("adopboard", adopboard).addAttribute("af", af);
-			return "adoptionRecodeDetail";
+			mv.addObject("page", page).addObject("loginId", loginId).addObject("adopboard", adopboard).addObject("af", af).setViewName("adoptionRecodeDetail");
 		} else {
 			throw new AdoptionException("입양일지 상세보기에 실패하였습니다.");
 		}
+		
+		return mv;
 	}
 
 	// 입양 일지 등록폼 이동
@@ -463,9 +471,8 @@ public class AdoptionController {
 	public String addReply(@ModelAttribute AdoptionReply r, HttpSession session) {
 		// String을 반환하니까 @ResponseBody도 필요
 
-		// session에 저장된 userId를 writer에 저장
-		String rWriter = ((Member) session.getAttribute("loginUser")).getNickname();
-		// vo에 writer를 세팅
+		String rWriter = ((Member) session.getAttribute("loginUser")).getId();
+		
 		r.setrWriter(rWriter);
 
 		int result = aService.insertReply(r);
@@ -476,6 +483,55 @@ public class AdoptionController {
 			throw new AdoptionException("댓글 등록을 실패하였습니다.");
 		}
 	}
+	
+	
+	// 입양일지_댓글 수정 폼 
+	@RequestMapping("adoprUpdateForm.ado")
+	public ModelAndView adoprUpdateForm(@RequestParam("page") int page, @RequestParam("rId") int rId, @RequestParam("adopId") int adopId, ModelAndView mv, HttpServletRequest request){
+		AdoptionBoard aBoard = aService.selectAdopBoard(adopId);
+		AdoptionReply ar = aService.selectAdopReply(rId);
+		
+		if(aBoard != null) {
+			mv.addObject("page", page).addObject("aBoard", aBoard).addObject("ar", ar).setViewName("adoptionRecodeDetail_update_reply");
+		} else {
+			throw new AdoptionException("댓글 수정에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
+	// 입양일지_댓글 수정
+		@RequestMapping(value="adoprUpdate.ado")
+		@ResponseBody
+		public String adoprUpdate(@ModelAttribute AdoptionReply adopr, HttpServletRequest request, Model model) {
+			System.out.println("수정할 reply : " + adopr);
+//			int result = aService.updateAdopReply(adopr);
+//			System.out.println("댓글 수정 결과 : " + result);
+//			
+//			if(result > 0) {
+//				return "success";
+//			} else {
+//				throw new AdoptionException("댓글 수정에 실패했습니다.");
+//			}
+			
+			return "";
+		}
+	
+		// 입양일지_댓글 삭제
+		@RequestMapping(value="adoprDelete.ado")
+		public String adoptionrDelete(@RequestParam("rId") int rId, @RequestParam("adopId") int adopId, @RequestParam("page") int page){
+			System.out.println(rId);
+			
+			int result = aService.adoptionrDelete(rId);
+			
+			if(result > 0) {
+//				return "success";
+				return "redirect:adoptionRecodeDetail.ado?adopId=" + adopId + "&page=" + page;
+			} else {
+				throw new AdoptionException("댓글 삭제에 실패하였습니다.");
+			}
+		}
+	
+	
 
 	// 댓글 리스트 노출
 	@RequestMapping("adoprList.ado")

@@ -62,4 +62,14 @@ public interface AdoptionService {
 
 	ArrayList<AnimalInfo> admin_selectAnimalList(PageInfo pi);
 
+	// 댓글 수정
+	AdoptionReply selectAdopReply(int rId);
+
+	int updateAdopReply(AdoptionReply adopr);
+
+	int adoptionrDelete(int rId);
+
+
+
+
 }

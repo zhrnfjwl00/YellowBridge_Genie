@@ -14,6 +14,7 @@ import com.kh.YellowBridge.adoption.model.vo.AnimalInfo;
 import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.member.model.vo.Member;
+import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 
 @Service("aService")
 public class AdoptionServiceImpl implements AdoptionService {
@@ -169,12 +170,21 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return result;
 	}
 
-	
+	@Override
+	public AdoptionReply selectAdopReply(int rId) {
+		return aDAO.selectAdopReply(sqlSession, rId);
+	}
 
-//	@Override
-//	public void deleteAnimalNotice(String no) {
-//		return aDAO.deleteAnimalNotice(sqlSession, no);
-//		
-//	}
+	@Override
+	public int updateAdopReply(AdoptionReply adopr) {
+		return aDAO.updateAdopReply(sqlSession, adopr);
+	}
+
+	@Override
+	public int adoptionrDelete(int rId) {
+		return aDAO.adoptionrDelete(sqlSession, rId);
+	}
+
+
 
 }

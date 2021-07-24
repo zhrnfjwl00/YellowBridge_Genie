@@ -85,6 +85,7 @@
 									<c:url var="adoptionRecodeDetail" value="adoptionRecodeDetail.ado">
 										<c:param name="adopId" value="${ adop.adopId }"/>
 										<c:param name="page" value="${ pi.currentPage }"/>
+										<c:param name="loginId" value="${ loginUser.id }"/>
 									</c:url>
 									<a href="${ adoptionRecodeDetail }">${ adop.adopTitle }</a>
 								</td>

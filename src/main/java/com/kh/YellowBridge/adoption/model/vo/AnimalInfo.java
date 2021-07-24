@@ -20,13 +20,14 @@ public class AnimalInfo {
 	private String animalFile;
 	private String requestMemberNickname;
 	private String animalRequestState;
+	private String animalRequestDate;
 	
 	public AnimalInfo() {}
 
 	public AnimalInfo(int animalNo, String animalType, String animalGender, int animalAge, String animalColor,
 			String animalTnr, String animalCharacter, String animalWeight, String animalCondition, String animalFeature,
 			Date rescueDate, String rescueLocation, int animalBoardNo, String animalStatus, String animalFile,
-			String requestMemberNickname, String animalRequestState) {
+			String requestMemberNickname, String animalRequestState, String animalRequestDate) {
 		super();
 		this.animalNo = animalNo;
 		this.animalType = animalType;
@@ -45,6 +46,7 @@ public class AnimalInfo {
 		this.animalFile = animalFile;
 		this.requestMemberNickname = requestMemberNickname;
 		this.animalRequestState = animalRequestState;
+		this.animalRequestDate = animalRequestDate;
 	}
 
 	public int getAnimalNo() {
@@ -183,6 +185,14 @@ public class AnimalInfo {
 		this.animalRequestState = animalRequestState;
 	}
 
+	public String getAnimalRequestDate() {
+		return animalRequestDate;
+	}
+
+	public void setAnimalRequestDate(String animalRequestDate) {
+		this.animalRequestDate = animalRequestDate;
+	}
+
 	@Override
 	public String toString() {
 		return "AnimalInfo [animalNo=" + animalNo + ", animalType=" + animalType + ", animalGender=" + animalGender
@@ -191,10 +201,8 @@ public class AnimalInfo {
 				+ animalCondition + ", animalFeature=" + animalFeature + ", rescueDate=" + rescueDate
 				+ ", rescueLocation=" + rescueLocation + ", animalBoardNo=" + animalBoardNo + ", animalStatus="
 				+ animalStatus + ", animalFile=" + animalFile + ", requestMemberNickname=" + requestMemberNickname
-				+ ", animalRequestState=" + animalRequestState + "]";
+				+ ", animalRequestState=" + animalRequestState + ", animalRequestDate=" + animalRequestDate + "]";
 	}
 
-
-	
 
 }

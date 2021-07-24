@@ -12,12 +12,14 @@ public class AnimalRequest {
 	private int requestMemberNo;
 	private int requestAnimalNo;
 	private String requestState;
-	
-	public AnimalRequest() {}
+	private String requestDate;
+
+	public AnimalRequest() {
+	}
 
 	public AnimalRequest(int requestNo, String requestReason, String requestAgreement, String requestExperience,
 			String requestPoss, String requestQuestion1, String requestQuestion2, String requestTnrAgree,
-			int requestMemberNo, int requestAnimalNo, String requestState) {
+			int requestMemberNo, int requestAnimalNo, String requestState, String requestDate) {
 		super();
 		this.requestNo = requestNo;
 		this.requestReason = requestReason;
@@ -30,6 +32,7 @@ public class AnimalRequest {
 		this.requestMemberNo = requestMemberNo;
 		this.requestAnimalNo = requestAnimalNo;
 		this.requestState = requestState;
+		this.requestDate = requestDate;
 	}
 
 	public int getRequestNo() {
@@ -120,15 +123,21 @@ public class AnimalRequest {
 		this.requestState = requestState;
 	}
 
+	public String getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(String requestDate) {
+		this.requestDate = requestDate;
+	}
+
 	@Override
 	public String toString() {
 		return "AnimalRequest [requestNo=" + requestNo + ", requestReason=" + requestReason + ", requestAgreement="
 				+ requestAgreement + ", requestExperience=" + requestExperience + ", requestPoss=" + requestPoss
 				+ ", requestQuestion1=" + requestQuestion1 + ", requestQuestion2=" + requestQuestion2
 				+ ", requestTnrAgree=" + requestTnrAgree + ", requestMemberNo=" + requestMemberNo + ", requestAnimalNo="
-				+ requestAnimalNo + ", requestState=" + requestState + "]";
+				+ requestAnimalNo + ", requestState=" + requestState + ", requestDate=" + requestDate + "]";
 	}
-
-	
 
 }

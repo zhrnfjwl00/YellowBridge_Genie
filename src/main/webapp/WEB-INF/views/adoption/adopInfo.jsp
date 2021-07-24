@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
-<title>게시판 리스트 출력</title>
+<title>입양신청조회</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,11 +23,11 @@
 		letter-spacing: -1px;
 	}
 	
-	.selected{width:5%;}
 	.tableNo{width: 5%;}
 	.tableShelter{width: 20%;}
 	.tableCo{width:40%;}
 	.tableTime{width:15%;}
+	.tableDate{width:15%;}
 	.tableStatus{width:15%;}
 	
 	#listArea{padding: 5px;}
@@ -48,20 +48,20 @@
 				<table id="serviceApplyBoardTable" class="display" style="width:100%">
 			        <thead>
 			            <tr>
-			            	<th class="selected"><input type="checkbox" name="selected" id="allSelected">
 			                <th class="tableNo">NO.</th>
 			                <th class="tableShelter">동물번호</th>
 			                <th class="tableCo">신청내역</th>
+			                <th class="tableDate">신청일</th>
 			                <th class="tableStatus">상태</th>
 			            </tr>
 			        </thead>
 			        <tbody id = "listArea">
 			        	<c:forEach var="requestlist" items="${ requestlist }">
 			        	<tr>
-			            	<td class="selected"><input type="checkbox" name="selected" id="oneSelected"></td>
 			        		<td class="tableNo">${requestlist.requestNo }</td>
 			        		<td class="tableShelter">${requestlist.requestAnimalNo }</td>
 			        		<td class="tableCo">${member.nickname }</td>
+			        		<td class="tableCo">${requestlist.requestDate }</td>
 			        		<td class="tableStatus" style="color:red;">${requestlist.requestState }</td>
 			        	</tr>
 			        	</c:forEach>

@@ -28,12 +28,13 @@
 		letter-spacing: -1px;
 	}
 	
-	.tableCheck{width: 10%;}
+	.tableCheck{width: 5%;}
 	.tableNo{width: 10%;}
-	.tableTitle{width: 35%;}
-	.tableWriter{width: 20%;}
-	.tableDate{width: 25%;}
-	.tableCount{width: 5%;}
+	.tableTitle{width: 25%;}
+	.tableRescueDate{width: 20%;}
+	.tableRequestMember{width: 25%;}
+	.tablerequestDate{width: 10%;}
+	.tableState{width: 10%;}
 	#searchArea{padding-bottom:25px;}
 	.btnDiv{padding-top:25px; float: right;}
 </style>
@@ -66,9 +67,10 @@
 								<th class="tableCheck">선택</th>
 								<th class="tableNo">NO.</th>
 								<th class="tableTitle">동물명</th>
-								<th class="tableWriter">구조일</th>
-								<th class="tableDate">입양신청자</th>
-								<th class="tableCount">입양상태</th>
+								<th class="tableRescueDate">구조일</th>
+								<th class="tableRequestMember">입양신청자</th>
+								<th class="tablerequestDate">입양신청일</th>
+								<th class="tableState">입양상태</th>
 							</tr>
 						</thead>
 						<tbody id="listArea">
@@ -81,6 +83,7 @@
 									<td align="center" class="tableTitle">${ animal.animalType }</td>
 									<td align="center" class="tableWriter">${ formatRegDate }</td>
 									<td align="center" class="tableDate">${ animal.requestMemberNickname }</td>
+									<td align="center" class="tableDate">${ animal.animalRequestDate }</td>
 									<td align="center" class="adopView">${ animal.animalRequestState }</td>
 								</tr>
 							</c:forEach>
