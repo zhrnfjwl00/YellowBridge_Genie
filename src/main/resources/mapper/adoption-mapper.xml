@@ -109,19 +109,39 @@
 	<!-- 댓글 추가 -->
 	<insert id="insertReply">
 		insert into comments
-		values(seq_commno.nextval,
-		#{rContent}, sysdate, default, #{rWriterNo}, #{refBid}, #{rWriter})
-	</insert>
+		values(SEQ_COMMNO.nextval, #{rContent}, default, default, null, #{refBid}, #{rWriter})	</insert>
 
+	<!-- 댓글 리스트 노출 -->
 	<select id="selectReplyList" parameterType="_int"
 		resultMap="ReplyResultSet">
 		select *
 		from COMMENTS
-		where COMMETS_STATUS='Y' and
-		BOARD_NO=#{adopId}
+			left join member on (MEMBER_ID = COMMETS_WRITER)
+		where COMMETS_STATUS='Y' and BOARD_NO=#{adopId}
 		order by COMMENTS_NO desc
 	</select>
-
+	
+	<!-- 댓글 수정 -->
+		<select id="selectAdopReply" parameterType="_int" resultMap="ReplyResultSet">
+		select *
+		from COMMENTS
+			left join member on (MEMBER_ID = COMMETS_WRITER)
+		where COMMETS_STATUS='Y' and COMMENTS_NO=#{adoprId}
+	</select> 
+	
+	<update id="updateAdopReply">
+		update COMMENTS
+		set COMMETS_COTENT=#{adoprContent}
+		where COMMENTS_NO=#{adoprId}
+	</update>
+	
+	<update id="adoptionrDelete">
+		update COMMENTS
+		set COMMETS_STATUS='N'
+		where COMMENTS_NO=#{rId}
+        
+	</update>
+	
 	<resultMap
 		type="com.kh.YellowBridge.adoption.model.vo.AdoptionReply"
 		id="ReplyResultSet">
@@ -130,9 +150,13 @@
 		<result property="refBid" column="BOARD_NO" />
 		<result property="rWriter" column="COMMETS_WRITER" />
 		<result property="rWriterNo" column="MEMBER_NO" />
+		<result property="rNickname" column="MEMBER_NICKNAME" />
 		<result property="rCreateDate" column="COMMETS_DATE" />
 		<result property="rStatus" column="COMMETS_STATUS" />
 	</resultMap>
+	
+	
+	
 
 
 
@@ -167,9 +191,7 @@
 	</select>
 
 
-	<resultMap
-		type="com.kh.YellowBridge.adoption.model.vo.AnimalInfo"
-		id="AnimalListResultSet">
+	<resultMap type="com.kh.YellowBridge.adoption.model.vo.AnimalInfo" id="AnimalListResultSet">
 		<id property="animalNo" column="ANIMAL_NO" />
 		<result property="animalType" column="ANIMAL_TYPE" />
 		<result property="animalGender" column="ANIMAL_GENDER" />
@@ -185,6 +207,9 @@
 		<result property="animalBoardNo" column="BOARD_NO" />
 		<result property="animalStatus" column="ANIMAL_STATUS" />
 		<result property="animalFile" column="FILE_CHANGE" />
+		<result property="requestMemberNickname" column="MEMBER_NICKNAME" />
+		<result property="animalRequestState" column="REQUEST_STATE" />
+		<result property="animalRequestDate" column="REQUEST_Date" />
 	</resultMap>
 
 	<!-- 입양공고 등록 -->
@@ -233,8 +258,23 @@
 		order by animal_no desc)
 		where 4 >= rownum
 	</select>
-
-
+	
+	<!-- 관리자 입양공고관리 리스트 -->
+	<select id="admin_selectAnimalList" resultMap="AnimalListResultSet">
+		SELECT ANIMAL_NO, ANIMAL_TYPE, RESCUE_DATE, REQUEST_STATE, ANIMAL_REQUEST_NO, MEMBER_NO, MEMBER_NICKNAME, REQUEST_DATE
+		FROM ANIMAL_INFO
+		JOIN ANIMAL_REQUEST USING (ANIMAL_NO)
+        JOIN MEMBER USING (MEMBER_NO)
+		ORDER BY ANIMAL_NO DESC
+	</select>
+	
+	
+	<!-- 관리자 입양 공고 삭제 -->
+	<update id="deleteAnimalNotice">
+		update animal_info
+		set animal_STATUS='N'
+		where animal_no = #{ animalNo }
+	</update>
 
 	<!-- 입양신청서 -->
 	<insert id="insertAppForm">
@@ -242,13 +282,22 @@
 		values(SEQ_RNO.nextval,
 		#{requestReason}, #{requestAgreement}, #{requestExperience},
 		#{requestPoss}, #{requestQuestion1}, #{requestQuestion2},
-		#{requestTnrAgree}, #{requestMemberNo}, #{requestAnimalNo}, DEFAULT)
+		#{requestTnrAgree}, #{requestMemberNo}, #{requestAnimalNo}, DEFAULT, SYSDATE)
 	</insert>
+	
+	<!-- 입양신청과 동시에 신청된 공고 Status변경 -->
+	<update id="updateAnimalStatus">
+		update ANIMAL_INFO
+		set ANIMAL_STATUS='Y'
+		where ANIMAL_NO=#{animalNo}
+	
+	</update>
+	
 
 	<select id="selectAppForm" resultMap="adopAppResultSet">
 		select *
 		from (select ANIMAL_REQUEST_NO, ANIMAL_NO, ANIMAL_TYPE, MEMBER_NO,
-		MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_EMAIL
+		MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_EMAIL, REQUEST_DATE
 		from ANIMAL_REQUEST
 		left join member using (MEMBER_NO)
 		left join ANIMAL_INFO using (ANIMAL_NO)
@@ -258,25 +307,23 @@
 
 	</select>
 
+	<!-- 사용자_입양신청조회 -->
 	<select id="selectRequestList" resultMap="adopAppResultSet">
 		select *
 		from (select ANIMAL_REQUEST_NO, ANIMAL_NO, ANIMAL_TYPE, MEMBER_NO,
-		MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, REQUEST_STATE
+		MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, REQUEST_STATE, REQUEST_DATE
 		from ANIMAL_REQUEST
 		left join member using (MEMBER_NO)
 		left join ANIMAL_INFO using (ANIMAL_NO)
-		where ANIMAL_STATUS='Y' and member_no=#{requestMemberNo}
+		where member_no=#{requestMemberNo}
 		order by ANIMAL_REQUEST_NO desc)
 	</select>
 
-	<resultMap
-		type="com.kh.YellowBridge.adoption.model.vo.AnimalRequest"
-		id="adopAppResultSet">
+	<resultMap type="com.kh.YellowBridge.adoption.model.vo.AnimalRequest" id="adopAppResultSet">
 		<id property="requestNo" column="ANIMAL_REQUEST_NO" />
 		<result property="requestReason" column="REQUEST_REASON" />
 		<result property="requestAgreement" column="REQUEST_AGREEMENT" />
-		<result property="requestExperience"
-			column="REQUEST_EXPERIENCE" />
+		<result property="requestExperience" column="REQUEST_EXPERIENCE" />
 		<result property="requestPoss" column="REQUEST_POSS" />
 		<result property="requestQuestion1" column="REQUEST_QUESTION_1" />
 		<result property="requestQuestion2" column="REQUEST_QUESTION_2" />
@@ -284,6 +331,7 @@
 		<result property="requestMemberNo" column="MEMBER_NO" />
 		<result property="requestAnimalNo" column="ANIMAL_NO" />
 		<result property="requestState" column="REQUEST_STATE" />
+		<result property="requestDate" column="REQUEST_DATE" />
 	</resultMap>
 
 	<select id="getRequestListCount" resultType="_int">

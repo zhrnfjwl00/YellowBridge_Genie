@@ -13,7 +13,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>게시판</title>
 <style type="text/css">
-	#rinsertBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
+	#rupdateBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
 	#listBtn{float: center;}
 	
 	.serviceBoardtext{
@@ -96,95 +96,60 @@
 		<br>
 		
 		<!-- 댓글 -->
-		<div id="reply">
-			<ol class="replyList">
-				<c:forEach items="${replyList}" var="replyList">
-					<li>
-						<p>
-							작성자 : ${replyList.writer}<br/>
-							작성 날짜 :  <fmt:formatDate value="${replyList.regdate}" pattern="yyyy-MM-dd" />
-						</p>
-					  
-						<p>${replyList.content}</p>
-						
-						<div>
-							<button type="button" class="replyUpdateBtn btn btn-warning" data-rno="${replyList.rno}">수정</button>
-							<button type="button" class="replyDeleteBtn btn btn-danger" data-rno="${replyList.rno}">삭제</button>
-						</div>
-					</li>
-				</c:forEach>   
-			</ol>
-		</div>
+		<table class="replyTable">
+			<tr>
+				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control" value="${ar.rContent}"></td>
+						<td><button id="rupdateBtn" class="replyWriteBtn btn btn-success rupdateBtn">수정</button></td>
+			</tr>
+		</table>
 		
-		<form name="replyForm" method="post" class="form-horizontal">
-			<input type="hidden" id="bno" name="bno" value="${read.bno}" />
-			<input type="hidden" id="page" name="page" value="${scri.page}"> 
-			<input type="hidden" id="perPageNum" name="perPageNum" value="${scri.perPageNum}"> 
-			<input type="hidden" id="searchType" name="searchType" value="${scri.searchType}"> 
-			<input type="hidden" id="keyword" name="keyword" value="${scri.keyword}"> 
-				
-			<hr>
-					
-			<div class="form-group">
-				<table>
-					<tr>
-						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
-					</tr>
-					<tr>
-							<c:if test="${ !empty sessionScope.loginUser }">
-						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
-						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
-						</c:if>
-					</tr>
-				</table>
+		<table class="replyTable" id="rtb">
+			<thead>
+				<tr>
+					<td colspan="2"><b id="rCount"></b></td>
+				</tr>
+			</thead>
+		</table>
+		</section>
+		</div>
 						
-						
-				<table class="replyTable" id="rtb">
-					<thead>
-						<tr><td colspan="2"><b id="rCount"></b></td></tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-			</div>
-			
-		</form>
-	</section>
 	<c:import url="../common/footer.jsp"/>
-</div>
-
 <script>
 	$(function(){
 		
-		getReplyList(); // 시작하자마자 댓글이 보이게 하기 위해 설정 
-		
-		setInterval(function(){  // 다른사람이 봤을때도 계속 갱신 하기 위해 설정, 10초마다갱신
+/* 		getReplyList(); // 시작하자마자 댓글이 보이게 하기 위해 설정 
+ */		
+	/* 	setInterval(function(){  // 다른사람이 봤을때도 계속 갱신 하기 위해 설정, 10초마다갱신
 			getReplyList();
 		}, 1000);
-		
-		$('#rinsertBtn').on('click', function(){
+		 */
+		$('#rupdateBtn').on("click", function(){
 			var rContent = $('#rContent').val();
-			var refBid = ${adopboard.adopId};
+			var refBid = adopId;
+			var rId = ${ar.rId};
+			var page = ${page};
 			
 			$.ajax({
-				url: 'adopaddReply.ado',
-				data: {rContent:rContent, refBid:refBid},
+				url: 'adoprUpdate.ado',
+				data: {rContent:rContent, refBid:refBid, rId:rId},
 				success: function(data){
 					console.log(data);
 					
 					if(data == 'success'){
 						$('#rContent').val('');
+						location.href='<%=request.getContextPath()%>/adoptionRecodeDetail.ado?adopId=' + refBid + '&page=' + page;
 						getReplyList(); // 댓글 리스트 불러오기
 					}
 				}
 			});
 		});
 	});
+	
 	</script>
 	
 	<script>
-	function getReplyList(){
+/* 	function getReplyList(){
 		var adopId = ${adopboard.adopId};
-		var id = $('#id').val();
 		
 		$.ajax({
 			url: 'adoprList.ado',
@@ -196,7 +161,6 @@
 				$tableBody.html('');
 				
 				$('#rCount').text('댓글(' + data.length + ')');
-				// 댓글 몇개 들어가있는지 확인 
 				if(data.length > 0){
 					var $tr = $('<tr>');
 					var $a = $('<a>');
@@ -215,21 +179,14 @@
 					
 					for(var i in data){
 						var $tr = $('<tr>');
-						var $rWriterNickname = $('<td>').text(data[i].rNickname);
+						var $rWriter = $('<td>').text(data[i].rNickname);
 						var $rContent = $('<td colspan=7>').text(data[i].rContent);
 						var $rCreateDate = $('<td>').text(data[i].rCreateDate);
 						var page = ${page};
-						var $writerId = data[i].rWriter;
-						var $userId = id;
-						if( $userId.trim() == $writerId.trim() ){
-							var $rUpdateBtn = $('<td width=50><a href="adoprUpdateForm.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">수정</a></td>');						
-							var $rdeleteBtn = $('<td width=50><a href="adoprDelete.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">삭제</a></td>');						
-						} else {
-							var $rUpdateBtn = $('<td>').text('수정');
-							var $rdeleteBtn = $('<td>').text('삭제');
-						}
+						var $rUpdateBtn = $('<td width=50><a href="adoprUpdateForm.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">수정</a></td>');						
+						var $rdeleteBtn = $('<td width=50><a href="adoprDelete.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">삭제</a></td>');						
 						
-						$tr.append($rWriterNickname);
+						$tr.append($rWriter);
 						$tr.append($rContent);
 						$tr.append($rCreateDate);
 						$tr.append($rUpdateBtn);
@@ -238,14 +195,14 @@
 					}
 				} else {
 					var $tr = $('<tr>');
-					var $rContent = $('<td colspan=3>').text('등록된 댓글이 없습니다.');
+					var $rContent = $('<td colspan=10>').text('등록된 댓글이 없습니다.');
 					
 					$tr.append($rContent);
 					$tableBody.append($tr);
 				}
 			}
 		});
-	}
+	} */
 </script>
 
 	
@@ -289,7 +246,7 @@
 			formObj.submit();
 		});
 		
-		// 댓글 수정 View
+		//댓글 수정 View
 		$(".replyUpdateBtn").on("click", function(){
 			location.href = "/board/replyUpdateView?bno=${read.bno}"
 							+ "&page=${scri.page}"

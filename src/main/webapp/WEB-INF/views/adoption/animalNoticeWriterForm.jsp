@@ -36,7 +36,7 @@
 								<td><input type="text" id="animalType" name="animalType" value=""></td>
 								<th scope="row"><img src="<%=request.getContextPath()%>/resources/images/check.png" alt="필수항목표시"><span>성별</span></th>
 								<td colspan="3">
-									<input type="radio" class="animalGender" name="animalGender" id="animalGender1" value="F" checked><label for="animalGender1"> 암컷</label>
+									<input type="radio" class="animalGender" name="animalGender" id="animalGender1" value="G" checked><label for="animalGender1"> 암컷</label>
 									<input type="radio" class="animalGender" name="animalGender" id="animalGender2" value="M"><label for="animalGender2"> 수컷</label></td>
 							</tr>
 							<tr>

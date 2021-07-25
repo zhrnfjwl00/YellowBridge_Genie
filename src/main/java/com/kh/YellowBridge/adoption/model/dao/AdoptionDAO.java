@@ -70,12 +70,20 @@ public class AdoptionDAO {
 		return sqlSession.selectOne("adoptionMapper.getAnimalListCount");
 	}
 
-	// 입양공고 게시물 리스트
+	// 사용자_입양공고 게시물 리스트
 	public ArrayList<AnimalInfo> selectAnimalList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
 		return (ArrayList) sqlSession.selectList("adoptionMapper.selectAnimalList", null, rowBounds);
+	}
+	
+	// 관리자_입양공고 게시물 리스트
+	public ArrayList<AnimalInfo> admin_selectAnimalList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adoptionMapper.admin_selectAnimalList", null, rowBounds);
 	}
 
 	// 입양 공고 등록
@@ -132,4 +140,33 @@ public class AdoptionDAO {
 	public ArrayList<AnimalInfo> selectAlist(SqlSessionTemplate sqlSession) {
 		return (ArrayList) sqlSession.selectList("adoptionMapper.selectAlist");
 	}
+//
+//	public Object deleteAnimalNotice(SqlSessionTemplate sqlSession, String no) {
+//		return sqlSession.update("adoptionMapper.deleteAnimalNotice", no);
+//	}
+
+	public int deleteAnimalNotice(SqlSessionTemplate sqlSession, Integer animalNo) {
+		return sqlSession.update("adoptionMapper.deleteAnimalNotice", animalNo);
+	}
+
+	public int updateAnimalStatus(SqlSessionTemplate sqlSession, int animalNo) {
+		return sqlSession.update("adoptionMapper.deleteAnimalNotice", animalNo);
+		
+	}
+
+	public AdoptionReply selectAdopReply(SqlSessionTemplate sqlSession, int rId) {
+		return sqlSession.selectOne("adoptionMapper.selectAdopReply", rId);
+	}
+
+	public int updateAdopReply(SqlSessionTemplate sqlSession, AdoptionReply adopr) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("adoptionMapper.updateAdopReply", adopr);
+	}
+
+	public int adoptionrDelete(SqlSessionTemplate sqlSession, int rId) {
+		return sqlSession.update("adoptionMapper.adoptionrDelete", rId);
+	}
+
+
+	
 }

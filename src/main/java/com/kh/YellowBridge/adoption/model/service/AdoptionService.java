@@ -43,7 +43,7 @@ public interface AdoptionService {
 	AnimalInfo selectApplyAnimal(int animalNo);
 
 	// 입양 신청서 작성
-	int insertAppForm(AnimalRequest ar);
+	int insertAppForm(AnimalRequest ar, int animalNo);
 
 	AnimalRequest selectAppForm(int memberNo);
 
@@ -55,5 +55,21 @@ public interface AdoptionService {
 	Member selectMember(int memberNo);
 
 	ArrayList<AnimalInfo> selectAList();
+//
+//	void deleteAnimalNotice(String no);
+
+	int deleteAnimalNotice(Integer animalNo);
+
+	ArrayList<AnimalInfo> admin_selectAnimalList(PageInfo pi);
+
+	// 댓글 수정
+	AdoptionReply selectAdopReply(int rId);
+
+	int updateAdopReply(AdoptionReply adopr);
+
+	int adoptionrDelete(int rId);
+
+
+
 
 }
