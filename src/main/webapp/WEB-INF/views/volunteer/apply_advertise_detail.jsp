@@ -8,11 +8,20 @@
 <meta charset="UTF-8">
 <title>봉사 신청 등록</title>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c928d855be38f3adf0df68edd3fca4ae"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>
 <style>
 	.servicedetail{
 		width: 65%;
 		margin: 0px auto;
 		padding-top: 30px;
+	}
+	
+	#map{
+		width: 100%;
+		margin: 0px auto;
 	}
 	
 	.apply-top{
@@ -86,11 +95,37 @@
 		margin-top: 150px;
 		letter-spacing: -1px;
 	}
+	
+	.info1-table tr td{padding-bottom: 4px;}
+	
+	#goMain{
+		background: lightgray;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 15px 15px;
+	}
+	
+	.buttonDiv{padding-top:100px;}
+	
+	.tableTitle{width: 40%;}
+	.tableWriter{width: 10%;}
+	.tableDate{width: 15%;}
+	.tableCount{width: 10%;}
+	
+	#mapDiv{padding: 30px; width: 65%; margin: 0px auto;}
+	
+	.map_wrap {position:relative;width:100%;height:350px;}
+    .title {font-weight:bold;display:block;}
+    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 </style>
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="servicedetail">
-	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
@@ -99,30 +134,60 @@
 	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volad.serviceNo }" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
-				<img src="<%=request.getContextPath()%>${ volad.filePath }${ volad.fileName }">
+				<img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ volad.changeName }">
 			</div>
 			<div id="apply-info1">
-				<table>
+				<table class="info1-table">
 					<tr>
-						<td><b>${ volad.serviceTitle }</b></td>
+						<td>
+						<input type="hidden" id="shelter" value="${ volad.cateNo }">
+						<input type="hidden" id="page" name="page" value="${page}"> 
+						<button type="button" class="update_btn btn btn-warning" id="updateBtn">수정</button>
+						<button type="button" class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
+						</td>
 					</tr>
 					<tr>
-						<td>10,000원</td>
+						<td style="font-size: 20px;"><b>${ volad.serviceTitle }</b></td>
+					</tr>
+					<tr>
+						<td><b>참가비 : </b>10,000원</td>
 					</tr>
 						<td><div style="border-top:2px solid black; width:100%; margin: 20px 0;"></div></td>
 					<tr>
-						<td>${ volad.shelterInfo }</td>
+						<td><b>보호소 : </b>${ volad.shelterName }</td>
 					</tr>
 					<tr>
-						<td>${ volad.shelterTel }</td>
+						<td><b>보호소 정보 : </b>${ volad.shelterInfo }</td>
 					</tr>
+					<tr>
+						<td><b>보호소 연락처 : </b>${ volad.shelterTel }</td>
+					</tr>
+					
+					<c:if test="${ !empty sessionScope.loginUser }">
 					<tr>
 						<td>
-							<div style="text-align: center;">
-							<button id="applybtn" onclick="goApply();">봉사신청</button>
+							<c:if test="${ volad.serviceStatus eq 'Y' }">
+								<div style="text-align: center;">
+								<button id="applybtn" onclick="goApply();">봉사신청</button>
+								</div>
+							</c:if>
+							<c:if test="${ volad.serviceStatus eq 'P' }">
+								<div style="text-align: center; padding-top: 15px; color: navy; font-size: 18px;" >
+								<b>이미 신청이 마감된 봉사입니다.</b>
+								</div>
+							</c:if>
+						</td>
+					</tr>
+					</c:if>
+					<c:if test="${ empty sessionScope.loginUser }">
+					<tr>
+						<td>
+							<div style="text-align: center; padding-top: 15px; color: red; font-size: 18px;" >
+							<b>봉사 신청은 로그인 후 가능합니다.</b>
 							</div>
 						</td>
 					</tr>
+					</c:if>
 				</table>
 			</div>
 		</div>
@@ -130,21 +195,19 @@
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				<% pageContext.setAttribute("newLineChar", "\r\n"); %>
-				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent"><c:out value="${fn:replace(volad.serviceContent, newLineChar, '<br>')}" /></textarea>
+				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent">${ volad.serviceContent }</textarea>
 				<%-- ${fn:replace(volad.serviceContent, newLineChar, "<br>")} --%>
 			</div>
 		</div>
 		
+		<div id="mapDiv"> 
+		<label style="font-size: 20px;"><b>위치안내</b></label>
+			<div id="map" style="width:600px; height:400px;"></div>
+		</div>
+		
+		
 		
 		<br>
-		<div class="container">
-		<table class="replyTable">
-			<tr>
-				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
-				<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
-			</tr>
-		</table>
 		
 		<table class="replyTable" id="rtb">
 			<thead>
@@ -154,9 +217,12 @@
 			</thead>
 			<tbody></tbody>
 		</table>
+			
+		<div align="center" class="buttonDiv">
+			<input type="button" onclick="location.href='<%= request.getContextPath() %>/serviceapply.vol'" id="goMain" value="메인으로">
 		</div>
 </div>
-	<c:import url="../common/footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 
 	<script>
 	function readImage(input) {
@@ -197,79 +263,147 @@
   </script>
   
   <script>
-	$(function(){
+	$("#deleteBtn").on("click", function(){
+		var serviceNo = ${ volad.serviceNo };
 		
-		getReplyList();
-		
-		setInterval(function(){
-			getReplyList();
-		}, 1000);
-		
-		$('#rinsertBtn').on('click', function(){
-			var volrContent = $('#rContent').val();
-			var volrefBid = ${ volad.serviceNo };
-			
-			$.ajax({
-				url: 'voladdReply.vol',
-				data: {volrContent:volrContent, volrefBid:volrefBid},
-				success: function(data){
-					console.log(data);
-					
-					if(data == 'success'){
-						$('#rContent').val('');
-						getReplyList(); // 댓글 리스트 불러오기
-					}
-				}
-			});
-		});
-	});
+		var deleteYN = confirm("삭제하시겠습니까?");
+		if(deleteYN == true){
+			location.href = "vAdDelete.vol?serviceNo=" + serviceNo;
+		}
+	})
 	
-	function getReplyList(){
-		var volId = ${ volad.serviceNo };
+	$("#updateBtn").on("click", function(){
+		var serviceNo = ${ volad.serviceNo };
+		var page = ${ page };
 		
-		$.ajax({
-			url: 'volrList.vol',
-			data: {volId:volId},
-			dataType: 'json',
-			success: function(data){
-				console.log(data);
-				var $tableBody = $('#rtb tbody');
-				$tableBody.html('');
-				
-				$('#rCount').text('후기(' + data.length + ')');
-				if(data.length > 0){
-					var $tr = $('<tr>');
-					var $trWriter = $('<th>').text('작성자');
-					var $trContent = $('<th colspan=3>').text('내용');
-					var $trCreateDate = $('<th>').text('작성일');
-					
-					$tr.append($trWriter);
-					$tr.append($trContent);
-					$tr.append($trCreateDate);
-					$tableBody.append($tr);
-					
-					for(var i in data){
-						var $tr = $('<tr>');
-						var $rWriter = $('<td>').text(data[i].volrNickname);
-						var $rContent = $('<td colspan=3>').text(data[i].volrContent);
-						var $rCreateDate = $('<td>').text(data[i].volrCreateDate);
-						
-						$tr.append($rWriter);
-						$tr.append($rContent);
-						$tr.append($rCreateDate);
-						$tableBody.append($tr);
-					}
-				} else {
-					var $tr = $('<tr>');
-					var $rContent = $('<td colspan=5>').text('등록된 후기가 없습니다.');
-					
-					$tr.append($rContent);
-					$tableBody.append($tr);
-				}
-			}
-		});
+		location.href = "adminVolUpdateForm.vol?serviceNo=" + serviceNo + "&page=" + page;
+	})
+</script>
+<script>
+	var mapContainer = document.getElementById('map');
+	var place = ${ volad.cateNo };
+	
+	if(place == 21){
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.880401, 128.701180),
+			level: 3
+		};
+	} else if (place == 22) {
+		var mapOption = {
+			center: new kakao.maps.LatLng(36.130951, 128.316779),
+			level: 3
+		};
+	} else if (place == 23) {
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.430988, 129.159204),
+			level: 3
+		};
+	} else if (place == 24) {
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.415067, 128.645838),
+			level: 3
+		};
+	} else if (place == 25) {
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.848403, 128.597092),
+			level: 3
+		};
+	} else if (place == 26) {
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.769183, 128.878759),
+			level: 3
+		};
+	} else if (place == 27) {
+		var mapOption = {
+			center: new kakao.maps.LatLng(35.612025, 128.748393),
+			level: 3
+		};
 	}
-	</script>
+	
+	var map = new kakao.maps.Map(mapContainer, mapOption);
+	
+	if(place == 21){
+		var markerPosition  = new kakao.maps.LatLng(35.880401, 128.701180); 
+		
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/rUfXbj0fB" target="_blank">' +
+	    '    <span class="title">대구 반야월 쉼터</span>' +
+	    '  </a>' +
+	    '</div>';
+	} else if (place == 22) {
+		var markerPosition  = new kakao.maps.LatLng(36.130951, 128.316779); 
+		
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/PVcf20j4M" target="_blank">' +
+	    '    <span class="title">구미 사랑 보호소</span>' +
+	    '  </a>' +
+	    '</div>';
+	} else if (place == 23) {
+		var markerPosition  = new kakao.maps.LatLng(35.430988, 129.159204); 
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/ejgxl004p" target="_blank">' +
+	    '    <span class="title">양산 사랑이네 집</span>' +
+	    '  </a>' +
+	    '</div>';
+	} else if (place == 24) {
+		var markerPosition  = new kakao.maps.LatLng(35.415067, 128.645838); 
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/mdNn2004H" target="_blank">' +
+	    '    <span class="title">경남 창녕 쉼터</span>' +
+	    '  </a>' +
+	    '</div>';
+	} else if (place == 25) {
+		var markerPosition  = new kakao.maps.LatLng(35.848386, 128.597070); 
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/v3AFljj4B" target="_blank">' +
+	    '    <span class="title">대구 앵두네 집</span>' +
+	    '  </a>' +
+	    '</div>';
+	} else if (place == 26) {
+		var markerPosition  = new kakao.maps.LatLng(35.769183, 128.878759); 
+		
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/Ux75bjjfp" target="_blank">' +
+	    '    <span class="title">경산 아이들 쉼터</span>' +
+	    '  </a>' +
+	    '</div>';
+	} else if (place == 27) {
+		var markerPosition  = new kakao.maps.LatLng(35.612025, 128.748393); 
+		
+		var content = '<div class="customoverlay">' +
+	    '  <a href="http://kko.to/Mdi0vjjfp" target="_blank">' +
+	    '    <span class="title">청도 허그안 쉼터</span>' +
+	    '  </a>' +
+	    '</div>';
+	}
 
+	// 마커를 생성합니다
+	var marker = new kakao.maps.Marker({
+	    position: markerPosition
+	});
+
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+	
+	// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+	var mapTypeControl = new kakao.maps.MapTypeControl();
+
+	// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+	// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+	// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+	var zoomControl = new kakao.maps.ZoomControl();
+	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	
+	// 커스텀 오버레이를 생성합니다
+	var customOverlay = new kakao.maps.CustomOverlay({
+	    map: map,
+	    position: markerPosition,
+	    content: content,
+	    yAnchor: 1 
+	});
+
+	</script>
 </body>
 </html>

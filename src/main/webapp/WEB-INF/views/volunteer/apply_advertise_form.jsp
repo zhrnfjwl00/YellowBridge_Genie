@@ -110,19 +110,19 @@
 	        	</tr>
 				<tr>
 	        		<th><b>봉사자 성함</b></th>
-	        		<td>강건강</td>
+	        		<td>${ loginUser.name }</td>
 	        	</tr>
 	           	<tr>
 	           		<th><b>휴대전화번호</b></th>
-	           		<td>01012345678</td>
+	           		<td>${ loginUser.phone }</td>
 	           	</tr>
 	           	<tr>
 	           		<th><b>이메일</b></th>
-	           		<td>health@gmail.com</td>
+	           		<td>${ loginUser.email }</td>
 	           	</tr>
 	           	<tr>
 	           		<th><b>봉사자 주소</b></th>
-	           		<td>서울시 강남구 역삼동</td>
+	           		<td>${ loginUser.address }</td>
 	           	</tr>
 	           	<tr>
 	           		<th><b>전달사항</b></th>
@@ -147,6 +147,7 @@
 				<input type="submit" name="applybtn" id="applybtn" value="신청하기">
 			</div>
 		</form>
+		
 	</div>
 </div>
 <c:import url="../common/footer.jsp"/>

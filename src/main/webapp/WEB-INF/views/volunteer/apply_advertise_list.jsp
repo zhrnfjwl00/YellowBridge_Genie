@@ -51,37 +51,67 @@
 		padding: 15px;
 		text-align: center;
 	}
+	
+	#searchArea{padding-bottom:30px;}
+	
+	#searchValue{
+    	border: 1px solid lightgray;
+    	border-radius: 5px;
+    	padding: 8px 20px;
+	}
+	
+	#searchBtn{
+		background: #BDCC94;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 8px 10px;
+	}
 </style>
 </head>
 <body>
 
+<c:import url="../common/header.jsp"/>
 <div class="serviceapply">
-	<c:import url="../common/header.jsp"/>
-	<form action="serviceBoardWrite.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
+	<form action="volAdminAdForm.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
 	</div>
-	
+	<div class="btnDiv">
+		<button type="submit" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/volAdminAdForm.vol'">글쓰기</button>
+	</div>
 	<div id="service">
 		<div id="service-list" class="service-list" align="center">
-		
+			<div id="searchArea" align="center">
+				<select id="searchCondition" name="searchCondition">
+					<option>-------</option>
+					<option value="title">제목</option>
+					<option value="category">보호소</option>
+				</select>
+				
+				<input id="searchValue" type="search">
+				<button type="button" onclick="searchBoard();" id="searchBtn">검색</button>
+			</div>
+			
+			
 			<c:forEach var="shel" items="${ volad }">
 				<div class="shelter">
 					<input type="hidden" id="shelNo" name="shelNo" value="${ shel.serviceNo }">
 					<div id="contents">
 						<div class="shelter-img">
-							<c:url var="serviceAppDetail" value="serviceAppDetail.vol">
+							<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
 								<c:param name="volId" value="${ shel.serviceNo }"/>
 								<c:param name="page" value="${ vpi.currentPage }"/>
 							</c:url>
-							<a href="${ serviceAppDetail }"><img src="<%=request.getContextPath()%>${ shel.filePath }${ shel.fileName }" ></a>
+							<a href="${ serviceAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.fileName }" ></a>
 						</div>
 						<div id="shelter-info">
-						<c:url var="serviceAppDetail" value="serviceAppDetail.vol">
+						<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
 							<c:param name="volId" value="${ shel.serviceNo }"/>
 							<c:param name="page" value="${ vpi.currentPage }"/>
 						</c:url>
-							<a href="${ serviceAppDetail }" class="shelter-name">${ shel.serviceTitle }</a>
+							<a href="${ serviceAdDetail }" class="shelter-name">${ shel.serviceTitle }</a>
 						</div>
 						<div class="shelter-price">10,000원</div>
 					</div>
@@ -96,47 +126,58 @@
 		<td colspan="6">
 		
 			<!-- [이전] -->
-			<c:if test="${ vpi.currentPage <= 1 }">
-				[이전] &nbsp;
-			</c:if>
+			<c:if test="${ vpi.currentPage <= 1 }">[이전]</c:if>
 			<c:if test="${ vpi.currentPage > 1 }">
-				<c:url var="before" value="serviceapply.vol">
+				<c:url value="${ loc }" var="blistBack">
 					<c:param name="page" value="${ vpi.currentPage - 1 }"/>
+					<c:if test="${ searchValue ne null }">
+						<c:param name="searchCondition" value="${ searchCondition }"/>
+						<c:param name="searchValue" value="${ searchValue }"/>
+					</c:if>
 				</c:url>
-				<a href="${ before }">[이전]</a> &nbsp;
+				<a href="${ blistBack }">[이전]</a>
 			</c:if>
+			<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
 			
-			<!-- 페이지 -->
+			<!-- 숫자 -->
 			<c:forEach var="p" begin="${ vpi.startPage }" end="${ vpi.endPage }">
-				<c:if test="${ p eq vpi.currentPage }">
+				<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
+				<c:if test="${ p == vpi.currentPage }">
 					<font color="red" size="4"><b>[${ p }]</b></font>
 				</c:if>
-				
+				<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
 				<c:if test="${ p ne vpi.currentPage }">
-					<c:url var="pagination" value="serviceapply.vol">
+					<c:url var="blistCheck" value="${ loc }">
 						<c:param name="page" value="${ p }"/>
+						<c:if test="${ searchValue ne null }">
+							<c:param name="searchCondition" value="${ searchCondition }"/>
+							<c:param name="searchValue" value="${ searchValue }"/>
+						</c:if>
 					</c:url>
-					<a href="${ pagination }">${ p }</a> &nbsp;
+					<a href="${ blistCheck }">${ p }</a>
 				</c:if>
+				<!-- loc: search.bo -->
 			</c:forEach>
 			
 			<!-- [다음] -->
-			<c:if test="${ vpi.currentPage >= vpi.maxPage }">
-				[다음]
-			</c:if>
+			<c:if test="${ vpi.currentPage >= vpi.maxPage }">[다음]</c:if>
 			<c:if test="${ vpi.currentPage < vpi.maxPage }">
-				<c:url var="after" value="serviceapply.vol">
+				<c:url value="${ loc }" var="blistNext">
 					<c:param name="page" value="${ vpi.currentPage + 1 }"/>
-				</c:url> 
-				<a href="${ after }">[다음]</a>
+					<c:if test="${ searchValue ne null }">
+						<c:param name="searchCondition" value="${ searchCondition }"/>
+						<c:param name="searchValue" value="${ searchValue }"/>
+					</c:if>
+				</c:url>
+				<a href="${ blistNext }">[다음]</a>
 			</c:if>
 		</td>
 	</tr>
 	</table>
 	
 	</form>
-	<c:import url="../common/footer.jsp"/>
 </div>
+<c:import url="../common/footer.jsp"/>
 
 <script type="text/javascript">
    // 게시글 상세보기
@@ -147,7 +188,13 @@
 				$(this).parent().css({'background' : 'none'});
 			}});
 		});
-
+	// 게시글 검색
+	function searchBoard(){
+		var searchCondition = $("#searchCondition").val();
+		var searchValue = $("#searchValue").val();
+		
+		location.href="searchAdvertise.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
+	}
 	
 </script>
 </body>

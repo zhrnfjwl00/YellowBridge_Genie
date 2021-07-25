@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,43 +21,47 @@
 				<hr>
 			</div>
 				<c:forEach var="animal" items="${ animallist }">
+				<fmt:formatDate var="formatRegDate" value="${rescueDate}" pattern="yyyy.MM.dd"/>
 			<div class="list">
-				<form name="animal56162" action="" method="post" enctype="multipart/form-data">
+				<form action="animalApplyWriterForm.ado" method="post" enctype="multipart/form-data">
 				<%-- <c:foreach items="${list}" var="list" varstatus="status"> --%>
-						<input type="hidden" name="animalNo" value="animal"> 
-						<input type="hidden" name="animalType" value="56162"> 
-						<input type="hidden" name="animalAge" value="AAAA"> 
-						<input type="hidden" name="animalColor" value=""> 
-						<input type="hidden" name="animalTnr" value=""> 
-						<input type="hidden" name="animalCharacter" value=""> 
-						<input type="hidden" name="animalWeight" value="">
-						<input type="hidden" name="animalCondition" value="">
-						<input type="hidden" name="animalFeature" value="">
-						<input type="hidden" name="rescueDate" value="">
-						<input type="hidden" name="animalWeight" value="">
-						<input type="hidden" name="animalBoardNo" value="">
-						<input type="hidden" name="animalStatus" value="">
-					<img src="<%=request.getContextPath()%>/resources/images/56132_AAAA_1624501275935.jpg" width="348" height="261" border="0/">
+<%-- 						<fmt:formatDate pattern="yyyy-MM-dd" values="${ animal.rescueDate }"/> --%>
+						<input type="hidden" name="animalNo" value="${ animal.animalNo }">
+						<input type="hidden" name="animalType" value="${ animal.animalType }"> 
+						<input type="hidden" name="animalAge" value="${ animal.animalAge }"> 
+						<input type="hidden" name="animalColor" value="${ animal.animalColor }"> 
+						<input type="hidden" name="animalTnr" value="${ animalanimalTnr }"> 
+						<input type="hidden" name="animalCharacter" value="${ animalanimalCharacter }"> 
+						<input type="hidden" name="animalWeight" value="${ animal.animalWeight }">
+						<input type="hidden" name="animalCondition" value="${ animal.animalCondition }">
+						<input type="hidden" name="animalFeature" value="${ animal.animalFeature }">
+						<input type="hidden" name="rescueLocation" value="${ animal.rescueLocation }">
+						<input type="hidden" name="rescueDate" value="${ formatRegDate }">
+						<input type="hidden" name="animalWeight" value="${ animal.animalWeight }">
+						<input type="hidden" name="animalBoardNo" value="${ animal.animalBoardNo }">
+						<input type="hidden" name="animalStatus" value="${ animal.animalStatus }"> 
+					<img src="<%=request.getContextPath()%>/resources/auploadFiles/${ animal.animalFile }"  width="348" height="261" border="0/">
 					<ul>
+						<li class="full"><strong>No.</strong>${ animal.animalNo }</li>
 						<li class="full"><strong>구조일</strong> <i>
-								${ animal.rescueDate }
+								${ formatRegDate }
 						</i></li>
 						<li class="full"><strong>구조장소</strong></li>
 						<li class="full">${ animal.rescueLocation }</li>
 						<li class="half"><strong>축종</strong> ${ animal.animalType }</li>
 						<li class="half"><strong>성별</strong> ${ animal.animalGender }</li>
-						<li class="half"><strong>연령</strong> ${ animal.animalAge })</li>
+						<li class="half"><strong>연령</strong> ${ animal.animalAge }살</li>
 						<li class="half"><strong>모색</strong> ${ animal.animalColor }</li>
 						<li class="half"><strong>중성화수술</strong> ${ animal.animalTnr }</li>
 						<li class="half"><strong>성격</strong> ${ animal.animalCharacter }</li>
-						<li class="half"><strong>체중</strong> ${ animal.animalWeight }</li>
+						<li class="half"><strong>체중</strong> ${ animal.animalWeight }kg</li>
 						<li class="half"><strong>건강상태</strong> ${ animal.animalCondition }</li>
 						<li class="full"><strong>특징</strong></li>
 						<li class="full"><span>
 								${ animal.animalFeature }
 						</span></li>
 					</ul>
-					<button type="button" onclick="">입양신청</button>
+					<button type="submit">입양신청</button>
 				</form>
 			</div>
 					</c:forEach>

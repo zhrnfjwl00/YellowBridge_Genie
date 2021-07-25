@@ -33,17 +33,51 @@
 	.tableCount{width: 10%;}
 	#searchArea{padding-bottom:25px;}
 	.btnDiv{padding-top:25px; float: right;}
+	
+	nav{margin-left: 25px; margin-top: 10px;}
+	
+	.content{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		width: 95%;
+		min-height: 500px;
+	}
+	
+	.menuwrap{background: #EDFFC0; width: 100%; height: 50px;}
+	.volmenu{
+		background: #DDE88F; color: navy; text-align: center; font-weight: bold; 
+		vertical-align: middle; width: 300px; height: 50px; display: table-cell;
+	}
+	#navDiv{width: 600px; margin-left: auto; margin-right: auto;}
+	.volmenu:hover {background: beige; color:orangered; font-weight:bold; cursor:pointer;}
+	#serviceBoardList{background: #F6FFDE; color:green; border:1px solid green;}
 </style>
 
 </head>
 <body>
+<c:import url="../common/header.jsp"/>
 <div class="serviceBoard">
-	<c:import url="../common/header.jsp"/>
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 게시판</b></h1>
 		<h5><b>봉사 하면서 필요한 물품이나 문제점, 개선방안, 아픈 아이 치료 요청 등 상세하게 작성해주세요.</b></h5>
 	</div>
 	
+	<br clear="all">
+	<br>
+	
+	<div class="menuwrap">
+	 <nav id="navDiv">
+		<div class="volmenu" id="serviceBoardList"><b>물품요청</b></div>
+		<div class="volmenu" id="volreview">봉사후기</div>
+	 </nav>
+	</div>
+	
+	<!-- <div class="menuDiv">
+	<nav id="navDiv">
+		<div class="voldiv"> | </div>
+	</nav>
+	</div> -->
 	<div class="container" style="margin-top:30px; text-align:center;">
 		<div class="row">
 			<div class="col-sm-12">
@@ -71,13 +105,13 @@
 						</tr>
 					</thead>
 					<tbody id = "listArea">
-					<%-- <c:if test="${ empty vollist }">
+					<c:if test="${ empty vollist }">
 						<tr>
 							<td colspan="6">작성된 게시물이 없습니다.</td>
 						</tr>
-					</c:if> --%>
+					</c:if>
 					
-					<%-- <c:if test="${ !empty vollist }"> --%>
+					<c:if test="${ !empty vollist }">
 						<c:forEach var="vol" items="${ vollist }">
 							<tr>
 								<td align="center" class="tableNo">${ vol.volId }</td>
@@ -96,72 +130,72 @@
 								<td align="center" class="tableCount">${ vol.volCount }</td>
 							</tr>
 						</c:forEach>
-					<%-- </c:if> --%>
-					
-						<!-- 페이징 처리 -->
+					</c:if>
+
+					<tr align="center" height="20" id="buttonTab">
+						<td colspan="6">
+						
+							<!-- [이전] -->
+							<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
+							<c:if test="${ pi.currentPage > 1 }">
+								<c:url value="${ loc }" var="blistBack">
+									<c:param name="page" value="${ pi.currentPage - 1 }"/>
+									<c:if test="${ searchValue ne null }">
+										<c:param name="searchCondition" value="${ searchCondition }"/>
+										<c:param name="searchValue" value="${ searchValue }"/>
+									</c:if>
+								</c:url>
+								<a href="${ blistBack }">[이전]</a>
+							</c:if>
+							<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
 							
-							<tr align="center" height="20" id="buttonTab">
-								<td colspan="6">
-								
-									<!-- [이전] -->
-									<c:if test="${ pi.currentPage <= 1 }">[이전]</c:if>
-									<c:if test="${ pi.currentPage > 1 }">
-										<c:url value="${ loc }" var="blistBack">
-											<c:param name="page" value="${ pi.currentPage - 1 }"/>
-											<c:if test="${ searchValue ne null }">
-												<c:param name="searchCondition" value="${ searchCondition }"/>
-												<c:param name="searchValue" value="${ searchValue }"/>
-											</c:if>
-										</c:url>
-										<a href="${ blistBack }">[이전]</a>
-									</c:if>
-									<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
-									
-									<!-- 숫자 -->
-									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-										<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
-										<c:if test="${ p == pi.currentPage }">
-											<font color="red" size="4"><b>[${ p }]</b></font>
+							<!-- 숫자 -->
+							<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+								<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
+								<c:if test="${ p == pi.currentPage }">
+									<font color="red" size="4"><b>[${ p }]</b></font>
+								</c:if>
+								<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
+								<c:if test="${ p ne pi.currentPage }">
+									<c:url var="blistCheck" value="${ loc }">
+										<c:param name="page" value="${ p }"/>
+										<c:if test="${ searchValue ne null }">
+											<c:param name="searchCondition" value="${ searchCondition }"/>
+											<c:param name="searchValue" value="${ searchValue }"/>
 										</c:if>
-										<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
-										<c:if test="${ p ne pi.currentPage }">
-											<c:url var="blistCheck" value="${ loc }">
-												<c:param name="page" value="${ p }"/>
-												<c:if test="${ searchValue ne null }">
-													<c:param name="searchCondition" value="${ searchCondition }"/>
-													<c:param name="searchValue" value="${ searchValue }"/>
-												</c:if>
-											</c:url>
-											<a href="${ blistCheck }">${ p }</a>
-										</c:if>
-										<!-- loc: search.bo -->
-									</c:forEach>
-									
-									<!-- [다음] -->
-									<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
-									<c:if test="${ pi.currentPage < pi.maxPage }">
-										<c:url value="${ loc }" var="blistNext">
-											<c:param name="page" value="${ pi.currentPage + 1 }"/>
-											<c:if test="${ searchValue ne null }">
-												<c:param name="searchCondition" value="${ searchCondition }"/>
-												<c:param name="searchValue" value="${ searchValue }"/>
-											</c:if>
-										</c:url>
-										<a href="${ blistNext }">[다음]</a>
+									</c:url>
+									<a href="${ blistCheck }">${ p }</a>
+								</c:if>
+								<!-- loc: search.bo -->
+							</c:forEach>
+							
+							<!-- [다음] -->
+							<c:if test="${ pi.currentPage >= pi.maxPage }">[다음]</c:if>
+							<c:if test="${ pi.currentPage < pi.maxPage }">
+								<c:url value="${ loc }" var="blistNext">
+									<c:param name="page" value="${ pi.currentPage + 1 }"/>
+									<c:if test="${ searchValue ne null }">
+										<c:param name="searchCondition" value="${ searchCondition }"/>
+										<c:param name="searchValue" value="${ searchValue }"/>
 									</c:if>
-								</td>
-							</tr>
+								</c:url>
+								<a href="${ blistNext }">[다음]</a>
+							</c:if>
+						</td>
+					</tr>
 					</tbody>
 				</table>
+				<c:if test="${ !empty sessionScope.loginUser }">
 				<div class="btnDiv">
 					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/serviceBoardWriteForm.vol'">글쓰기</button>
 				</div>
+				</c:if>
 			</div>
 		</div>
 		
 	</div>
-	<c:import url="../common/footer.jsp"/>
 </div>
+<c:import url="../common/footer.jsp"/>
 	<script type="text/javascript">
 	   // 게시글 상세보기
 		$(function(){
@@ -180,5 +214,12 @@
 		}
 		
 	</script>
+	
+	<script>
+			$('.volmenu').on('click', function() {
+				var id = $(this).attr('id');
+				location.href='<%=request.getContextPath()%>/' + id + '.vol';
+			});
+		</script>
 </body>
 </html>

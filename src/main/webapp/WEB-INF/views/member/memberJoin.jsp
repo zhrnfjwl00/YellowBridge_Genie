@@ -4,31 +4,95 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>YELLOW BRIDGE</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-	.joinArea{width:500px; height:750px;  margin-left:570px; margin-top:150px; }
-	.infoTable { border-collapse: separate; border-spacing: 0 20px; margin-left:40px;}
-	.infoTable th{ font-weight: bolder; font-size:15px; }
-	.infoTable sup{color:red; font-weight: bolder;}
 	
-	/* .infoTable input{ width:200px; height:30px;} */
-	#ad{width:100px;}
+	.area{
+	 width:100%;
+	 height: 150px; 
+	}
+
+	.joinArea{
+	width:500px; 
+	height:900px;  
+	margin:0 auto; }
+	
+	.infoTable{ 
+	border-collapse: separate; 
+	border-spacing: 0 20px; 
+	margin-left:40px;
+	}
+	.infoTable th{ 
+	font-weight: bolder; 
+	font-size:15px; 
+	}
+	.infoTable sup{
+	color:red; 
+	font-weight: bolder;
+	}
+	
+	#ad{
+	width:100px;
+	}
+	
+	#button{
+	width:200px;
+	height:50px; 
+	background:rgb(246, 255, 222); 
+	border:none; 
+	font-weight: bolder; 
+	color:black; 
+	font-size:15px;
+	}
+	
+	#resetButton{
+	width:200px; 
+	height:50px; 
+	background:rgb(246, 255, 222); 
+	border:none; 
+	font-weight: bolder; 
+	color:black; 
+	font-size:15px;
+	margin-right:50px;}
 	
 	
-	#button{width:200px; height:50px; background:rgb(246, 255, 222); border:none; font-weight: bolder; color:black; font-size:15px;}
-	#resetButton{width:200px; height:50px; background:rgb(246, 255, 222); border:none; font-weight: bolder; color:black; font-size:15px;
-	             margin-right:50px;}
+	#email{
+	width:190px;
+	}
+	
+	#birth{
+	width:190px;
+	}
 	
 	
-	.postcodify_address{width:250px;}
-	.postcodify_extra_info{width:250px;}
+	.postcodify_address{
+	width:250px;
+	}
+	.postcodify_extra_info{
+	width:250px;
+	}
+	
+	span.guide{
+	display:none; 
+	font-size:12px; 
+	top:12px; 
+	right: 10px;
+	}
+	span.ok{
+	color: green;
+	}
+	span.error{
+	color:red;
+	}
 	
 	
 </style>
 </head>
 <body>
 	<c:import url="../common/header.jsp"/>
-	
+	<div class="area">
+	</div>
 	
 	<div class="joinArea">
 		<h1>회원가입</h1>
@@ -37,7 +101,10 @@
 					<tr>
 						<th><sup>*</sup>아이디</th>
 						<td>
-							<input type="text" name="id" id="userId">
+							<input type="text" name="id" id="userId"><br>
+							<span class="guide ok">사용 가능합니다.</span>
+							<span class="guide error">사용 불가능합니다.</span>
+							<input type="hidden" name="idDuplicateCheck" id="idDuplicateCheck" value="0">
 						</td>
 					</tr>
 					<tr>
@@ -56,7 +123,10 @@
 					<tr>
 						<th><sup>*</sup>닉네임</th>
 						<td>
-							<input type="text" name="nickname">
+							<input type="text" name="nickname" id="nickname"><br>
+							<span class="nickGuide ok">사용 가능합니다.</span>
+							<span class="nickGuide error">사용 불가능합니다.</span>
+							<input type="hidden" name="nick_DuplicateCheck" id="nickDuplicateCheck" value="0">
 						</td>
 					</tr>
 						<tr>
@@ -118,5 +188,80 @@
 			</form>
 	</div>
 	<c:import url="../common/footer.jsp"/>
+	
+	<script>
+		$('#userId').on('keyup', function(){
+			var userId = $(this).val().trim();
+			
+			if(userId.length < 4){
+				$('.guide').hide();
+				$('#idDuplicateCheck').val(0);
+				
+				return;
+			}
+			
+			$.ajax({
+				url: 'dupId.me',
+				data: {id:userId},
+				success : function(data){
+					console.log(data);
+					if(data == 0) {
+						$('.guide.error').hide();
+						$('.guide.ok').show();
+						$('#idDuplicateCheck').val(1);
+					}else{
+						$('.guide.error').show();
+						$('.guide.ok').hide();
+						$('#idDuplicateCheck').val(0);
+					}
+				}
+			});
+		});
+		
+			
+		$('#nickname').on('keyup', function(){
+			var nickname = $(this).val().trim();
+			
+			if(nickname.length < 4){
+				$('.nickGuide').hide();
+				$('#nickDuplicateCheck').val(0);
+				
+				return;
+			}
+			$.ajax({
+				url:'dupNickname.me',
+				data: {nickname : nickname},
+				success: function(data){
+					console.log(data);
+					if(data == 0){
+						$('.nickGuide.error').hide();
+						$('.nickGuide.ok').show();
+						$('#nickDuplicateCheck').val(1);
+					}else{
+						$('.nickGuide.error').show();
+						$('.nickGuide.ok').hide();
+						$('#nickDuplicateCheck').val(0);
+					}
+				}
+			});
+		});
+		
+		
+		function validate(){
+			if($('#idDuplicateCheck').val() == 0){
+				alert("사용가능한 아이디를 입력해주세요.");
+				$('#userId').focus();
+				return false;
+			}else if($('#nickDuplicateCheck').val() == 0){
+				alert("사용가능한 닉네임을 입력해주세요.");
+				$('#nickname').focus();
+				return false;	
+			}else{
+				$('#joinForm').submit();
+			}
+		}
+		
+		
+	</script>
 </body>
 </html>

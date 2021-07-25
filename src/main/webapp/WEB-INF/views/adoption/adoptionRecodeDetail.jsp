@@ -37,9 +37,11 @@
 			<input type="hidden" id="adopId" name="adopId" value="${adopboard.adopId}" />
 			<input type="hidden" id="adopTitle" name="adopTitle" value="${adopboard.adopTitle}"> 
 			<input type="hidden" id="adopWriter" name="adopWriter" value="${adopboard.adopWriter}"> 
+			<input type="hidden" id="id" name="id" value="${loginId}">
 			<input type="hidden" id="adopContent" name="adopContent" value="${adopboard.adopContent}"> 
 			<input type="hidden" id="adopView" name="adopView" value="${adopboard.adopView}"> 
 			<input type="hidden" id="adopCreateDate" name="adopCreateDate" value="${adopboard.adopCreateDate}"> 
+			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
 	
 		<div class="form-group">
@@ -129,8 +131,10 @@
 						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
 					</tr>
 					<tr>
+							<c:if test="${ !empty sessionScope.loginUser }">
 						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
 						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+						</c:if>
 					</tr>
 				</table>
 						
@@ -175,9 +179,12 @@
 			});
 		});
 	});
+	</script>
 	
+	<script>
 	function getReplyList(){
 		var adopId = ${adopboard.adopId};
+		var id = $('#id').val();
 		
 		$.ajax({
 			url: 'adoprList.ado',
@@ -191,15 +198,42 @@
 				$('#rCount').text('댓글(' + data.length + ')');
 				// 댓글 몇개 들어가있는지 확인 
 				if(data.length > 0){
+					var $tr = $('<tr>');
+					var $a = $('<a>');
+					var $trWriter = $('<th>').text('작성자');
+					var $trContent = $('<th colspan=7>').text('내용');
+					var $trCreateDate = $('<th>').text('작성일');
+					var $trUpdate = $('<th>').text('수정');
+					var $trDelete = $('<th>').text('삭제');
+					
+					$tr.append($trWriter);
+					$tr.append($trContent);
+					$tr.append($trCreateDate);
+					$tr.append($trUpdate);
+					$tr.append($trDelete);
+					$tableBody.append($tr);
+					
 					for(var i in data){
 						var $tr = $('<tr>');
-						var $rWriter = $('<td width=100>').text(data[i].rWriter);
-						var $rContent = $('<td>').text(data[i].rContent);
-						var $rCreateDate = $('<td width=100>').text(data[i].rCreateDate);
+						var $rWriterNickname = $('<td>').text(data[i].rNickname);
+						var $rContent = $('<td colspan=7>').text(data[i].rContent);
+						var $rCreateDate = $('<td>').text(data[i].rCreateDate);
+						var page = ${page};
+						var $writerId = data[i].rWriter;
+						var $userId = id;
+						if( $userId.trim() == $writerId.trim() ){
+							var $rUpdateBtn = $('<td width=50><a href="adoprUpdateForm.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">수정</a></td>');						
+							var $rdeleteBtn = $('<td width=50><a href="adoprDelete.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">삭제</a></td>');						
+						} else {
+							var $rUpdateBtn = $('<td>').text('수정');
+							var $rdeleteBtn = $('<td>').text('삭제');
+						}
 						
-						$tr.append($rWriter);
+						$tr.append($rWriterNickname);
 						$tr.append($rContent);
 						$tr.append($rCreateDate);
+						$tr.append($rUpdateBtn);
+						$tr.append($rdeleteBtn);
 						$tableBody.append($tr);
 					}
 				} else {
@@ -213,6 +247,7 @@
 		});
 	}
 </script>
+
 	
 <script type="text/javascript">
 	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
@@ -254,7 +289,7 @@
 			formObj.submit();
 		});
 		
-		//댓글 수정 View
+		// 댓글 수정 View
 		$(".replyUpdateBtn").on("click", function(){
 			location.href = "/board/replyUpdateView?bno=${read.bno}"
 							+ "&page=${scri.page}"

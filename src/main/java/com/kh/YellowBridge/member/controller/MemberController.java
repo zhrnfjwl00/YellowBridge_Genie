@@ -1,7 +1,9 @@
 package com.kh.YellowBridge.member.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.YellowBridge.member.model.exception.MemberException;
 import com.kh.YellowBridge.member.model.service.MemberService;
 import com.kh.YellowBridge.member.model.vo.Member;
+import com.sun.tracing.dtrace.Attributes;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -40,7 +44,7 @@ public class MemberController {
 		Member loginUser = mService.memberLogin(m);
 		
 //		bCryptPasswordEncoder.matches(m.getPwd(), loginUser.getPwd());
-		System.out.println(loginUser.getPwd());
+	
 		
 		if(bCryptPasswordEncoder.matches(m.getPwd(), loginUser.getPwd())) {
 			session.setAttribute("loginUser", loginUser);
@@ -51,7 +55,9 @@ public class MemberController {
 		}
 		return mv;
 	}
-		
+	
+	
+	
 	@RequestMapping("logout.me")
 	public ModelAndView memberLogout(SessionStatus status, ModelAndView mv) {
 		status.setComplete();
@@ -168,6 +174,12 @@ public class MemberController {
 	 * }
 	 */
 	
+	@RequestMapping("mdeleteView.me")
+	public String mdeleteForm() {
+		return "memberDeleteForm";
+	}
+	
+
 	
 	@RequestMapping("mdelete.me")
 	public ModelAndView deleteMember(@RequestParam("id") String id, ModelAndView mv, SessionStatus status) {
@@ -175,10 +187,59 @@ public class MemberController {
 		
 		if(result > 0) {
 			status.setComplete();
-			mv.setViewName("../../../index");
+			mv.setViewName("/memberSecessionForm");
 		}else {
 			throw new MemberException("회원탈퇴 실패");
 		}
 		return mv;
 	}
+	
+	
+
+
+	@RequestMapping("dupId.me")	
+	@ResponseBody
+ 	public String duplicateId(@RequestParam("id") String userId) {
+		int result = mService.checkId(userId);
+		return result + "";
+	}
+	
+	
+	@RequestMapping("dupNickname.me")
+	@ResponseBody
+	public String duplicateNickname(@RequestParam("nickname") String nickname) {
+		//System.out.println(nickname);
+		int result = mService.checkNickname(nickname);
+		return result + "";
+	}
+
+	
+	
+	@RequestMapping("memberCheck.me")
+	@ResponseBody
+	public String memberCheck(@RequestParam("id") String userId) {
+		System.out.println(userId);
+		int result = mService.memberCheck(userId);
+		return result + "";
+	}
+	
+	
+	@RequestMapping("idFindView.me")
+	public String findIdForm() {
+		return "/memberFindId";
+	}
+ 
+	@RequestMapping("pwdFindView.me")
+	public String findPwForm() {
+		return "/memberFindPw";
+	}
+	 	
+	
 }
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	

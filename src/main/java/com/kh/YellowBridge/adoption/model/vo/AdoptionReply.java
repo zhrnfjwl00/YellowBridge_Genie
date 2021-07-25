@@ -7,6 +7,7 @@ public class AdoptionReply {
 	private String rContent;
 	private int refBid;
 	private String rWriter;
+	private String rNickname;
 	private String rWriterNo;
 	private Date rCreateDate;
 	private Date rModifyDate;
@@ -14,13 +15,14 @@ public class AdoptionReply {
 	
 	public AdoptionReply() {}
 
-	public AdoptionReply(int rId, String rContent, int refBid, String rWriter, String rWriterNo, Date rCreateDate,
-			Date rModifyDate, String rStatus) {
+	public AdoptionReply(int rId, String rContent, int refBid, String rWriter, String rNickname, String rWriterNo,
+			Date rCreateDate, Date rModifyDate, String rStatus) {
 		super();
 		this.rId = rId;
 		this.rContent = rContent;
 		this.refBid = refBid;
 		this.rWriter = rWriter;
+		this.rNickname = rNickname;
 		this.rWriterNo = rWriterNo;
 		this.rCreateDate = rCreateDate;
 		this.rModifyDate = rModifyDate;
@@ -59,6 +61,14 @@ public class AdoptionReply {
 		this.rWriter = rWriter;
 	}
 
+	public String getrNickname() {
+		return rNickname;
+	}
+
+	public void setrNickname(String rNickname) {
+		this.rNickname = rNickname;
+	}
+
 	public String getrWriterNo() {
 		return rWriterNo;
 	}
@@ -94,9 +104,11 @@ public class AdoptionReply {
 	@Override
 	public String toString() {
 		return "AdoptionReply [rId=" + rId + ", rContent=" + rContent + ", refBid=" + refBid + ", rWriter=" + rWriter
-				+ ", rWriterNo=" + rWriterNo + ", rCreateDate=" + rCreateDate + ", rModifyDate=" + rModifyDate
-				+ ", rStatus=" + rStatus + "]";
+				+ ", rNickname=" + rNickname + ", rWriterNo=" + rWriterNo + ", rCreateDate=" + rCreateDate
+				+ ", rModifyDate=" + rModifyDate + ", rStatus=" + rStatus + "]";
 	}
+	
+	
 
 
 	

@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>header_admin</title>
 <link rel="stylesheet"  href="<%= request.getContextPath() %>/resources/css/common.css">
-<link rel="stylesheet" href=".<%= request.getContextPath() %>/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/bootstrap.min.css">
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/common.js"></script>
 </head>
@@ -32,14 +32,12 @@
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">입양관리</a>
+					<li class=""><a href="">관리</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-							</ul>
-						</div></li>
-					<li class=""><a href="">후원관리</a>
-						<div class="sub" style="display: none;">
-							<ul class="inner">
+								<li><a href="admin_adoption.ado">입양관리</a></li>
+								<li><a href="">봉사관리</a></li>
+								<li><a href="">후원관리</a></li>
 							</ul>
 						</div></li>
 					<li class=""><a href="">고객사항</a>

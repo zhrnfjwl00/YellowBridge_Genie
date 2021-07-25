@@ -1,5 +1,7 @@
 package com.kh.YellowBridge.member.model.service;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.kh.YellowBridge.member.model.vo.Member;
 
 public interface MemberService {
@@ -12,6 +14,22 @@ public interface MemberService {
 
 	int deleteMember(String id);
 
+	int checkId(String userId);
+
+	int checkNickname(String nickname);
+
+	int memberCheck(String userId);
+
+	
+
+
+
+	
+
+
+
+	
+	
 	
 	
 

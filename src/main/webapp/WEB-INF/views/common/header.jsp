@@ -22,7 +22,7 @@
 <!-- 헤더 시작 -->
 <header class="gnbFixed main">
 <div class="inner">
-	<h1><a href=""><img src="<%= request.getContextPath() %>/resources/images/logo.png"></a></h1>
+	<h1><a onclick="location.href ='<%=request.getContextPath()%>/index.jsp'" style="cursor:pointer;"><img src="<%= request.getContextPath() %>/resources/images/logo.png"></a></h1>
 	<div class="innerMenu">
 	
 		<span class="util">
@@ -51,7 +51,8 @@
 					<li class=""><a href="">입양</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="adopProcess.ado">입양절차</a></li>
+								<!-- <li><a href="adopProcess.ado">입양절차</a></li> -->
+								<li><a href="admin_adoption.ado">입양절차</a></li> <!-- 관리자 화면 확인위해 잠시 설정 -->
 								<li><a href="adopNotice.ado">입양공고</a></li>
 								<li><a href="adopInfo.ado">입양신청조회</a></li>
 								<li><a href="adopRecode.ado">입양일지</a></li>

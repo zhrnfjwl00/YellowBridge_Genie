@@ -1,15 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet"  href="<%= request.getContextPath() %>/resources//css/common.css">
-<link rel="stylesheet" href=".<%= request.getContextPath() %>/resources/css/bootstrap.min.css">
+<link rel="stylesheet"  href="<%= request.getContextPath() %>/resources/css/common.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/bootstrap.min.css">
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/common.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/canalytics.js"></script>
-<title>Main Contents</title>
+<title>YELLOW BRIDGE</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+
+	
+	
+	.area{margin: 0 auto;}
+	
+	#aArea{ width: 270px; height: 450px;}
+	#aImage{ width:250px; height:250px; margin: 0 auto;} 
+	#aContent{ width:200px; height:100px; margin: 0 auto;}
+	#aList li{font-weight: border; font-size:20px;}
+	
+	
+	#sArea{width: 250px; height: 450px;  }
+	#sImage{ width:250px; height:250px; margin: 0 auto;} 
+	#sContent{ width:200px; height:100px; margin: 0 auto;}
+	#sList li{font-weight: border; font-size:25px; text-align: center; }
+
+</style>
 </head>
 <body>
 <section id="gotoMainContents" class="mainCont" tabindex="0">
@@ -32,46 +53,22 @@
     <section class="best_services section_padding">
         <div class="container">
             <div class="row justify-content-center">
+                <!-- 제목 div -->
                 <div class="col-xl-6">
                     <div class="section_tittle text-center">
-                        <h2>입양동물</h2>
+                        <h2 onclick="GoAnimalNoticeWriterForm();" style="cursor:pointer">입양동물</h2>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_1.png" alt="">
-                         <h3> <a href="#"> 일련번호 : 455-35839</a></h3>
-                        <p>구조일 2021-06-10</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_2.png" alt="">
-                        <h3> <a href="#"> 일련번호 : 455-35839</a></h3>
-                        <p>구조일 2021-06-10</p>                    
-                        </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_3.png" alt="">
-                        <h3> <a href="#"> 일련번호 : 455-35839</a></h3>
-                        <p>구조일 2021-06-10</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_4.png" alt="">
-                        <h3> <a href="#"> 일련번호 : 455-35839</a></h3>
-                        <p>구조일 2021-06-10</p>
-                    </div>
-                </div>
-            </div>
+            
+            <!-- 입양동물 정보 -->
+            <div class="row" id="animalArea">      
+            </div>	
+          
         </div>
     </section>
     <!--::입양동물 끝::-->
-    
+
     
     
      <!--::봉사::-->
@@ -80,36 +77,15 @@
             <div class="row justify-content-center">
                 <div class="col-xl-6">
                     <div class="section_tittle text-center">
-                        <h2>봉사</h2>
+                        <h2 onclick="GoVolAdminAdList();" style="cursor:pointer">봉사</h2>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_1.png" alt="">
-                         <h3> <a href="#">대구 반야월 쉼터</a></h3>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_2.png" alt="">
-                        <h3> <a href="#">경남 창녕 쉼터</a></h3>
-                        </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_3.png" alt="">
-                        <h3> <a href="#">경산 아이들 보호소</a></h3>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single_ihotel_list">
-                        <img src="<%= request.getContextPath() %>/resources/images/services_4.png" alt="">
-                        <h3> <a href="#">양산 사랑이네 집</a></h3>
-                    </div>
-                </div>
+            
+            <!-- 봉사 정보 -->
+            <div class="row" id="serviceArea">
             </div>
+            
         </div>
     </section>
     <!--::봉사 끝::-->
@@ -177,6 +153,86 @@
 		</div>
 	</article>
 </section>
+<script>
+/* --------- 입양공고 ---------------------*/
+   
+   
+    		$.ajax({
+    			url: 'animalList.ado',
+    			dataType: 'json',
+    			success: function(data){
+    				console.log(data);
+    			
+    				var $row = $('#animalArea')
+    				
+    			 
+    			 	 for(var i in data){
+    					$row.append(
+    							'<div id="aArea" class="area">' +
+	    							'<div class="single_ihotel_list" id="aImage" onclick="GoAnimalNoticeWriterForm();" style="cursor:pointer">' +
+	    							'<img src="<%= request.getContextPath() %>/resources/auploadFiles/'+data[i].animalFile+'" style="width:250px; height:250px;">' +
+	    							'</div>' + 
+	    							'<br>' +
+	    							' <div id="aContent" onclick="GoAnimalNoticeWriterForm();" style="cursor:pointer">'+
+	    								'<ul id="aList">' +
+	    								   '<li>'+ "종분류 : "+ data[i].animalType +'</li>' +
+	    								   '<li>'+ "구조일 : " +data[i].rescueDate +'</li>' +
+	    								 '</ul>' +  
+	    							'</div>'+
+	    						'</div>'
+    							); 
+    				}
+    			}
+    		});
+    	
+    	function GoAnimalNoticeWriterForm(){
+    		$(this).on('click', function(){
+    			console.log("클릭됨");
+    			location.href='adopNotice.ado';
+    		});
+    	}
+    	
+    
+
+	
+/*------------- 봉사 ---------------------*/
+
+		$.ajax({
+			url: 'serviceList.vol',
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				
+				var $row = $('#serviceArea')
+				
+			
+				for(var i in data){
+							$row.append(
+	    							'<div id="sArea" class="area">' +
+		    							'<div class="single_ihotel_list" id="sImage" onclick="GoVolAdminAdList();" style="cursor:pointer">' +
+		    							'<img src="<%= request.getContextPath() %>/resources/images/'+data[i].changeName+'"  style="width:250px; height:250px;">' +
+		    							'</div>' +
+		    							'<br>' +
+		    							' <div id="sContent"  onclick="GoVolAdminAdList();" style="cursor:pointer">'+
+		    								'<ul id="sList">' +
+		    							    '<li>'+ data[i].shelterName +'</li>' +
+		    								'</ul>' +  
+		    							'</div>'+
+		    						'</div>'
+	    							);
+				}
+			}
+		});
+	
+	function GoVolAdminAdList(){
+		$(this).on('click', function(){
+			console.log("클릭됨");
+			location.href='serviceapply.vol';
+		});
+	}
+    
+</script>
+
 
 </body>
 </html>
