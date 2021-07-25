@@ -4,13 +4,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
-<meta charset="utf-8">
 <head>
+<meta charset="utf-8">
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 부가적인 테마
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
+<!-- BootStrap CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+ <!-- 서머노트를 위해 추가해야할 부분 -->
+ <script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
+
 <title>게시판</title>
 <style type="text/css">
 	#rinsertBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
@@ -30,7 +46,7 @@
 </style>
 </head>
 <body>
-<c:import url="../common/header.jsp"/>
+<c:import url="header.jsp"/>
 <div class="container">
 	
 	<div style="text-align:center;" class="serviceBoardtext">
@@ -42,12 +58,10 @@
 			<input type="hidden" id="volId" name="volId" value="${volboard.volId}" />
 			<input type="hidden" id="volTitle" name="volTitle" value="${volboard.volTitle}"> 
 			<input type="hidden" id="volWriter" name="volWriter" value="${volboard.volWriter}">
-			<input type="hidden" id="id" name="id" value="${loginId}">
-			<input type="hidden" id="volContent" name="volContent" value="${volboard.volContent}"> 
 			<input type="hidden" id="volCategory" name="volCategory" value="${volboard.volCategory}"> 
 			<input type="hidden" id="volCount" name="volCount" value="${volboard.volCount}"> 
 			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${volboard.volCreateDate}"> 
-			<%-- <input type="hidden" id="id" name="id" value="${ sessionScope.loginUser }">  --%>
+			<input type="hidden" id="id" name="id" value="${ loginUser.id }">
 			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
 	
@@ -57,8 +71,13 @@
 					<th id="title"> ${ volboard.volTitle } <b id="rCount"></b></th>
 					<c:if test="${ loginUser.id eq volboard.volWriter}">
 						<th>
+						<c:url var="serviceBoardUpdateForm" value="serviceBoardUpdateForm.vol">
+							<c:param name="volId" value="${ volboard.volId }"/>
+							<c:param name="page" value="${ page }"/>
+							<c:param name="loginId" value="${ loginUser.id }"/>
+						</c:url>
 						<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
-						<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
+						<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${ serviceBoardUpdateForm }'">수정</button>
 						</th>
 					</c:if>
 				</tr>
@@ -84,7 +103,7 @@
 		
 		<div class="form-group">
 			<label for="content" class="col-sm-2 control-label"><b>내용</b></label>
-			<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none">${volboard.volContent}</textarea>
+			<textarea id="summernote" name="content" class="form-control" cols="60" rows="25" style="resize:none" readonly>${volboard.volContent}</textarea>
 		</div>
 						
 		<div align="center">
@@ -215,12 +234,12 @@
 			
 			location.href = "/YellowBridge/serviceBoardList.vol";
 		})
-		$("#updateBtn").on("click", function(){
+/* 		$("#updateBtn").on("click", function(){
 			var volId = ${volboard.volId};
 			var page = ${page};
 			
 			location.href="serviceBoardUpdateForm.vol?volId="+volId+"&page="+page;
-		})
+		}) */
 		
 		$("#deleteBtn").on("click", function(){
 			var volId = ${volboard.volId};
@@ -242,5 +261,19 @@
 		}) */
 		
 </script> 
+<script type="text/javascript">
+$('#summernote').summernote({
+	  // 에디터 높이
+	  minheight: 500,
+	  // 에디터 한글 설정
+	  lang: "ko-KR",
+	  // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
+	  focus : true,
+	});
+	
+	$('#summernote').summernote('disable');
+	
+    
+</script>
 </body>
 </html>

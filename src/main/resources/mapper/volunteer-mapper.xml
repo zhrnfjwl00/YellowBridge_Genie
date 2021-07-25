@@ -133,10 +133,12 @@
 	</select>
 	
 	<select id="serviceApplyList" resultMap="volAdvertiseResultSet">
-		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, FILE_STATUS
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
+				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list, FILE_STATUS
 		from SERVICE_INFO
 			join FILE_INFO using (SERVICE_NO)
-		where SERVICE_STATUS='Y' and FILE_STATUS='Y'
+			left join category on (SHELTER_NAME = LIST)
+		where SERVICE_STATUS!='N' and FILE_STATUS!='N'
 		order by SERVICE_NO desc
 	</select>
 	<resultMap type="Volunteer" id="volAdvertiseResultSet"> 
@@ -151,6 +153,8 @@
 		<result property="fileName" column="FILE_NAME"/>
 		<result property="changeName" column="FILE_CHANGE"/>
 		<result property="filePath" column="FILE_PATH"/>
+		<result property="cateNo" column="cate_no"/>
+		<result property="cateName" column="list"/>
 	</resultMap> 
 	
 	<select id="selectAppBoard" resultMap="volAdvertiseResultSet">

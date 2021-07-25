@@ -89,7 +89,9 @@
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청 등록</b></h1>
 	</div>
 	
-	<form action="<%= request.getContextPath() %>/adminVolUpdate.vol" method="post" encType="multipart/form-data">
+	<form action="adminVolUpdate.vol" method="post" encType="multipart/form-data">
+		<input type="hidden" name="page" size="70%" value="${ page }">
+		<input type="hidden" name="serviceNo" size="70%" value="${ adadmin.serviceNo }">
 		<div class="apply-top">
 			<div id="applyImg">
 				<img id="preview-image" src="<%=request.getContextPath()%>/resources/voluploadFiles/${ vFuadmin.fileName }">
@@ -99,19 +101,20 @@
 				<table>
 					<tr>
 						<td>
-						<input type="hidden" name="serviceNo" size="70%" value="${ adadmin.serviceNo }" required>
 						<input type="text" name="serviceTitle" size="70%" value="${ adadmin.serviceTitle }" required>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<select name="shelterName">
+								<option value="카테고리선택">카테고리선택</option>
 			           			<option value="대구 반야월 쉼터">대구 반야월 쉼터</option>
 			           			<option value="구미 사랑 보호소">구미 사랑 보호소</option>
 			           			<option value="양산 사랑이네 집">양산 사랑이네 집</option>
 			           			<option value="경남 창녕 쉼터">경남 창녕 쉼터</option>
 			           			<option value="대구 앵두네 집">대구 앵두네 집</option>
 			           			<option value="경산 아이들 쉼터">경산 아이들 쉼터</option>
+			           			<option value="청도 허그안 쉼터">청도 허그안 쉼터</option>
 			           		</select>
 						</td>
 					</tr>
@@ -140,7 +143,15 @@
 	</form>
 </div>
 <c:import url="../common/footer.jsp"/>
-	
+	<script type="text/javascript">
+		function cate(){
+			if($('#category').val() == '카테고리선택'){
+				alert('카테고리를 선택해주세요.');
+				$('#category').focus();
+				return false;
+			}
+		}
+	</script>	
 	<script>
 	function readImage(input) {
 	    // 인풋 태그에 파일이 있는 경우
