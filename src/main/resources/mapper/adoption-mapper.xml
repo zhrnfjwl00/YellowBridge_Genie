@@ -68,23 +68,18 @@
 	</select>
 
 	<insert id="insertAdopBoard">
-		INSERT
-		INTO BOARD
-		VALUES (SEQ_BNO.nextval, #{adopTitle}, #{adopContent},
-		0, SYSDATE, SYSDATE, DEFAULT, null, 10, #{adopWriterNickname})
+		insert into board
+		values(SEQ_BNO.nextval, #{adopTitle}, #{adopContent},  0, sysdate, sysdate, default, null, 10, #{adopWriterNickname})
 	</insert>
 
 	<insert id="insertAdopFile">
-		INSERT
-		INTO FILE_INFO
-		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{fileChangeName}, SYSDATE, 1,
-		#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL, NULL)
+		insert into FILE_INFO
+		values(SEQ_FNO.nextval, #{fileName}, #{fileChangeName}, default, 0, #{filePath}, default, SEQ_BNO.currval, null, null)
 	</insert>
 
 
 	<resultMap
-		type="com.kh.YellowBridge.adoption.model.vo.AdoptionFile"
-		id="adoptionFileResultMap">
+		type="com.kh.YellowBridge.adoption.model.vo.AdoptionFile" id="adoptionFileResultMap">
 		<id property="fileNo" column="FILE_NO" />
 		<result property="fileName" column="FILE_NAME" />
 		<result property="fileChangeName" column="FILE_CHANGE" />
@@ -209,38 +204,33 @@
 		<result property="animalFile" column="FILE_CHANGE" />
 		<result property="requestMemberNickname" column="MEMBER_NICKNAME" />
 		<result property="animalRequestState" column="REQUEST_STATE" />
-		<result property="animalRequestDate" column="REQUEST_Date" />
+		<result property="animalRequestDate" column="REQUEST_DATE" />
 	</resultMap>
 
 	<!-- 입양공고 등록 -->
 
 	<insert id="insertAnimalNotice">
-		insert
-		into animal_info
-		values(SEQ_ANO.nextval, #{animalType}, #{animalGender},
-		#{animalAge},
-		#{animalColor}, #{animalTnr}, #{animalCharacter}, #{animalWeight},
+		INSERT
+		INTO ANIMAL_INFO
+		VALUES(SEQ_ANO.nextval, #{animalType}, #{animalGender},
+		#{animalAge}, #{animalColor}, #{animalTnr}, #{animalCharacter}, #{animalWeight},
 		#{animalCondition}, #{animalFeature}, #{rescueDate},
-		#{rescueLocation},
-		null, default)
+		#{rescueLocation}, null, default)
 	</insert>
 
 	<insert id="insertAnimalFile">
 		INSERT
 		INTO FILE_INFO
-		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{fileChangeName}, SYSDATE, 1,
-		#{filePath}, 'Y', NULL, NULL, SEQ_ANO.CURRVAL)
+		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{fileChangeName}, SYSDATE, 1, #{filePath}, 'Y', NULL, NULL, SEQ_ANO.CURRVAL)
 	</insert>
 
 
-	<select id="selectAnimalApplyForm"
-		resultMap="AnimalListResultSet">
+	<select id="selectAnimalApplyForm" resultMap="AnimalListResultSet">
 
 		SELECT ANIMAL_NO, ANIMAL_TYPE, ANIMAL_GENDER, ANIMAL_AGE, ANIMAL_COLOR,
 		ANIMAL_TNR, ANIMAL_CHARACTER, ANIMAL_WEIGHT, ANIMAL_CONDITION,
 		ANIMAL_FEATURE, RESCUE_DATE, RESCUE_LOCATION, ANIMAL_STATUS
-		FROM
-		ANIMAL_INFO
+		FROM ANIMAL_INFO
 		WHERE ANIMAL_STATUS='Y'AND ANIMAL_NO = #{animalNo}
 
 	</select>

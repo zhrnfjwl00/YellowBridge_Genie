@@ -85,13 +85,18 @@ public class AdoptionServiceImpl implements AdoptionService {
 
 	// 입양일지 게시물 추가
 	@Override
-	public int insertAdopBoard(AdoptionBoard a, AdoptionFile af) {
-		int result = aDAO.insertAdopBoard(sqlSession, a);
+	public int insertAdopBoard(AdoptionBoard a) {
+		return aDAO.insertAdopBoard(sqlSession, a);
 
-		if (result > 0) {
-			return aDAO.insertAnimalFile(sqlSession, af);
-		}
-		return result;
+//		if (result > 0) {
+//			return aDAO.insertAnimalFile(sqlSession, af);
+//		}
+//		return result;
+	}
+	
+	@Override
+	public int insertAdopFile(AdoptionFile affi) {
+		return aDAO.insertAdopFile(sqlSession, affi);
 	}
 
 	// 입양일지 게시물 삭제
@@ -184,6 +189,8 @@ public class AdoptionServiceImpl implements AdoptionService {
 	public int adoptionrDelete(int rId) {
 		return aDAO.adoptionrDelete(sqlSession, rId);
 	}
+
+
 
 
 

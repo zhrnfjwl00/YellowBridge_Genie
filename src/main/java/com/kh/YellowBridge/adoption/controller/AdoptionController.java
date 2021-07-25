@@ -40,9 +40,6 @@ import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.vo.Member;
-import com.kh.YellowBridge.volunteer.model.exception.VolunteerException;
-import com.kh.YellowBridge.volunteer.model.vo.VolReply;
-import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Controller
 public class AdoptionController {
@@ -310,6 +307,9 @@ public class AdoptionController {
 		AdoptionBoard adopboard = aService.selectAdopBoard(adopId);
 		AdoptionFile af = aService.selectAdopFile(adopId);
 
+		System.out.println(adopboard);
+		System.out.println(af);
+		
 		//비로그인시 오류문구 출력
 //		if(loginId == null) {
 //			request.setAttribute("msg", "로그인 후 이용하세요");
@@ -335,11 +335,24 @@ public class AdoptionController {
 	@RequestMapping("adopinsert.ado")
 	public String adopInsertBoard(@ModelAttribute AdoptionBoard a, @RequestParam("uploadFile") MultipartFile uploadFile,
 			HttpServletRequest request, HttpSession session) {
-
-		AdoptionFile af = new AdoptionFile();
-
+		String nickname = ((Member)session.getAttribute("loginUser")).getNickname();
+		a.setAdopWriterNickname(nickname);
+		int result = aService.insertAdopBoard(a);
+		
+		AdoptionFile affi = new AdoptionFile();
+		
+		
+		if(uploadFile != null && !uploadFile.isEmpty()) {
+			AdoptionFile af = saveFile(uploadFile, request);
+			if(af != null) {
+				affi.setFileName(uploadFile.getOriginalFilename());
+				affi.setFileChangeName(af.getFileChangeName());
+				affi.setFilePath(af.getFilePath());
+				aService.insertAdopFile(affi);
+			}
+		}
+		
 		System.out.println("AdoptionBoard : " + a);
-
 		System.out.println("uploadFile : " + uploadFile);
 		System.out.println("uploadFile.getOriginalFilename() : " + uploadFile.getOriginalFilename());
 		// [파일을 넣었을 떄]
@@ -355,27 +368,6 @@ public class AdoptionController {
 		// 파일을 넣은지 안넣은지의 여부는 getOriginalFilename() 이 있vs없다로 구분(확인 가능함)
 
 //		if(!uploadFile.getOriginalFilename().equals("")) {
-		if (uploadFile != null && !uploadFile.isEmpty()) {
-			// getOriginalFilename이 "" <-- 아무것도 들어오지 않은 것과 같지 않다면!
-			AdoptionFile affi = saveFile(uploadFile, request);
-
-			if (affi.getFileChangeName() != null) {
-				af.setFileName(uploadFile.getOriginalFilename());
-				af.setFileChangeName(affi.getFileChangeName());
-				af.setFilePath(affi.getFilePath());
-
-				System.out.println("AdoptionFile : " + af);
-
-			}
-		}
-
-		// session에 저장된 userId를 writer에 저장
-		String nickname = ((Member) session.getAttribute("loginUser")).getNickname();
-		// vo에 writer를 세팅
-		// 현재 로그인 서비스가 없어 임의로 작성자 삽입
-		a.setAdopWriterNickname(nickname);
-
-		int result = aService.insertAdopBoard(a, af);
 
 		if (result > 0) {
 			return "redirect:adopRecode.ado";
@@ -383,6 +375,8 @@ public class AdoptionController {
 			throw new AdoptionException("입양 일지 등록에 실패하였습니다.");
 		}
 	}
+	
+	
 
 	// 내가 지정한 폴더에 파일을 저장하는 메소드
 	public AdoptionFile saveFile(MultipartFile uploadFile, HttpServletRequest request) {
@@ -423,14 +417,16 @@ public class AdoptionController {
 
 	// 게시물 수정폼으로 이동
 	@RequestMapping("adopUpdateForm.ado")
-	public String adopUpdateForm(@RequestParam("adopId") int adopId, @RequestParam("page") int page, Model model) {
+	public String adopUpdateForm(@RequestParam("adopId") int adopId, @RequestParam("page") int page, Model model, HttpServletRequest request) {
 		// 기존 데이터를 가지고서 넘어가야함.
 		// selectBoard를 이용
 
 		AdoptionBoard adopboard = aService.selectAdopBoard(adopId);
+		AdoptionFile af = aService.selectAdopFile(adopId);
 
-		model.addAttribute("adopboard", adopboard);
-		model.addAttribute("page", page);
+		if(adopboard != null) {
+			model.addAttribute("page", page).addAttribute("adopboard", adopboard).addAttribute("af", af);
+		}
 
 		return "adoptionRecodeUpdateForm";
 
