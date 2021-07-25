@@ -363,26 +363,17 @@ public class VolunteerController {
 	
 	// 게시판 글 상세보기
 	@RequestMapping("volBoardDetail.vol")
-	public ModelAndView serviceBoardDetail(@RequestParam("page") int page, @RequestParam("loginId") String loginId, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request, HttpSession session) {
+	public ModelAndView serviceBoardDetail(@RequestParam("page") int page, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request, HttpSession session) {
 		VolunteerBoard volboard = volBoardService.selectVolBoard(volId);
+
 		VolunteerFile vFile = volBoardService.selectVolFile(volId);
 		
-		if(loginId == null) {
-			request.setAttribute("msg", "로그인 후 이용하세요");
-		}
 			
 			if(volboard != null) {
-				mv.addObject("page", page).addObject("loginId", loginId).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("serviceBoardDetail");
+				mv.addObject("page", page).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("serviceBoardDetail");
 			} else {
 				throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
 			}
-//		} else {
-//			if(volboard != null) {
-//				mv.addObject("page", page).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("serviceBoardDetail");
-//			} else {
-//				throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
-//			}
-//		}
 		return mv;
 	}
 	
@@ -711,12 +702,12 @@ public class VolunteerController {
 	
 	// 관리자: 공고 수정 폼
 	@RequestMapping("adminVolUpdateForm.vol")
-	public String adminVolUpdateForm(@RequestParam("serviceNo") int volId, Model model, HttpServletRequest request){
+	public String adminVolUpdateForm(@RequestParam("page") int page, @RequestParam("serviceNo") int volId, Model model, HttpServletRequest request){
 		Volunteer adadmin = volBoardService.selectAppBoard(volId);
 		VolunteerFile vFuadmin = volBoardService.selectVolAdFile(volId);
 		
 		if(adadmin != null) {
-			model.addAttribute("adadmin", adadmin).addAttribute("vFuadmin", vFuadmin);
+			model.addAttribute("page", page).addAttribute("volId", volId).addAttribute("adadmin", adadmin).addAttribute("vFuadmin", vFuadmin);
 		}
 		
 		return "admin_apply_advertise_update";
@@ -724,10 +715,9 @@ public class VolunteerController {
 	
 	// 관리자: 공고 수정
 	@RequestMapping(value="adminVolUpdate.vol", method=RequestMethod.POST)
-	public String adminVolUpdate(@ModelAttribute Volunteer vol, @RequestParam("page") int page, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, Model model) {
-		
-		int serviceNo = vol.getServiceNo();
-		
+	public String adminVolUpdate(@RequestParam("page") int page, @RequestParam("serviceNo") int serviceNo, @ModelAttribute Volunteer vol, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, Model model) {
+		System.out.println("page : " + page);
+		System.out.println("serviceNo : " + serviceNo);
 		int result = volBoardService.updateVolAd(vol);
 		
 		VolunteerFile vF = new VolunteerFile();
@@ -767,7 +757,7 @@ public class VolunteerController {
 		}
 			
 		if(result > 0) {
-			return "redirect:serviceAdDetail.vol?serviceNo=" + serviceNo + "&page=" + page;
+			return "redirect:serviceAdDetail.vol?volId=" + serviceNo + "&page="+page;
 		} else {
 			throw new VolunteerException("공고 수정에 실패하였습니다.");
 		}

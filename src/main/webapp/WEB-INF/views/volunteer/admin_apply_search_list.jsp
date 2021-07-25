@@ -135,7 +135,7 @@
 				</td>
 				
 				<td align="center" class="tableName">${ vol.mName }</td>
-				<td align="center" class="tableId">${ vol.mId }</td>
+				<td align="center" class="tableId">${ vol.memberNo }</td>
 				<td align="center" class="tableTime">${ vol.volDate }</td>
 				<td align="center" class="tableStatus">${ vol.volStatus }</td>
 			</tr>
