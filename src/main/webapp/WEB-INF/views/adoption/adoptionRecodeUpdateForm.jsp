@@ -49,9 +49,9 @@
 						<div class="form-group">
 							<label>첨부파일</label>
 							<input type="file" id="uploadFile" multiple="multiple" name="reloadFile">
-							<c:if test="${ !empty adopboard.originalFileName }">
+							<c:if test="${ !empty af.fileName }">
 							<br>현재 업로드한 파일 : 
-							<a href="${ contextPath }/resources/auploadFiles/${ adopboard.renameFileName }" download="${ adopboard.originalFileName }">${ adopboard.originalFileName }</a>
+							<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
 							</c:if>
 						</div>
 					</td>
@@ -66,12 +66,10 @@
 				</tr>
 			</table>
 			<div class="btnDiv">
-			<button type="submit" class="btn btn-default">작성</button> 
+			<button type="submit" class="btn btn-default">수정</button> 
 			</div>
 		</form>
 	</div>
-	
-	
 </div>
 </body>
 </html>

@@ -83,7 +83,7 @@ public class AdoptionDAO {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-		return (ArrayList) sqlSession.selectList("adoptionMapper.admin_selectAnimalList", null, rowBounds);
+		return (ArrayList) sqlSession.selectList("adoptionMapper.selectAdopFile", null, rowBounds);
 	}
 
 	// 입양 공고 등록
@@ -165,6 +165,10 @@ public class AdoptionDAO {
 
 	public int adoptionrDelete(SqlSessionTemplate sqlSession, int rId) {
 		return sqlSession.update("adoptionMapper.adoptionrDelete", rId);
+	}
+
+	public int insertAdopFile(SqlSessionTemplate sqlSession, AdoptionFile affi) {
+		return sqlSession.insert("adoptionMapper.insertAdopFile", affi);
 	}
 
 
