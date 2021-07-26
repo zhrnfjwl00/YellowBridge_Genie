@@ -201,7 +201,7 @@
 						var $userId = id;
 						if( $userId.trim() == $writerId.trim() ){
 							var $rUpdateBtn = $('<td width=50><a href="reviewrUpdateForm.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">수정</a></td>');						
-							var $rdeleteBtn = $('<td width=50><a href="reviewrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');						
+							var $rdeleteBtn = $('<td width=50><a href="reviewrDelete.vol?rId='+ data[i].volrId + '&volId=' + volId + '&page=' + page + '">삭제</a></td>');
 						} else {
 							var $rUpdateBtn = $('<td>').text('수정');
 							var $rdeleteBtn = $('<td>').text('삭제');
@@ -244,7 +244,11 @@
 		$("#deleteBtn").on("click", function(){
 			var volId = ${review.volId};
 			
-			location.href = "ReviewDelete.vol?volId="+volId;
+			var deleteYN = confirm("삭제하시겠습니까?");
+			if(deleteYN == true){
+				location.href = "ReviewDelete.vol?volId="+volId;
+			}
+			
 		})
 </script> 
 <script type="text/javascript">

@@ -345,6 +345,21 @@ public class VolBoardServiceImpl implements VolBoardService{
 		return VolBoardDAO.selectvList(sqlSession);
 	}
 
+	@Override
+	public int stopAd(int serviceNo) {
+		return VolBoardDAO.stopAd(sqlSession, serviceNo);
+	}
+
+	@Override
+	public int continueAd(int serviceNo) {
+		return VolBoardDAO.continueAd(sqlSession, serviceNo);
+	}
+
+	@Override
+	public int vdeleteFile(int fileNo) {
+		return VolBoardDAO.vdeleteFile(sqlSession, fileNo);
+	}
+
 
 	
 }

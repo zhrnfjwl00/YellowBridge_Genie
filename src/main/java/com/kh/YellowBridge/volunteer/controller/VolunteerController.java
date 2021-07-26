@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.kh.YellowBridge.adoption.model.exception.AdoptionException;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.vo.Member;
@@ -533,30 +534,28 @@ public class VolunteerController {
 	
 	// 게시판 수정 중 파일 삭제
 	@RequestMapping("vdeleteFile.vol")
-	public String vdeleteFile(@RequestParam("fileNo") int fileNo, @RequestParam("volId") int volId, @RequestParam("page") int page){
+	@ResponseBody
+	public String vdeleteFile(@RequestParam("fileNo") int fileNo, @RequestParam("volId") int volId, @RequestParam("page") int page, HttpServletRequest request){
 		System.out.println("fileNo : " + fileNo);
-		System.out.println("page : " + page);
+		System.out.println("volId : " + volId);
 		
-		
-		VolunteerFile vF = new VolunteerFile();
-		VolunteerFile vFu = volBoardService.selectVolFile(volId);
-		System.out.println("삭제할 파일 검색결과 : " + vFu);
-		
-		
-		int result = 0;
-		
-		if(vFu != null) {
-			result = volBoardService.deleteVolFile(fileNo);
-		}
-		
+		int result = volBoardService.vdeleteFile(fileNo);
+		System.out.println("result : " + result);
 		
 		if(result > 0) {
+			return "success";
+		} else {
+			throw new AdoptionException("봉사 게시판 수정중 파일삭제에 실패하였습니다.");
+		}
+		
+		/*if(result > 0) {
 			return "redirect:serviceBoardUpdateForm.vol?volId=" + volId + "&page=" + page;
 		} else {
 			throw new VolunteerException("파일 삭제에 실패하였습니다.");
-		}
+		}*/
 		
 	}
+	
 	
 	// 게시판 댓글 삭제
 	@RequestMapping("volrDelete.vol")
@@ -784,6 +783,30 @@ public class VolunteerController {
 			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
 		}
 
+	}
+	
+	// 관리자: 공고 신청 중단
+	@RequestMapping("vAdStop.vol")
+	public String vAdStop(@RequestParam("page") int page, @RequestParam("serviceNo") int serviceNo){
+		int result = volBoardService.stopAd(serviceNo);
+		
+		if(result > 0) {
+			return "redirect:serviceAdDetail.vol?volId=" + serviceNo + "&page="+page;
+		} else {
+			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
+		}
+	}
+	
+	// 관리자: 공고 신청 재개
+	@RequestMapping("vAdContinue.vol")
+	public String vAdContinue(@RequestParam("page") int page, @RequestParam("serviceNo") int serviceNo){
+		int result = volBoardService.continueAd(serviceNo);
+		
+		if(result > 0) {
+			return "redirect:serviceAdDetail.vol?volId=" + serviceNo + "&page="+page;
+		} else {
+			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
+		}
 	}
 	
 	// 관리자: 봉사상세조회 상태 수정

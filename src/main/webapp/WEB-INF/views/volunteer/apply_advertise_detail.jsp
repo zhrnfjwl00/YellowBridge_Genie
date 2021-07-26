@@ -6,6 +6,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
+<!-- BootStrap CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+ <!-- 서머노트를 위해 추가해야할 부분 -->
+ <script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
+
 <title>봉사 신청 등록</title>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c928d855be38f3adf0df68edd3fca4ae"></script>
@@ -76,6 +93,35 @@
 	#rtb th{border-bottom: 1px dotted grey;}
 	#rtb td{padding: 3px;}
 
+	#stopBtn{
+    	background-color: red;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        padding: 5px 30px;
+        margin-top: 30px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+	#continueBtn{
+    	background-color: rgb(189, 204, 148);
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        padding: 5px 30px;
+        margin-top: 30px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+	
 	#applybtn{
     	background-color: rgb(189, 204, 148);
         border: 1px solid white;
@@ -124,13 +170,12 @@
 </style>
 </head>
 <body>
-<c:import url="../common/header.jsp"/>
+<c:import url="header.jsp"/>
 <div class="servicedetail">
 	
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
 	</div>
-	
 	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volad.serviceNo }" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
@@ -144,6 +189,8 @@
 						<input type="hidden" id="page" name="page" value="${page}"> 
 						<button type="button" class="update_btn btn btn-warning" id="updateBtn">수정</button>
 						<button type="button" class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
+						<button type="button" id="stopBtn">신청중지</button>
+						<button type="button" id="continueBtn">신청재개</button>
 						</td>
 					</tr>
 					<tr>
@@ -166,14 +213,14 @@
 					<c:if test="${ !empty sessionScope.loginUser }">
 					<tr>
 						<td>
-							<c:if test="${ volad.serviceStatus eq 'Y' }">
-								<div style="text-align: center;">
-								<button id="applybtn" onclick="goApply();">봉사신청</button>
-								</div>
-							</c:if>
-							<c:if test="${ volad.serviceStatus eq 'P' }">
+							<c:if test="${ volad.serviceEnd eq '신청중지' }">
 								<div style="text-align: center; padding-top: 15px; color: navy; font-size: 18px;" >
 								<b>이미 신청이 마감된 봉사입니다.</b>
+								</div>
+							</c:if>
+							<c:if test="${ volad.serviceEnd ne '신청중지' }">
+								<div style="text-align: center;">
+								<button id="applybtn" onclick="goApply();">봉사신청</button>
 								</div>
 							</c:if>
 						</td>
@@ -195,7 +242,7 @@
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				<textarea id="content" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent">${ volad.serviceContent }</textarea>
+				<textarea id="summernote" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent">${ volad.serviceContent }</textarea>
 				<%-- ${fn:replace(volad.serviceContent, newLineChar, "<br>")} --%>
 			</div>
 		</div>
@@ -269,6 +316,26 @@
 		var deleteYN = confirm("삭제하시겠습니까?");
 		if(deleteYN == true){
 			location.href = "vAdDelete.vol?serviceNo=" + serviceNo;
+		}
+	})
+	
+	$("#stopBtn").on("click", function(){
+		var serviceNo = ${ volad.serviceNo };
+		var page = ${ page };
+		
+		var stopYN = confirm("해당 봉사의 신청을 중단하시겠습니까?");
+		if(stopYN == true){
+			location.href = "vAdStop.vol?serviceNo=" + serviceNo + "&page=" + page;
+		}
+	})
+	
+	$("#continueBtn").on("click", function(){
+		var serviceNo = ${ volad.serviceNo };
+		var page = ${ page };
+		
+		var continueYN = confirm("해당 봉사의 신청을 재개하시겠습니까?");
+		if(continueYN == true){
+			location.href = "vAdContinue.vol?serviceNo=" + serviceNo + "&page=" + page;
 		}
 	})
 	
@@ -404,6 +471,20 @@
 	    yAnchor: 1 
 	});
 
-	</script>
+</script>
+<script type="text/javascript">
+$('#summernote').summernote({
+	  // 에디터 높이
+	  minheight: 500,
+	  // 에디터 한글 설정
+	  lang: "ko-KR",
+	  // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
+	  focus : true,
+	});
+	
+	$('#summernote').summernote('disable');
+	
+    
+</script>
 </body>
 </html>
