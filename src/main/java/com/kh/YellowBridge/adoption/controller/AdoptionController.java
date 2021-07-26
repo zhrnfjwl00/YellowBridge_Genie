@@ -21,6 +21,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,12 +38,10 @@ import com.kh.YellowBridge.adoption.model.vo.AdoptionReply;
 import com.kh.YellowBridge.adoption.model.vo.AnimalInfo;
 import com.kh.YellowBridge.adoption.model.vo.AnimalPagination;
 import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
+import com.kh.YellowBridge.adoption.model.vo.RecodePagination;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.vo.Member;
-import com.kh.YellowBridge.volunteer.model.exception.VolunteerException;
-import com.kh.YellowBridge.volunteer.model.vo.VolReply;
-import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
 
 @Controller
 public class AdoptionController {
@@ -50,41 +49,22 @@ public class AdoptionController {
 	// 의존성 주입
 	@Autowired
 	private AdoptionService aService;
-
+	
+	
+	/* -------------------- 입양절차 시작 -------------------- */
+	
 	// 입양절차
 	@RequestMapping("adopProcess.ado")
 	public String adopProcess() {
 		return "adopProcess";
 	}
-
-	// 입양공고리스트 , 페이징
-	@RequestMapping("adopNotice.ado")
-	public ModelAndView adopNotice(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
-			@DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
-		int currentPage = 1; // 연산에서 사용할 변수
-
-		if (page != null) {
-			currentPage = page;
-		}
-		int listCount = aService.getAnimalListCount();
-
-		// 페이징 처리를 위한 연산 : Pagination
-		PageInfo pi = AnimalPagination.getPageInfo(currentPage, listCount);
-//			AdoptionFile af = aService.selectAnimalile(animalNo);
-
-		ArrayList<AnimalInfo> animallist = aService.selectAnimalList(pi);
-		System.out.println(animallist);
-
-		if (animallist != null) {
-
-			mv.addObject("animallist", animallist).addObject("pi", pi).setViewName("adopNotice");
-
-		} else {
-			throw new AdoptionException("입양공고 조회에 실패하였습니다.");
-		}
-
-		return mv;
-	}
+	
+	/* -------------------- 입양절차 끝 -------------------- */
+	
+	
+	
+	
+	/* -------------------- (관리자) 입양공고/요청관리 시작 -------------------- */
 
 	// 입양공고 등록 폼 이동
 	@RequestMapping("animalNoticeWriterForm.ado")
@@ -100,29 +80,13 @@ public class AdoptionController {
 	}
 
 	@RequestMapping("animalInsert.ado")
-	public String animalInsert(@ModelAttribute AnimalInfo a, @RequestParam("uploadFile") MultipartFile uploadFile,
-			HttpServletRequest request, @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
+	public String animalInsert(@ModelAttribute AnimalInfo a, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
 		AdoptionFile af = new AdoptionFile();
-
-		System.out.println("AnimalInfo : " + a);
-
-		System.out.println("uploadFile : " + uploadFile);
-		System.out.println("uploadFile.getOriginalFilename() : " + uploadFile.getOriginalFilename());
-		// [파일을 넣었을 떄]
-		// uploadFileMultipartFile : [field="uploadFile", filename=스크린샷 2021-06-17
-		// 오후 2.50.26.png, contentType=image/png, size=231792]
-		// uploadFile.getOriginalFilename() : 스크린샷 2021-06-17 오후 2.50.26.png
-
-		// [파일을 넣지 않았을 떄]
-		// uploadFileMultipartFile : [field="uploadFile", filename=,
-		// contentType=application/octet-stream, size=0]
-		// uploadFile.getOriginalFilename() :
-
+		
 		// 파일을 넣은지 안넣은지의 여부는 getOriginalFilename() 이 있vs없다로 구분(확인 가능함)
-
-//				if(!uploadFile.getOriginalFilename().equals("")) {
 		if (uploadFile != null && !uploadFile.isEmpty()) {
 			// getOriginalFilename이 "" <-- 아무것도 들어오지 않은 것과 같지 않다면!
+			
 			AdoptionFile affi = saveFile(uploadFile, request);
 
 			if (affi.getFileChangeName() != null) {
@@ -131,10 +95,8 @@ public class AdoptionController {
 				af.setFilePath(affi.getFilePath());
 
 				System.out.println("AdoptionFile : " + af);
-
 			}
 		}
-
 		int result = aService.insertAnimal(a, af);
 
 		if (result > 0) {
@@ -142,7 +104,6 @@ public class AdoptionController {
 		} else {
 			throw new AdoptionException("입양 공고 등록에 실패하였습니다.");
 		}
-
 	}
 
 	// 입양 신청서 폼 이동
@@ -160,7 +121,77 @@ public class AdoptionController {
 			throw new AdoptionException("입양신청에 실패하였습니다.");
 		}
 	}
+	
+	// 관리자_입양공고 조회 리스트
+		@RequestMapping("admin_adoption.ado")
+		public ModelAndView adminRecodeList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
+				@DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
+			int currentPage = 1; // 연산에서 사용할 변수
 
+			if (page != null) {
+				currentPage = page;
+			}
+			int listCount = aService.getAnimalListCount();
+
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+
+			ArrayList<AnimalInfo> animallist = aService.admin_selectAnimalList(pi);
+			System.out.println(animallist);
+
+			if (animallist != null) {
+				mv.addObject("animallist", animallist).addObject("pi", pi).setViewName("admin_adopRecodeList");
+			} else {
+				throw new AdoptionException("관리자 입양공고 조회에 실패하였습니다.");
+			}
+			return mv;
+		}
+
+		// 관리자_입양공고 삭제 (선택된 공고만 삭제)
+		@ResponseBody
+		@RequestMapping("admin_deleteNotice.ado")
+		public String deleteNotice(@RequestParam(required = false, value = "checkbox[]") List<Integer> animalNo) {
+			// view에서 체크된 값 Integer List로 가져오기
+			// vo에 animalNo라고 설정했으므로 animalNo로 해주어야 한다.
+
+			for (int i = 0; i < animalNo.size(); i++) {
+				int result = aService.deleteAnimalNotice(animalNo.get(i));
+				System.out.println(animalNo.get(i));
+			}
+			// vo에 animal_no는 int로 선언되어 있고, script에서 Ajax를 통해 키 값이 checkArr인 배열로 보냈으니까
+			// @RequestParam(value="checkArr[]")로 받고
+			// 타입은 배열이니까 꼭 List<Integer> 로 받아옴.
+
+			return "redirect:admin_adoption.ado";
+		}
+	
+	/* -------------------- (관리자) 입양공고/요청관리 끝 -------------------- */
+	
+	
+	/* -------------------- (사용자) 입양공고 시작 -------------------- */
+
+	// 입양공고리스트 , 페이징
+	@RequestMapping("adopNotice.ado")
+	public ModelAndView adopNotice(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv, @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
+		int currentPage = 1; // 연산에서 사용할 변수
+
+		if (page != null) {
+			currentPage = page;
+		}
+		int listCount = aService.getAnimalListCount();
+
+		PageInfo pi = AnimalPagination.getPageInfo(currentPage, listCount);
+
+		ArrayList<AnimalInfo> animallist = aService.selectAnimalList(pi);
+		System.out.println(animallist);
+
+		if (animallist != null) {
+			mv.addObject("animallist", animallist).addObject("pi", pi).setViewName("adopNotice");
+		} else {
+			throw new AdoptionException("입양공고 조회에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
 	// 사용자_입양신청서 작성
 	@RequestMapping("animalApplyInsert.ado")
 	public String animalApplyInsert(@ModelAttribute AnimalRequest ar, HttpSession session) {
@@ -172,7 +203,7 @@ public class AdoptionController {
 		System.out.println("폼 정보확인 : " + ar);
 		System.out.println("로그인 정보확인 : " + memberNo);
 
-		// 신청과 동시에 animalStatus의 값이 N으로 변경되어야 하기 때문에 impl에서 ANIMAL_INFO의 STATUS 값을 변경해줌.
+		// 신청과 "동시에" animalStatus의 값이 N으로 변경되어야 하기 때문에 impl에서 ANIMAL_INFO의 STATUS 값을 변경해줌.
 		// insert와 update를 한번에 할 수 있는 쿼리문은 없음.(?)
 		int result = aService.insertAppForm(ar, animalNo);
 
@@ -203,8 +234,7 @@ public class AdoptionController {
 
 	// 사용자_입양신청조회 리스트
 	@RequestMapping("adopInfo.ado")
-	public ModelAndView adopInfo(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
-			HttpSession session, HttpServletRequest request) {
+	public ModelAndView adopInfo(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv, HttpSession session, HttpServletRequest request) {
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
@@ -231,72 +261,29 @@ public class AdoptionController {
 		}
 		return mv;
 	}
-
-	// 관리자_입양공고 조회 리스트
-	@RequestMapping("admin_adoption.ado")
-	public ModelAndView adminRecodeList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
-			@DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
-		int currentPage = 1; // 연산에서 사용할 변수
-
-		if (page != null) {
-			currentPage = page;
-		}
-		int listCount = aService.getAnimalListCount();
-
-		// 페이징 처리를 위한 연산 : Pagination
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-//				AdoptionFile af = aService.selectAnimalile(animalNo);
-
-		ArrayList<AnimalInfo> animallist = aService.admin_selectAnimalList(pi);
-		System.out.println(animallist);
-
-		if (animallist != null) {
-
-			mv.addObject("animallist", animallist).addObject("pi", pi).setViewName("admin_adopRecodeList");
-
-		} else {
-			throw new AdoptionException("관리자 입양공고 조회에 실패하였습니다.");
-		}
-		return mv;
-	}
-
-	// 관리자_입양공고 삭제 (선택된 공고만 삭제)
-	@ResponseBody
-	@RequestMapping("admin_deleteNotice.ado")
-	public String deleteNotice(@RequestParam(required = false, value = "checkbox[]") List<Integer> animalNo) {
-		// view에서 체크된 값 Integer List로 가져오기
-		// vo에 animalNo라고 설정했으므로 animalNo로 해주어야 한다.
-
-		for (int i = 0; i < animalNo.size(); i++) {
-			int result = aService.deleteAnimalNotice(animalNo.get(i));
-			System.out.println(animalNo.get(i));
-		}
-		// vo에 animal_no는 int로 선언되어 있고, script에서 Ajax를 통해 키 값이 checkArr인 배열로 보냈으니까
-		// @RequestParam(value="checkArr[]")로 받고
-		// 타입은 배열이니까 꼭 List<Integer> 로 받아온다 !
-
-		return "redirect:admin_adoption.ado";
-	}
-
+	/* -------------------- (사용자) 입양공고 끝 -------------------- */
+	
+	
+	
+	
+	
+	/* -------------------- (사용자) 입양일지 시작 -------------------- */
 	// 사용자_입양일지 리스트, 페이징처리
 	@RequestMapping("adopRecode.ado")
 	public ModelAndView boardList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv) {
-		int currentPage = 1; // 연산에서 사용할 변수
-
+		int currentPage = 1;
+		
 		if (page != null) {
 			currentPage = page;
 		}
 		int listCount = aService.getListCount();
 
-		// 페이징 처리를 위한 연산 : Pagination
-		PageInfo pi = AnimalPagination.getPageInfo(currentPage, listCount);
+		PageInfo pi = RecodePagination.getPageInfo(currentPage, listCount);
 
 		ArrayList<AdoptionBoard> adoplist = aService.selectList(pi);
 
 		if (adoplist != null) {
-
 			mv.addObject("adoplist", adoplist).addObject("pi", pi).setViewName("adoptionRecodeList");
-
 		} else {
 			throw new AdoptionException("입양일지리스트 조회에 실패하였습니다.");
 		}
@@ -311,10 +298,9 @@ public class AdoptionController {
 		AdoptionFile af = aService.selectAdopFile(adopId);
 
 		//비로그인시 오류문구 출력
-//		if(loginId == null) {
-//			request.setAttribute("msg", "로그인 후 이용하세요");
-//		}
-		
+		if(loginId == null) {
+			request.setAttribute("msg", "로그인 후 이용하세요");
+		}
 		
 		if (adopboard != null) {
 			mv.addObject("page", page).addObject("loginId", loginId).addObject("adopboard", adopboard).addObject("af", af).setViewName("adoptionRecodeDetail");
@@ -335,54 +321,29 @@ public class AdoptionController {
 	@RequestMapping("adopinsert.ado")
 	public String adopInsertBoard(@ModelAttribute AdoptionBoard a, @RequestParam("uploadFile") MultipartFile uploadFile,
 			HttpServletRequest request, HttpSession session) {
-
-		AdoptionFile af = new AdoptionFile();
-
-		System.out.println("AdoptionBoard : " + a);
-
-		System.out.println("uploadFile : " + uploadFile);
-		System.out.println("uploadFile.getOriginalFilename() : " + uploadFile.getOriginalFilename());
-		// [파일을 넣었을 떄]
-		// uploadFileMultipartFile : [field="uploadFile", filename=스크린샷 2021-06-17
-		// 오후 2.50.26.png, contentType=image/png, size=231792]
-		// uploadFile.getOriginalFilename() : 스크린샷 2021-06-17 오후 2.50.26.png
-
-		// [파일을 넣지 않았을 떄]
-		// uploadFileMultipartFile : [field="uploadFile", filename=,
-		// contentType=application/octet-stream, size=0]
-		// uploadFile.getOriginalFilename() :
-
-		// 파일을 넣은지 안넣은지의 여부는 getOriginalFilename() 이 있vs없다로 구분(확인 가능함)
-
-//		if(!uploadFile.getOriginalFilename().equals("")) {
-		if (uploadFile != null && !uploadFile.isEmpty()) {
-			// getOriginalFilename이 "" <-- 아무것도 들어오지 않은 것과 같지 않다면!
-			AdoptionFile affi = saveFile(uploadFile, request);
-
-			if (affi.getFileChangeName() != null) {
-				af.setFileName(uploadFile.getOriginalFilename());
-				af.setFileChangeName(affi.getFileChangeName());
-				af.setFilePath(affi.getFilePath());
-
-				System.out.println("AdoptionFile : " + af);
-
+		String nickname = ((Member)session.getAttribute("loginUser")).getNickname();
+		a.setAdopWriterNickname(nickname);
+		int result = aService.insertAdopBoard(a);
+		
+		AdoptionFile affi = new AdoptionFile();
+		
+		if(uploadFile != null && !uploadFile.isEmpty()) {
+			AdoptionFile af = saveFile(uploadFile, request);
+			if(af != null) {
+				affi.setFileName(uploadFile.getOriginalFilename());
+				affi.setFileChangeName(af.getFileChangeName());
+				affi.setFilePath(af.getFilePath());
+				aService.insertAdopFile(affi);
 			}
 		}
-
-		// session에 저장된 userId를 writer에 저장
-		String nickname = ((Member) session.getAttribute("loginUser")).getNickname();
-		// vo에 writer를 세팅
-		// 현재 로그인 서비스가 없어 임의로 작성자 삽입
-		a.setAdopWriterNickname(nickname);
-
-		int result = aService.insertAdopBoard(a, af);
-
 		if (result > 0) {
 			return "redirect:adopRecode.ado";
 		} else {
 			throw new AdoptionException("입양 일지 등록에 실패하였습니다.");
 		}
 	}
+	
+	
 
 	// 내가 지정한 폴더에 파일을 저장하는 메소드
 	public AdoptionFile saveFile(MultipartFile uploadFile, HttpServletRequest request) {
@@ -390,8 +351,6 @@ public class AdoptionController {
 
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
-		// request.getSession().getServletContext().getRealPath("resources"); --->
-		// resources폴더의 위치
 		String savePath = root + "/auploadFiles";
 
 		File folder = new File(savePath);
@@ -421,42 +380,93 @@ public class AdoptionController {
 
 	}
 
-	// 게시물 수정폼으로 이동
+	// (사용자)입양일지 수정 폼으로 이동
 	@RequestMapping("adopUpdateForm.ado")
-	public String adopUpdateForm(@RequestParam("adopId") int adopId, @RequestParam("page") int page, Model model) {
+	public String adopUpdateForm(@RequestParam("adopId") int adopId, @RequestParam("page") int page, Model model, HttpServletRequest request) {
 		// 기존 데이터를 가지고서 넘어가야함.
 		// selectBoard를 이용
 
 		AdoptionBoard adopboard = aService.selectAdopBoard(adopId);
-
-		model.addAttribute("adopboard", adopboard);
-		model.addAttribute("page", page);
-
+		AdoptionFile af = aService.selectAdopFile(adopId);
+		
+		if(adopboard != null) {
+			model.addAttribute("page", page).addAttribute("adopboard", adopboard).addAttribute("af", af);
+		}
 		return "adoptionRecodeUpdateForm";
-
 	}
 
-	// 게시물 수정 보류 @@@@@@@@@@@@@@@@@@@@@@@@@@
-
+	// (사용자)입양일지 수정
+	@RequestMapping(value="adopUpdate.ado", method=RequestMethod.POST)
+	public String adopUpdate(@RequestParam("page") int page, @ModelAttribute AdoptionBoard adopboard, @RequestParam("reloadFile") MultipartFile uploadFile, HttpServletRequest request, Model model) {
+		int adopId = adopboard.getAdopId();
+		
+		int result = aService.updateRecodeBoard(adopboard);
+		
+		AdoptionFile aF = new AdoptionFile();
+		AdoptionFile aFu = aService.selectAdopFile(adopId);
+		
+		if(aFu != null) {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				aFu = aService.selectAdopFile(adopId);
+				int fileNo = aFu.getFileNo();
+				
+				int result2 = aService.deleteAdopFile(fileNo);
+				
+				if(result2 > 0) {
+					AdoptionFile aFile = saveFile(uploadFile, request);
+					System.out.println(aFile);
+					
+					if(aFile != null) {
+						aF.setFileName(uploadFile.getOriginalFilename());
+						aF.setFileChangeName(aFile.getFileChangeName());
+						aF.setFilePath(aFile.getFilePath());
+						aF.setBoardNo(adopId);
+						int result3 = aService.updateAdopFile(aF);
+					}
+				}
+			}
+		} else {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				AdoptionFile aFile = saveFile(uploadFile, request);
+				
+				if(aFile != null) {
+					aF.setFileName(uploadFile.getOriginalFilename());
+					aF.setFileChangeName(aFile.getFileChangeName());
+					aF.setFilePath(aFile.getFilePath());
+					aF.setBoardNo(adopId);
+					int result4 = aService.updateAdopFile(aF);
+				}
+			} 
+		}
+		if(result > 0) {
+			return "redirect:adoptionRecodeDetail.ado?adopId=" + adopId + "&page=" + page;
+		} else {
+			throw new AdoptionException("입양일지 수정에 실패하였습니다.");
+		}
+	}
 	
 	
+	// (사용자) 입양일지 수정중 첨부파일 삭제 AJAX
+	@RequestMapping("aDeleteAdopFile.ado")
+	@ResponseBody
+	public String deleteFile(@RequestParam("fileNo") int fileNo, @RequestParam("adopId") int adopId, HttpServletRequest request) {
+		System.out.println("fileNo 값이 잘 넘어갔는지 확인 : " + fileNo);
+		
+		// 파일삭제할때처럼 status 값만 N으로 수정 후 success 로 반환해줌.
+		int result = aService.aDeleteAdopFile(fileNo);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new AdoptionException("입양일지 수정중 파일삭제에 실패하였습니다.");
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 게시물 삭제
+	// 입양일지 삭제
 	@RequestMapping("adopDelete.ado")
 	public String adopDeleteBoard(@RequestParam("adopId") int adopId) {
 		int result = aService.deleteAdopBoard(adopId);
-
+		
 		if (result > 0) {
 			return "redirect:adopRecode.ado";
 		} else {
@@ -464,6 +474,11 @@ public class AdoptionController {
 		}
 
 	}
+	
+	
+	/* -------------------- (사용자) 입양일지 끝 -------------------- */
+	
+	/* -------------------- (사용자) 입양일지_댓글 시작 -------------------- */
 
 	// 댓글 추가
 	@RequestMapping("adopaddReply.ado")
@@ -488,32 +503,31 @@ public class AdoptionController {
 	// 입양일지_댓글 수정 폼 
 	@RequestMapping("adoprUpdateForm.ado")
 	public ModelAndView adoprUpdateForm(@RequestParam("page") int page, @RequestParam("rId") int rId, @RequestParam("adopId") int adopId, ModelAndView mv, HttpServletRequest request){
-		AdoptionBoard aBoard = aService.selectAdopBoard(adopId);
+		AdoptionBoard adopboard = aService.selectAdopBoard(adopId);
 		AdoptionReply ar = aService.selectAdopReply(rId);
 		
-		if(aBoard != null) {
-			mv.addObject("page", page).addObject("aBoard", aBoard).addObject("ar", ar).setViewName("adoptionRecodeDetail_update_reply");
+		if(adopboard != null) {
+			mv.addObject("page", page).addObject("adopboard", adopboard).addObject("ar", ar).setViewName("adoptionRecodeDetail_update_reply");
 		} else {
 			throw new AdoptionException("댓글 수정에 실패하였습니다.");
 		}
 		return mv;
 	}
 	
-	// 입양일지_댓글 수정
+		// 입양일지_댓글 수정
 		@RequestMapping(value="adoprUpdate.ado")
 		@ResponseBody
 		public String adoprUpdate(@ModelAttribute AdoptionReply adopr, HttpServletRequest request, Model model) {
 			System.out.println("수정할 reply : " + adopr);
-//			int result = aService.updateAdopReply(adopr);
-//			System.out.println("댓글 수정 결과 : " + result);
-//			
-//			if(result > 0) {
-//				return "success";
-//			} else {
-//				throw new AdoptionException("댓글 수정에 실패했습니다.");
-//			}
+			int result = aService.updateAdopReply(adopr);
 			
-			return "";
+			System.out.println("댓글 수정 결과 : " + result);
+			
+			if(result > 0) {
+				return "success";
+			} else {
+				throw new AdoptionException("댓글 수정에 실패했습니다.");
+			}
 		}
 	
 		// 입양일지_댓글 삭제
@@ -524,7 +538,6 @@ public class AdoptionController {
 			int result = aService.adoptionrDelete(rId);
 			
 			if(result > 0) {
-//				return "success";
 				return "redirect:adoptionRecodeDetail.ado?adopId=" + adopId + "&page=" + page;
 			} else {
 				throw new AdoptionException("댓글 삭제에 실패하였습니다.");
@@ -535,16 +548,14 @@ public class AdoptionController {
 
 	// 댓글 리스트 노출
 	@RequestMapping("adoprList.ado")
-	public void getReplyList(@RequestParam("adopId") int adopId, HttpServletResponse response)
-			throws JsonIOException, IOException {
-
+	public void getReplyList(@RequestParam("adopId") int adopId, HttpServletResponse response) throws JsonIOException, IOException {
 		ArrayList<AdoptionReply> list = aService.selectReplyList(adopId);
 
 		// 인코딩
 		response.setContentType("application/json; charset=UTF-8");
 
 		// 객체를 여러개 보내고 싶으면 JSON,GSON 사용
-//		Gson gson = new Gson();
+		// Gson gson = new Gson();
 
 		// 날짜 포멧을 바꾸고 싶으면 GsonBuilder사용
 		GsonBuilder gb = new GsonBuilder();
@@ -553,18 +564,22 @@ public class AdoptionController {
 		gson.toJson(list, response.getWriter());
 
 	}
+	
+	
+	/* -------------------- (사용자) 입양일지_댓글 끝 -------------------- */
+	
+	
+	/* -------------------- 입양공고 메인페이지 노출 시작  -------------------- */
 
 	// 메인페이지 입양공고 게시
 	@RequestMapping("animalList.ado")
 	@ResponseBody
 	public void adopList(HttpServletResponse response) throws JsonIOException, IOException {
-
 		ArrayList<AnimalInfo> aList = aService.selectAList();
-
 		response.setContentType("application/json; charset=UTF-8");
-
 		new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(aList, response.getWriter());
 
+	
 	}
-
+	/* -------------------- 입양공고 메인페이지 노출 끝  -------------------- */
 }

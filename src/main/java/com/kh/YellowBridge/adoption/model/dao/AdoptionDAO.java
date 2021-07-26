@@ -83,7 +83,7 @@ public class AdoptionDAO {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-		return (ArrayList) sqlSession.selectList("adoptionMapper.admin_selectAnimalList", null, rowBounds);
+		return (ArrayList) sqlSession.selectList("adoptionMapper.selectAdopFile", null, rowBounds);
 	}
 
 	// 입양 공고 등록
@@ -159,7 +159,6 @@ public class AdoptionDAO {
 	}
 
 	public int updateAdopReply(SqlSessionTemplate sqlSession, AdoptionReply adopr) {
-		// TODO Auto-generated method stub
 		return sqlSession.update("adoptionMapper.updateAdopReply", adopr);
 	}
 
@@ -167,6 +166,19 @@ public class AdoptionDAO {
 		return sqlSession.update("adoptionMapper.adoptionrDelete", rId);
 	}
 
+	public int insertAdopFile(SqlSessionTemplate sqlSession, AdoptionFile affi) {
+		return sqlSession.insert("adoptionMapper.insertAdopFile", affi);
+	}
 
-	
+	public int updateRecodeBoard(SqlSessionTemplate sqlSession, AdoptionBoard adopboard) {
+		return sqlSession.update("adoptionMapper.updateRecodeBoard", adopboard);
+	}
+
+	public int deleteAdopFile(SqlSessionTemplate sqlSession, int fileNo) {
+		return sqlSession.update("adoptionMapper.deleteAdopFile", fileNo);
+	}
+
+	public int updateAdopFile(SqlSessionTemplate sqlSession, AdoptionFile aF) {
+		return sqlSession.insert("adoptionMapper.updateAdopFile", aF);
+	}
 }

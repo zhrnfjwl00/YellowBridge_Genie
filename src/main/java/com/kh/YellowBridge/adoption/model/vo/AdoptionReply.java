@@ -10,13 +10,12 @@ public class AdoptionReply {
 	private String rNickname;
 	private String rWriterNo;
 	private Date rCreateDate;
-	private Date rModifyDate;
 	private String rStatus;
 	
 	public AdoptionReply() {}
 
 	public AdoptionReply(int rId, String rContent, int refBid, String rWriter, String rNickname, String rWriterNo,
-			Date rCreateDate, Date rModifyDate, String rStatus) {
+			Date rCreateDate, String rStatus) {
 		super();
 		this.rId = rId;
 		this.rContent = rContent;
@@ -25,7 +24,6 @@ public class AdoptionReply {
 		this.rNickname = rNickname;
 		this.rWriterNo = rWriterNo;
 		this.rCreateDate = rCreateDate;
-		this.rModifyDate = rModifyDate;
 		this.rStatus = rStatus;
 	}
 
@@ -85,14 +83,6 @@ public class AdoptionReply {
 		this.rCreateDate = rCreateDate;
 	}
 
-	public Date getrModifyDate() {
-		return rModifyDate;
-	}
-
-	public void setrModifyDate(Date rModifyDate) {
-		this.rModifyDate = rModifyDate;
-	}
-
 	public String getrStatus() {
 		return rStatus;
 	}
@@ -105,10 +95,8 @@ public class AdoptionReply {
 	public String toString() {
 		return "AdoptionReply [rId=" + rId + ", rContent=" + rContent + ", refBid=" + refBid + ", rWriter=" + rWriter
 				+ ", rNickname=" + rNickname + ", rWriterNo=" + rWriterNo + ", rCreateDate=" + rCreateDate
-				+ ", rModifyDate=" + rModifyDate + ", rStatus=" + rStatus + "]";
+				+ ", rStatus=" + rStatus + "]";
 	}
-	
-	
 
 
 	
