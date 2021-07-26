@@ -122,13 +122,13 @@
 							<label>분류</label>
 							<select name="shelterName" id="category">
 			           			<option value="카테고리선택">카테고리선택</option>
-			           			<option value="21">대구 반야월 쉼터</option>
-			           			<option value="22">구미 사랑 보호소</option>
-			           			<option value="23">양산 사랑이네 집</option>
-			           			<option value="24">경남 창녕 쉼터</option>
-			           			<option value="25">대구 앵두네 집</option>
-			           			<option value="26">경산 아이들 쉼터</option>
-			           			<option value="27">청도 허그안 쉼터</option>
+			           			<option value="대구 반야월 쉼터">대구 반야월 쉼터</option>
+			           			<option value="구미 사랑 보호소">구미 사랑 보호소</option>
+			           			<option value="양산 사랑이네 집">양산 사랑이네 집</option>
+			           			<option value="경남 창녕 쉼터">경남 창녕 쉼터</option>
+			           			<option value="대구 앵두네 집">대구 앵두네 집</option>
+			           			<option value="경산 아이들 쉼터">경산 아이들 쉼터</option>
+			           			<option value="청도 허그안 쉼터">청도 허그안 쉼터</option>
 			           		</select>
 							</div>
 						</td>

@@ -15,6 +15,7 @@ public class VolunteerApply {
 	private String shelterName;
 	private String shelterTel;
 	private int memberNo;
+	private String mId;
 	private String mName;
 	private String mNickname;
 	private String mPhone;
@@ -94,6 +95,30 @@ public class VolunteerApply {
 		this.shelterName = shelterName;
 		this.shelterTel = shelterTel;
 		this.memberNo = memberNo;
+		this.mName = mName;
+		this.mNickname = mNickname;
+		this.mPhone = mPhone;
+		this.mAddress = mAddress;
+		this.mEmail = mEmail;
+	}
+	
+	public VolunteerApply(int serviceappNo, String volReq, String servicepayName, int volPrice, Date volDate,
+			String volStatus, String volYN, int serviceNo, String serviceName, String shelterName, String shelterTel,
+			int memberNo, String mId, String mName, String mNickname, String mPhone, String mAddress, String mEmail) {
+		super();
+		this.serviceappNo = serviceappNo;
+		this.volReq = volReq;
+		this.servicepayName = servicepayName;
+		this.volPrice = volPrice;
+		this.volDate = volDate;
+		this.volStatus = volStatus;
+		this.volYN = volYN;
+		this.serviceNo = serviceNo;
+		this.serviceName = serviceName;
+		this.shelterName = shelterName;
+		this.shelterTel = shelterTel;
+		this.memberNo = memberNo;
+		this.mId = mId;
 		this.mName = mName;
 		this.mNickname = mNickname;
 		this.mPhone = mPhone;
@@ -235,6 +260,14 @@ public class VolunteerApply {
 
 	public void setShelterTel(String shelterTel) {
 		this.shelterTel = shelterTel;
+	}
+	
+	public String getmId() {
+		return mId;
+	}
+
+	public void setmId(String mId) {
+		this.mId = mId;
 	}
 
 	@Override
