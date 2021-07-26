@@ -88,6 +88,16 @@
 		<h1 style="color:#BDCC94;"><b>봉사 신청 조회</b></h1>
 	</div>
 	
+	<br clear="all">
+	<br>
+	
+	<div class="menuwrap">
+	 <nav id="navDiv">
+		<div class="volmenu" id="serviceBoardList"><b>물품요청</b></div>
+		<div class="volmenu" id="volreview">봉사후기</div>
+	 </nav>
+	</div>
+	
 	<div id="searchArea" align="center">
 		<select id="searchCondition" name="searchCondition">
 			<option>-------</option>
@@ -103,7 +113,7 @@
 	<table id="serviceApplyBoardTable" class="display" style="width:100%">
 		<thead>
 			<tr>
-				<th align="center" class="selected"><input type="checkbox" name="selected" id="allSelected"></th>
+				<th align="center" class="selected"><input type="checkbox" name="selected" class="cate" id="allSelected" onclick="selectAll();"></th>
 				<th align="center" class="tableNo">NO.</th>
                 <th align="center" class="tableShelter">보호소</th>
                 <th align="center" class="tableCo">신청내역</th>
@@ -122,7 +132,7 @@
 		
 		<c:forEach var="vol" items="${ adminaplist }">
 			<tr>
-				<td class="selected"><input type="checkbox" name="checkbox" id="oneSelected" value="${ vol.serviceappNo }"></td>
+				<td class="selected"><input type="checkbox" name="checkbox" id="oneSelected" class="cate" onclick="selectOne();" value="${ vol.serviceappNo }"></td>
 				<td align="center" class="tableNo">${ vol.serviceappNo }</td>
 				<td align="center" class="tableShelter">${ vol.shelterName }</td>
 			
@@ -262,6 +272,38 @@
 		}
 	});
    
+</script>
+<script>
+	var all = document.getElementById("allSelected");
+	var category = document.getElementsByClassName("cate");
+
+	function selectAll(){
+		if(all.checked){
+			for(var i = 0; i < category.length; i++){
+				category[i].checked = true;
+			}
+		} else{
+			for(var i = 0; i < category.length; i++){
+				category[i].checked = false;
+			}
+		} 
+	}
+	
+	function selectOne(){
+		var count = 0;
+		
+		for(var i = 0; i < category.length; i++){
+			if(category[i].checked){
+				count++;
+			} 
+		}
+		
+		if(count != 5){
+			all.checked = false;
+		} else{
+			all.checked = true;
+		}
+	}
 </script>
 </body>
 </html>
