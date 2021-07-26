@@ -159,7 +159,6 @@ public class AdoptionDAO {
 	}
 
 	public int updateAdopReply(SqlSessionTemplate sqlSession, AdoptionReply adopr) {
-		// TODO Auto-generated method stub
 		return sqlSession.update("adoptionMapper.updateAdopReply", adopr);
 	}
 
@@ -171,6 +170,15 @@ public class AdoptionDAO {
 		return sqlSession.insert("adoptionMapper.insertAdopFile", affi);
 	}
 
+	public int updateRecodeBoard(SqlSessionTemplate sqlSession, AdoptionBoard adopboard) {
+		return sqlSession.update("adoptionMapper.updateRecodeBoard", adopboard);
+	}
 
-	
+	public int deleteAdopFile(SqlSessionTemplate sqlSession, int fileNo) {
+		return sqlSession.update("adoptionMapper.deleteAdopFile", fileNo);
+	}
+
+	public int updateAdopFile(SqlSessionTemplate sqlSession, AdoptionFile aF) {
+		return sqlSession.insert("adoptionMapper.updateAdopFile", aF);
+	}
 }
