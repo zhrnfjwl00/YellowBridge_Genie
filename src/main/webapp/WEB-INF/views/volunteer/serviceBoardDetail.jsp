@@ -243,8 +243,10 @@
 		
 		$("#deleteBtn").on("click", function(){
 			var volId = ${volboard.volId};
-			
-			location.href = "serviceBoardDelete.vol?volId="+volId;
+			var deleteYN = confirm("삭제하시겠습니까?");
+			if(deleteYN == true){
+				location.href = "serviceBoardDelete.vol?volId="+volId;
+			}
 		})
 		
 /* 		$("#updateBtn").on("click", function(){

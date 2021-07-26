@@ -79,14 +79,16 @@
 						<div class="form-group">
 							<label>첨부파일</label>
 							<input type="file" id="uploadFile" multiple="multiple" name="uploadFile">
-							<div>
-								<button type="button" class="fileBtn" id="fileBtn" onclick="location.href='${ vReviewdeleteFile }'">삭제</button>
-								<a href="<%= request.getContextPath() %>/resources/voluploadFiles/${ vFu.changeName }" download="${ vFu.fileName }">${ vFu.changeName }</a>
+							<div class="vDeleteFile">
+								<c:if test="${ !empty vFu.fileName && vFu.fileStatus =='Y'}">
+								<br>현재 업로드한 파일 : 
+									<a href="${ contextPath }/resources/voluploadFiles/${ vFu.changeName }" download="${ vFu.fileName }">${ vFu.changeName }</a>
+								</c:if>
+								
+								<c:if test="${ !empty vFu.fileName }">
+								<button type="button" class="deletefileBtn" id="fileBtn">삭제</button>
+								</c:if>
 							</div>
-							<c:url var="vReviewdeleteFile" value="vReviewdeleteFile.vol">
-								<c:param name="fileNo" value="${ vFu.fileNo }"/>
-								<c:param name="page" value="${ page }"/>
-							</c:url>
 							
 						</div>
 					</td>
@@ -103,7 +105,7 @@
 			<div class="btnDiv">
 			<button type="submit" class="btn btn-default">수정</button>
 			<c:url var="ReviewDelete" value="ReviewDelete.vol">
-				<c:param name="volId" value="${volboard.volId}"/>
+				<c:param name="volId" value="${volu.volId}"/>
 				<c:param name="page" value="${ page }"/>
 			</c:url>
 			</div>
@@ -112,19 +114,31 @@
 	
 </div>
 <c:import url="../common/footer.jsp"/>
-<script type="text/javascript">
-$("#fileBtn").on("click", function(){
-	var volId = ${volu.volId};
-	var fileNo = ${ vFu.fileNo };
-	var page = ${page};
-	
-	location.href="vReviewdeleteFile.vol?volId=" + volId + "&fileNo="+fileNo+"&page="+page;
-})
+<script>
+	$(".deletefileBtn").on('click', function(event) {
+ 		var that = $(this); 
+		var fileNo = ${vFu.fileNo};
+		var volId = ${volu.volId};
+		var page = ${page};
+		
+		$.ajax({
+			url : 'vdeleteFile.vol',
+			type : 'post', 
+			data : {fileNo:fileNo, volId:volId, page:page},
+			dataType : 'text',
+			success: function(data) {
+				// controller 수행 후 
+				// 클릭한 button이 속한 div를 remove하여 없앰.
+				that.parent("div").remove();
+				alert("파일이 삭제되었습니다. ")
+				}
+		});
+	});
 </script>
 <script>
 	$('#summernote').summernote({
 		  // 에디터 높이
-		  height: 150,
+		  height: 500,
 		  // 에디터 한글 설정
 		  lang: "ko-KR",
 		  // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)

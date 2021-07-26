@@ -215,6 +215,6 @@
 				var id = $(this).attr('id');
 				location.href='<%=request.getContextPath()%>/' + id + '.vol';
 			});
-		</script>
+	</script>
 </body>
 </html>
