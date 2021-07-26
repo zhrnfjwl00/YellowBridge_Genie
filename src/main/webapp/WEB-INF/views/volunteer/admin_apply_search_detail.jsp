@@ -87,6 +87,7 @@
 	<div style="text-align:center; padding-bottom:30px;" class="servicetext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청 조회</b></h1>
 	</div>
+	
 	<div id="tableDiv">
 	<table border="1" align="center">
 		<tr>
@@ -129,10 +130,7 @@
 	</c:url>
 						
 	<div align="center" class="button">
-		<input type="button" onclick="location.href='<%= request.getContextPath() %>/serviceApplyBoard.vol'" id="goMain" value="메인으로">
-		<c:if test="${ vApply.volStatus eq '신청확정' }">
-			<input type="button" onclick="location.href='${ writeReview }'" id="goReview" value="후기쓰기">
-		</c:if>
+		<input type="button" onclick="location.href='<%= request.getContextPath() %>/adminsearchlist.vol'" id="goMain" value="메인으로">
 	</div>
 </div>	
 <c:import url="../common/footer.jsp"/>

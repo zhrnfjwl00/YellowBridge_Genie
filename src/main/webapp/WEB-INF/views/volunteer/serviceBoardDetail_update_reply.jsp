@@ -58,7 +58,6 @@
 			<input type="hidden" id="volId" name="volId" value="${volboard.volId}" />
 			<input type="hidden" id="volTitle" name="volTitle" value="${volboard.volTitle}"> 
 			<input type="hidden" id="volWriter" name="volWriter" value="${volboard.volWriter}"> 
-			<input type="hidden" id="volContent" name="volContent" value="${volboard.volContent}"> 
 			<input type="hidden" id="volCategory" name="volCategory" value="${volboard.volCategory}"> 
 			<input type="hidden" id="volCount" name="volCount" value="${volboard.volCount}"> 
 			<input type="hidden" id="volCreateDate" name="volCreateDate" value="${volboard.volCreateDate}"> 
@@ -69,10 +68,6 @@
 			<table>
 				<tr>
 					<th id="title"> ${ volboard.volTitle } <b id="rCount"></b></th>
-					<th>
-					<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
-					<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
-					</th>
 				</tr>
 				<tr>
 					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname } &nbsp;&nbsp;</td>

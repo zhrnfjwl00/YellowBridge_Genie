@@ -77,6 +77,27 @@
 	#update select {
 		width: 150px !important;
 	}
+	
+	nav{margin-left: 25px; margin-top: 10px;}
+	
+	.content{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		width: 95%;
+		min-height: 500px;
+	}
+	
+	.menuwrap{background: #EDFFC0; width: 100%; height: 50px; margin-bottom: 50px;}
+	.adminmenu{
+		background: #DDE88F; color: navy; text-align: center; font-weight: bold; 
+		vertical-align: middle; width: 300px; height: 50px; display: table-cell;
+	}
+	#navDiv{width: 600px; margin-left: auto; margin-right: auto;}
+	#searchArea{margin-bottom: 30px;}
+	.adminmenu:hover {background: beige; color:orangered; font-weight:bold; cursor:pointer;}
+	#adminsearchlist{background: #F6FFDE; color:green; border:1px solid green;}
+	
 </style>
 </head>
 <body>
@@ -93,8 +114,8 @@
 	
 	<div class="menuwrap">
 	 <nav id="navDiv">
-		<div class="volmenu" id="serviceBoardList"><b>물품요청</b></div>
-		<div class="volmenu" id="volreview">봉사후기</div>
+		<div class="adminmenu" id="adminsearchlist"><b>봉사 신청서 관리</b></div>
+		<div class="adminmenu" id="adminserviceapply">공고 관리</div>
 	 </nav>
 	</div>
 	
@@ -145,7 +166,7 @@
 				</td>
 				
 				<td align="center" class="tableName">${ vol.mName }</td>
-				<td align="center" class="tableId">${ vol.memberNo }</td>
+				<td align="center" class="tableId">${ vol.mId }</td>
 				<td align="center" class="tableTime">${ vol.volDate }</td>
 				<td align="center" class="tableStatus">${ vol.volStatus }</td>
 			</tr>
@@ -304,6 +325,12 @@
 			all.checked = true;
 		}
 	}
+</script>
+<script>
+		$('.adminmenu').on('click', function() {
+			var id = $(this).attr('id');
+			location.href='<%=request.getContextPath()%>/' + id + '.vol';
+		});
 </script>
 </body>
 </html>

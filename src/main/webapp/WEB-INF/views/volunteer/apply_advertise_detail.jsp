@@ -187,10 +187,6 @@
 						<td>
 						<input type="hidden" id="shelter" value="${ volad.cateNo }">
 						<input type="hidden" id="page" name="page" value="${page}"> 
-						<button type="button" class="update_btn btn btn-warning" id="updateBtn">수정</button>
-						<button type="button" class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
-						<button type="button" id="stopBtn">신청중지</button>
-						<button type="button" id="continueBtn">신청재개</button>
 						</td>
 					</tr>
 					<tr>

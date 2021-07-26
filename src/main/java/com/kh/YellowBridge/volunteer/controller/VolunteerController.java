@@ -76,13 +76,14 @@ public class VolunteerController {
 		return mv;
 	}
 	
+	// 관리자: 공고 상세보기
 	@RequestMapping("volAdminAdDetail.vol")
 	public ModelAndView serviceAdminAdDetail(@RequestParam("page") int page, @RequestParam("volId") int volId, ModelAndView mv, HttpServletRequest request) {
-		VolunteerBoard volboard = volBoardService.selectVolBoard(volId);
+		Volunteer vol = volBoardService.selectAppBoard(volId);
 		VolunteerFile vFile = volBoardService.selectVolFile(volId);
 		
-		if(volboard != null) {
-			mv.addObject("page", page).addObject("volboard", volboard).addObject("vFile", vFile).setViewName("admin_apply_advertise_detail");
+		if(vol != null) {
+			mv.addObject("page", page).addObject("volboard", vol).addObject("vFile", vFile).setViewName("admin_apply_advertise_detail");
 		} else {
 			throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
 		}
@@ -90,6 +91,7 @@ public class VolunteerController {
 		return mv;
 	}
 	
+				
 	// 봉사시작 페이지 바로가기
 	@RequestMapping("serviceInfo.vol")
 	public String serviceInfo(){
@@ -129,7 +131,7 @@ public class VolunteerController {
 		VolunteerApply vApply = volBoardService.selectvApplyDetail(appId);
 		
 		if(vApply != null) {
-			mv.addObject("page", page).addObject("vApply", vApply).setViewName("apply_search_detail");
+			mv.addObject("page", page).addObject("vApply", vApply).setViewName("admin_apply_search_detail");
 		} else {
 			throw new VolunteerException("게시판 상세보기에 실패하였습니다.");
 		}
@@ -176,7 +178,7 @@ public class VolunteerController {
 	@RequestMapping("vApplyDetail.vol")
 	public ModelAndView vApplyDetail(@RequestParam("page") int page, @RequestParam("vId") int vId, ModelAndView mv, HttpServletRequest request) {
 		VolunteerApply vApply = volBoardService.selectvApplyDetail(vId);
-		
+		System.out.println("vApply : " + vApply);
 		if(vApply != null) {
 			mv.addObject("page", page).addObject("vApply", vApply).setViewName("apply_search_detail");
 		} else {
@@ -227,6 +229,65 @@ public class VolunteerController {
 		
 		return mv;
 		
+	}
+	
+	// 관리자 봉사 공고 목록
+	@RequestMapping("adminserviceapply.vol")
+	public ModelAndView adminServiceApplyList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
+		int currentPage = 1; // 연산에 사용될 변수
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getListAdvertiseCount();
+		
+		PageInfo vpi = VolPagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Volunteer> volad = volBoardService.serviceApplyList(vpi);
+//		System.out.println(volad);
+//		System.out.println(volad.get(1).getFilePath()+volad.get(1).getFileName());
+		
+		
+		if(volad != null) {
+			// Model or ModelAndView 사용하기
+			mv.addObject("page", page).addObject("volad", volad).addObject("vpi", vpi).setViewName("admin_apply_advertise_list");
+			// setViewName은 반환값이 void이기 때문에 맨 뒤에 와야함
+		} else {
+			throw new VolunteerException("게시글 전체 조회에 실패하였습니다.");
+		}
+		
+		return mv;
+		
+	}
+	
+	// 관리자: 봉사공고 검색
+	@RequestMapping("adminsearchAdvertise.vol")
+	public ModelAndView adminsearchAdvertise(@RequestParam(value="page", required=false) Integer page,@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
+		
+		VolSearchCondition vsc = new VolSearchCondition();	
+		if(searchCondition.equals("title")) vsc.setTitle(searchValue);
+		else if(searchCondition.equals("category")) vsc.setCategory(searchValue);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = volBoardService.getSearchResultAdvertiseListCount(vsc);
+		System.out.println("listCount : " + listCount);
+		
+		PageInfo vpi = VolPagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Volunteer> volad = volBoardService.selectSearchResultAdvertiseList(vsc, vpi);
+		
+		
+		if(volad != null) {
+			mv.addObject("volad", volad).addObject("vpi", vpi).addObject("searchCondition", searchCondition).addObject("searchValue", searchValue).setViewName("admin_apply_advertise_list");
+		} else {
+			throw new VolunteerException("게시글 검색에 실패하였습니다.");
+		}
+		
+		return mv;
 	}
 	
 	// 봉사공고 검색
@@ -692,7 +753,7 @@ public class VolunteerController {
 		}
 		
 		if(result > 0) {
-			return "redirect:serviceapply.vol";
+			return "redirect:adminserviceapply.vol";
 		} else {
 			throw new VolunteerException("게시글 등록에 실패하였습니다.");
 		}
@@ -756,7 +817,7 @@ public class VolunteerController {
 		}
 			
 		if(result > 0) {
-			return "redirect:serviceAdDetail.vol?volId=" + serviceNo + "&page="+page;
+			return "redirect:volAdminAdDetail.vol?volId=" + serviceNo + "&page="+page;
 		} else {
 			throw new VolunteerException("공고 수정에 실패하였습니다.");
 		}
@@ -778,7 +839,7 @@ public class VolunteerController {
 		
 		
 		if(result > 0) {
-			return "redirect:serviceapply.vol";
+			return "redirect:adminserviceapply.vol";
 		} else {
 			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
 		}
@@ -791,7 +852,7 @@ public class VolunteerController {
 		int result = volBoardService.stopAd(serviceNo);
 		
 		if(result > 0) {
-			return "redirect:serviceAdDetail.vol?volId=" + serviceNo + "&page="+page;
+			return "redirect:volAdminAdDetail.vol?volId=" + serviceNo + "&page="+page;
 		} else {
 			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
 		}
@@ -803,7 +864,7 @@ public class VolunteerController {
 		int result = volBoardService.continueAd(serviceNo);
 		
 		if(result > 0) {
-			return "redirect:serviceAdDetail.vol?volId=" + serviceNo + "&page="+page;
+			return "redirect:volAdminAdDetail.vol?volId=" + serviceNo + "&page="+page;
 		} else {
 			throw new VolunteerException("게시물 삭제에 실패하였습니다.");
 		}

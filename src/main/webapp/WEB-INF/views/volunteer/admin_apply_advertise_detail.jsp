@@ -172,20 +172,20 @@
 <body>
 <c:import url="header.jsp"/>
 <div class="servicedetail">
-	
+${ volboard.serviceEnd }
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 신청</b></h1>
 	</div>
-	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volad.serviceNo }" method="post" encType="multipart/form-data">
+	<form action="<%= request.getContextPath() %>/serviceapplyform.vol?serviceNo=${ volboard.serviceNo }" method="post" encType="multipart/form-data">
 		<div class="apply-top">
 			<div id="applyImg">
-				<img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ volad.changeName }">
+				<img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ volboard.changeName }">
 			</div>
 			<div id="apply-info1">
 				<table class="info1-table">
 					<tr>
 						<td>
-						<input type="hidden" id="shelter" value="${ volad.cateNo }">
+						<input type="hidden" id="shelter" value="${ volboard.cateNo }">
 						<input type="hidden" id="page" name="page" value="${page}"> 
 						<button type="button" class="update_btn btn btn-warning" id="updateBtn">수정</button>
 						<button type="button" class="delete_btn btn btn-danger" id="deleteBtn">삭제</button>
@@ -194,47 +194,36 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="font-size: 20px;"><b>${ volad.serviceTitle }</b></td>
+						<td style="font-size: 20px;"><b>${ volboard.serviceTitle }</b></td>
 					</tr>
 					<tr>
 						<td><b>참가비 : </b>10,000원</td>
 					</tr>
 						<td><div style="border-top:2px solid black; width:100%; margin: 20px 0;"></div></td>
 					<tr>
-						<td><b>보호소 : </b>${ volad.shelterName }</td>
+						<td><b>보호소 : </b>${ volboard.shelterName }</td>
 					</tr>
 					<tr>
-						<td><b>보호소 정보 : </b>${ volad.shelterInfo }</td>
+						<td><b>보호소 정보 : </b>${ volboard.shelterInfo }</td>
 					</tr>
 					<tr>
-						<td><b>보호소 연락처 : </b>${ volad.shelterTel }</td>
+						<td><b>보호소 연락처 : </b>${ volboard.shelterTel }</td>
 					</tr>
 					
-					<c:if test="${ !empty sessionScope.loginUser }">
 					<tr>
 						<td>
-							<c:if test="${ volad.serviceEnd eq '신청중지' }">
+							<c:if test="${ volboard.serviceEnd eq '신청중지' }">
 								<div style="text-align: center; padding-top: 15px; color: navy; font-size: 18px;" >
 								<b>이미 신청이 마감된 봉사입니다.</b>
 								</div>
 							</c:if>
-							<c:if test="${ volad.serviceEnd ne '신청중지' }">
+							<c:if test="${ volboard.serviceEnd ne '신청중지' }">
 								<div style="text-align: center;">
-								<button id="applybtn" onclick="goApply();">봉사신청</button>
+								<b>봉사 신청이 가능합니다.</b>
 								</div>
 							</c:if>
 						</td>
 					</tr>
-					</c:if>
-					<c:if test="${ empty sessionScope.loginUser }">
-					<tr>
-						<td>
-							<div style="text-align: center; padding-top: 15px; color: red; font-size: 18px;" >
-							<b>봉사 신청은 로그인 후 가능합니다.</b>
-							</div>
-						</td>
-					</tr>
-					</c:if>
 				</table>
 			</div>
 		</div>
@@ -242,8 +231,8 @@
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				<textarea id="summernote" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent">${ volad.serviceContent }</textarea>
-				<%-- ${fn:replace(volad.serviceContent, newLineChar, "<br>")} --%>
+				<textarea id="summernote" name="content" class="form-control" cols="60" rows="25" readonly="readonly" style="resize:none; background-color: transparent">${ volboard.serviceContent }</textarea>
+				<%-- ${fn:replace(volboard.serviceContent, newLineChar, "<br>")} --%>
 			</div>
 		</div>
 		
@@ -303,7 +292,7 @@
     });
     
     function goApply(){
-    	var serId = ${ volad.serviceNo };
+    	var serId = ${ volboard.serviceNo };
 		
 		location.href="serviceapplyform.vol?serId="+serId;
 	}
@@ -311,7 +300,7 @@
   
   <script>
 	$("#deleteBtn").on("click", function(){
-		var serviceNo = ${ volad.serviceNo };
+		var serviceNo = ${ volboard.serviceNo };
 		
 		var deleteYN = confirm("삭제하시겠습니까?");
 		if(deleteYN == true){
@@ -320,7 +309,7 @@
 	})
 	
 	$("#stopBtn").on("click", function(){
-		var serviceNo = ${ volad.serviceNo };
+		var serviceNo = ${ volboard.serviceNo };
 		var page = ${ page };
 		
 		var stopYN = confirm("해당 봉사의 신청을 중단하시겠습니까?");
@@ -330,7 +319,7 @@
 	})
 	
 	$("#continueBtn").on("click", function(){
-		var serviceNo = ${ volad.serviceNo };
+		var serviceNo = ${ volboard.serviceNo };
 		var page = ${ page };
 		
 		var continueYN = confirm("해당 봉사의 신청을 재개하시겠습니까?");
@@ -340,7 +329,7 @@
 	})
 	
 	$("#updateBtn").on("click", function(){
-		var serviceNo = ${ volad.serviceNo };
+		var serviceNo = ${ volboard.serviceNo };
 		var page = ${ page };
 		
 		location.href = "adminVolUpdateForm.vol?serviceNo=" + serviceNo + "&page=" + page;
@@ -348,7 +337,7 @@
 </script>
 <script>
 	var mapContainer = document.getElementById('map');
-	var place = ${ volad.cateNo };
+	var place = ${ volboard.cateNo };
 	
 	if(place == 21){
 		var mapOption = {
