@@ -72,6 +72,22 @@ public interface AdoptionService {
 
 	int adoptionrDelete(int rId);
 
+	// 입양일지 수정
+	int updateRecodeBoard(AdoptionBoard adopboard);
+
+	int deleteAdopFile(int fileNo);
+
+	int updateAdopFile(AdoptionFile aF);
+
+
+	
+	
+	
+	
+
+	int aDeleteAdopFile(int fileNo);
+
+
 
 
 

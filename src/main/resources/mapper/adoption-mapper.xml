@@ -37,7 +37,7 @@
 	</resultMap>
 
 
-	<!-- 게시글 조회수 카운트 -->
+	<!-- 입양일지 조회수 카운트 -->
 	<update id="addReadCount">
 		UPDATE BOARD
 		SET BOARD_VIEW = BOARD_VIEW + 1
@@ -45,7 +45,7 @@
 		BOARD_NO = #{adopId}
 	</update>
 
-	<!-- 게시글 상세 조회 -->
+	<!-- 입양일지 상세 조회 -->
 	<select id="selectAdopBoard" parameterType="_int"
 		resultMap="adopBoardResultSet">
 		select board_no, board_title, board_content, board_view,
@@ -64,7 +64,7 @@
 		FILE_NO,FILE_NAME,FILE_CHANGE,FILE_CREATE_DATE,FILE_LEVEL,
 		FILE_PATH,FILE_STATUS,BOARD_NO
 		FROM FILE_INFO
-		WHERE BOARD_NO=#{adopId}
+		WHERE FILE_STATUS ='Y' AND BOARD_NO=#{adopId}
 	</select>
 
 	<insert id="insertAdopBoard">
@@ -77,6 +77,23 @@
 		values(SEQ_FNO.nextval, #{fileName}, #{fileChangeName}, default, 0, #{filePath}, default, SEQ_BNO.currval, null, null)
 	</insert>
 
+	<!-- 입양일지 수정 -->
+	<update id="updateRecodeBoard">
+		update board
+		set BOARD_TITLE=#{adopTitle}, BOARD_CONTENT=#{adopContent}
+		where BOARD_NO=#{adopId}
+	</update>
+	
+	<update id="deleteAdopFile">
+		update FILE_INFO
+		set FILE_STATUS='N'
+		where FILE_NO=#{fileNo}
+	</update>
+	
+	<insert id="updateAdopFile">
+		insert into FILE_INFO
+		values(SEQ_FNO.nextval, #{fileName}, #{fileChangeName}, default, 0, #{filePath}, default, #{boardNo}, null, null)
+	</insert>
 
 	<resultMap
 		type="com.kh.YellowBridge.adoption.model.vo.AdoptionFile" id="adoptionFileResultMap">
@@ -125,9 +142,9 @@
 	</select> 
 	
 	<update id="updateAdopReply">
-		update COMMENTS
-		set COMMETS_COTENT=#{adoprContent}
-		where COMMENTS_NO=#{adoprId}
+		UPDATE COMMENTS
+		SET COMMETS_COTENT=#{rContent}
+		WHERE COMMENTS_NO=#{rId}
 	</update>
 	
 	<update id="adoptionrDelete">
@@ -138,14 +155,13 @@
 	</update>
 	
 	<resultMap
-		type="com.kh.YellowBridge.adoption.model.vo.AdoptionReply"
-		id="ReplyResultSet">
+		type="com.kh.YellowBridge.adoption.model.vo.AdoptionReply" id="ReplyResultSet">
 		<id property="rId" column="COMMENTS_NO" />
 		<result property="rContent" column="COMMETS_COTENT" />
 		<result property="refBid" column="BOARD_NO" />
 		<result property="rWriter" column="COMMETS_WRITER" />
-		<result property="rWriterNo" column="MEMBER_NO" />
 		<result property="rNickname" column="MEMBER_NICKNAME" />
+		<result property="rWriterNo" column="MEMBER_NO" />
 		<result property="rCreateDate" column="COMMETS_DATE" />
 		<result property="rStatus" column="COMMETS_STATUS" />
 	</resultMap>
