@@ -1,12 +1,14 @@
 package com.kh.YellowBridge.service.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.kh.YellowBridge.adoption.model.vo.AdoptionBoard;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.service.model.exception.NoticeException;
@@ -25,6 +31,7 @@ import com.kh.YellowBridge.service.model.service.qnaService;
 import com.kh.YellowBridge.service.model.vo.ScFileInfo;
 import com.kh.YellowBridge.support.model.vo.FileInfo;
 import com.kh.YellowBridge.service.model.vo.QnaBoard;
+import com.kh.YellowBridge.service.model.vo.ScBoard;
 
 public class QnAController {
 	
@@ -48,7 +55,7 @@ public class QnAController {
 			mv.addObject("qnalist", qnalist).addObject("pi", pi).setViewName("qna");
 			
 		} else {
-			throw new QnAException("qna ÀüÃ¼Á¶È¸¿¡ ½ÇÆÐÇÏ¿´½À´Ï´Ù.");
+			throw new QnAException("qna ï¿½ï¿½Ã¼ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 		return mv;
 	}
@@ -121,7 +128,7 @@ public class QnAController {
 			uploadFile.transferTo(new File(renamePath));
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("ÀúÀåÆÄÀÏ: " + e.getMessage());
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + e.getMessage());
 			
 		}
 		
@@ -129,6 +136,8 @@ public class QnAController {
 		fi.setFilePath(savePath);
 		
 		return fi;
-		
 	}
+	
+	
+	
 }

@@ -66,6 +66,15 @@ public class scServiceimpl implements scService{
 	}
 
 
+	@Override
+	public ArrayList<ScBoard> selectNoticeList() {
+		return scDAO.selectNoticeList(sqlSession);
+	}
+
+
+	
+
+
 
 
 

@@ -382,6 +382,19 @@ public class ScController {
 		}
 		
 	}
+	
+	
+	@RequestMapping("noticeList.sc")
+	@ResponseBody
+	public void noticeList(HttpServletResponse response) throws JsonIOException, IOException {
+		
+		
+		ArrayList<ScBoard> diaryList = scService.selectNoticeList();
+		
+		response.setContentType("application/json; charset=UTF-8");
+		new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(diaryList, response.getWriter());
+	
+	}
 
 
 }

@@ -19,6 +19,10 @@ public interface scService {
 
 	int deleteBoard(int scId);
 
+	ArrayList<ScBoard> selectNoticeList();
+
+
+
 
 
 
