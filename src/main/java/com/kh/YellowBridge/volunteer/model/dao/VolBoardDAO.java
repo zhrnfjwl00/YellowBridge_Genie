@@ -296,5 +296,17 @@ public class VolBoardDAO {
 	public ArrayList<Volunteer> selectvList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("volunteerMapper.selectvList");
 	}
+
+	public int stopAd(SqlSessionTemplate sqlSession, int serviceNo) {
+		return sqlSession.update("volunteerMapper.stopAd", serviceNo);
+	}
+
+	public int continueAd(SqlSessionTemplate sqlSession, int serviceNo) {
+		return sqlSession.update("volunteerMapper.continueAd", serviceNo);
+	}
+	
+	public int vdeleteFile(SqlSessionTemplate sqlSession, int fileNo) {
+		return sqlSession.update("volunteerMapper.vdeleteFile", fileNo);
+	}
 	
 }

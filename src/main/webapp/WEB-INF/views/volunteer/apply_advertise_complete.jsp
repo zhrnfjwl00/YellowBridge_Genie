@@ -138,7 +138,7 @@
 						
 	<div align="center" class="pay button">
 		<h3 style="color:rgb(192, 57, 43);" id="bottontxt"><b>무통장입금은 봉사신청 후 12시간 내로 입금해주세요. 12시간 동안 미입금시 자동 취소됩니다.</b></h3>
-		<input type="button" id="goOrderDetail" value="신청내역보기">
+		<input type="button" id="goOrderDetail" onclick="location.href='<%= request.getContextPath() %>/serviceApplyBoard.vol'" value="신청내역보기">
 		<input type="button" onclick="location.href='<%= request.getContextPath() %>/gomain'" id="goMain" value="메인으로">
 	</div>
 </div>	

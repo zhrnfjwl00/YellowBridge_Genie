@@ -20,7 +20,31 @@
 		letter-spacing: -1px;
 	}
 	.form-group{padding-bottom: 5px;}
-	.btnDiv{padding-top:25px; float: right;}
+	.btnDiv{padding-top:15px; float: right;}
+	
+	#fileBtn{
+		background: #BDCC94;
+    	border: 1px solid lightgray;
+    	color: white;
+    	font-weight: bold;
+    	border-radius: 5px;
+    	padding: 5px 5px;
+	}
+	
+
+	#writeBtn{
+    	background-color: #BDCC94;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+        padding: 7px 10px;
+	}
 </style>
 </head>
 <body>
@@ -34,7 +58,6 @@
 		<form action="adopUpdate.ado" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="page" value="${ page }">
 			<input type="hidden" name="adopId" value="${ adopboard.adopId }">
-			<input type="hidden" name="renameFileName" value="${ adopboard.renameFileName }">
 			<table>
 				<tr>
 					<td>
@@ -49,10 +72,18 @@
 						<div class="form-group">
 							<label>첨부파일</label>
 							<input type="file" id="uploadFile" multiple="multiple" name="reloadFile">
-							<c:if test="${ !empty af.fileName }">
+							
+							<div class="aDeleteFile">
+							<c:if test="${ !empty af.fileName && af.fileStatus =='Y'}">
 							<br>현재 업로드한 파일 : 
 							<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
 							</c:if>
+							
+							<c:if test="${ !empty af.fileName}">
+							<button type="button" class="deletefileBtn" id="fileBtn">삭제</button>
+							</c:if>
+							</div>
+							
 						</div>
 					</td>
 				</tr>
@@ -66,12 +97,35 @@
 				</tr>
 			</table>
 			<div class="btnDiv">
-			<button type="submit" class="btn btn-default">수정</button> 
+			<button type="submit" id="writeBtn">수정</button> 
 			</div>
 		</form>
 	</div>
 </div>
 </body>
+<script>
+	$(".deletefileBtn").on('click', function(event) {
+		// deletefileBtn 버튼 클릭시 
+		// filestatus 값 N 으로 변경후 controller에서 success로 반환되도록 설정
+		
+ 		var that = $(this); 
+		var fileNo = ${ af.fileNo };
+		var adopId = ${ adopboard.adopId};
+		
+		$.ajax({
+			url : 'aDeleteAdopFile.ado',
+			type : 'post', 
+			data : {fileNo:fileNo, adopId:adopId},
+			dataType : 'text',
+			success: function(data) {
+				// controller 수행 후 
+				// 클릭한 button이 속한 div를 remove하여 없앰.
+				that.parent("div").remove();
+				alert("파일이 삭제되었습니다. ")
+				}
+		});
+	});
+</script>
 </html>
 
 

@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html lang="en">
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<html>
 <head>
-<title>입양신청조회</title>
+<title>YELLOW BRIDGE</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <style>
   	#serviceApplyBoardTable{text-align: center;}
   	#serviceApplyBoardTable tr th{padding: 10px; font-size: 18px; font-weight: bold; border-bottom: 1px solid black;}
@@ -23,14 +26,13 @@
 		letter-spacing: -1px;
 	}
 	
-	.tableNo{width: 5%;}
-	.tableShelter{width: 20%;}
-	.tableCo{width:40%;}
-	.tableTime{width:15%;}
+	.tableNo{width: 10%;}
+	.animalNo{width: 10%;}
+	.content{width:40%;}
 	.tableDate{width:15%;}
 	.tableStatus{width:15%;}
 	
-	#listArea{padding: 5px;}
+	#listArea{padding: 5px; align:center;}
 </style>
 </head>
 <body>
@@ -49,19 +51,20 @@
 			        <thead>
 			            <tr>
 			                <th class="tableNo">NO.</th>
-			                <th class="tableShelter">동물번호</th>
-			                <th class="tableCo">신청내역</th>
+			                <th class="animalNo">동물번호</th>
+			                <th class="content">신청내역</th>
 			                <th class="tableDate">신청일</th>
 			                <th class="tableStatus">상태</th>
 			            </tr>
 			        </thead>
 			        <tbody id = "listArea">
 			        	<c:forEach var="requestlist" items="${ requestlist }">
+			        	<fmt:formatDate var="formatRegDate" value="${ requestlist.requestDate }" pattern="yyyy.MM.dd"/>
 			        	<tr>
 			        		<td class="tableNo">${requestlist.requestNo }</td>
-			        		<td class="tableShelter">${requestlist.requestAnimalNo }</td>
-			        		<td class="tableCo">${member.nickname }</td>
-			        		<td class="tableCo">${requestlist.requestDate }</td>
+			        		<td class="animalNo">${requestlist.requestAnimalNo }</td>
+			        		<td class="content">${ requestlist.requestReason }</td>
+			        		<td class="tableDate">${ formatRegDate }</td>
 			        		<td class="tableStatus" style="color:red;">${requestlist.requestState }</td>
 			        	</tr>
 			        	</c:forEach>

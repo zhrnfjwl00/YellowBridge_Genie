@@ -14,7 +14,6 @@ import com.kh.YellowBridge.adoption.model.vo.AnimalInfo;
 import com.kh.YellowBridge.adoption.model.vo.AnimalRequest;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.member.model.vo.Member;
-import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 
 @Service("aService")
 public class AdoptionServiceImpl implements AdoptionService {
@@ -146,8 +145,8 @@ public class AdoptionServiceImpl implements AdoptionService {
 	}
 
 	@Override
-	public ArrayList<AnimalRequest> selectRequestList(int memberNo, PageInfo pi) {
-		return aDAO.selectRequestList(sqlSession, memberNo, pi);
+	public ArrayList<AnimalRequest> selectRequestList(int memberNo) {
+		return aDAO.selectRequestList(sqlSession, memberNo);
 	}
 
 	@Override
@@ -190,8 +189,33 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return aDAO.adoptionrDelete(sqlSession, rId);
 	}
 
+	// 입양일지 수정
+	@Override
+	public int updateRecodeBoard(AdoptionBoard adopboard) {
+		return aDAO.updateRecodeBoard(sqlSession, adopboard);
+	}
 
 
+	@Override
+	public int deleteAdopFile(int fileNo) {
+		return aDAO.deleteAdopFile(sqlSession, fileNo);
+	}
 
+	@Override
+	public int updateAdopFile(AdoptionFile aF) {
+		return aDAO.updateAdopFile(sqlSession, aF);
+	}
 
+	// 입양일지 수정 중 첨부파일 삭제
+	@Override
+	public int aDeleteAdopFile(int fileNo) {
+		return aDAO.deleteAdopFile(sqlSession, fileNo);
+	}
+
+	@Override
+	public int changeRequestState(AnimalRequest a) {
+		return aDAO.changeRequestState(sqlSession, a);
+	}
+
+	
 }

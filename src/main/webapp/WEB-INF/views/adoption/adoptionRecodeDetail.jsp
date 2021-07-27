@@ -63,8 +63,7 @@
 			
 		</div>
 		<div class="downloadFile">
-		첨부파일 
-				<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
+		첨부파일<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
 		</div>
 		
 		<c:url var="adopUpdateForm" value="adopUpdateForm.ado">
@@ -73,14 +72,16 @@
 		</c:url>
 		<c:url var="adopDelete" value="adopDelete.ado">
 			<c:param name="adopId" value="${ adopboard.adopId }"/>
+			<c:param name="fileNo" value="${ af.fileNo }"/>
 		</c:url>
 		<c:url var="adopList" value="adopRecode.ado">
 			<c:param name="page" value="${ page }"/>
 		</c:url>
 		
+		<c:if test="${ loginUser.id eq adopboard.adopWriter}">
 		<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ adopDelete }'">삭제</button>
 		<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${ adopUpdateForm }'">수정</button> 
-		
+		</c:if>
 		<br>
 		
 		<div class="form-group">
@@ -128,7 +129,15 @@
 			<div class="form-group">
 				<table>
 					<tr>
-						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
+						<td colspan="1"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
+						<c:if test="${ empty sessionScope.loginUser }">
+						<td colspan="6">
+						<!-- 로그인하지 않은 사용자에게는 로그인 불가멘트 노출 및 클릭시 로그인 페이지로 이동 -->
+						<a href='<%=request.getContextPath()%>/loginView.me' class="btn btn-default btn-block" role="button">
+							<i class="fa fa-efit" >로그인한 사용자만 댓글 등록이 가능합니다. </i>
+						</a>
+						</td>
+						</c:if>
 					</tr>
 					<tr>
 							<c:if test="${ !empty sessionScope.loginUser }">
@@ -250,68 +259,10 @@
 
 	
 <script type="text/javascript">
-	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
-/*
-	$(document).ready(function(){
-		var formObj = $("form[name='readForm']");
-		
-		 // 수정 
-		$(".update_btn").on("click", function(){
-			formObj.attr("action", "adopUpdateForm.ado");
-			formObj.attr("method", "get");
-			formObj.submit();				
+ 		// 목록이동 버튼
+		$(document).on('click', '#listBtn', function(){
+			location.href = "${pageContext.request.contextPath}/adopRecode.ado";
 		});
-		
-		// 삭제
-		$(".delete_btn").on("click", function(){
-			
-			var deleteYN = confirm("삭제하시겠습니까?");
-			if(deleteYN == true){
-				
-			formObj.attr("action", "/board/delete");
-			formObj.attr("method", "post");
-			formObj.submit();
-				
-			}
-		})
-		
-		// 목록
-		$(".list_btn").on("click", function(){
-			
-			location.href = "/board/list?page=${scri.page}"
-					      +"&perPageNum=${scri.perPageNum}"
-					      +"&searchType=${scri.searchType}&keyword=${scri.keyword}";
-		})
-		
-		$(".replyWriteBtn").on("click", function(){
-			var formObj = $("form[name='replyForm']");
-			formObj.attr("action", "/board/replyWrite");
-			formObj.submit();
-		});
-		
-		// 댓글 수정 View
-		$(".replyUpdateBtn").on("click", function(){
-			location.href = "/board/replyUpdateView?bno=${read.bno}"
-							+ "&page=${scri.page}"
-							+ "&perPageNum=${scri.perPageNum}"
-							+ "&searchType=${scri.searchType}"
-							+ "&keyword=${scri.keyword}"
-							+ "&rno="+$(this).attr("data-rno");
-		});
-		
-		//댓글 삭제 View
-		$(".replyDeleteBtn").on("click", function(){
-			location.href = "/board/replyDeleteView?bno=${read.bno}"
-				+ "&page=${scri.page}"
-				+ "&perPageNum=${scri.perPageNum}"
-				+ "&searchType=${scri.searchType}"
-				+ "&keyword=${scri.keyword}"
-				+ "&rno="+$(this).attr("data-rno");
-		});
-	})
-	
-	*/
-	
 </script>
 </body>
 </html>

@@ -134,5 +134,11 @@ public interface VolBoardService {
 	ArrayList<VolunteerApply> selectAdminSearchApplyResultList(VolSearchCondition vsc, PageInfo pi);
 
 	ArrayList<Volunteer> selectvList();
+
+	int stopAd(int serviceNo);
+
+	int continueAd(int serviceNo);
+
+	int vdeleteFile(int fileNo);
 	
 }

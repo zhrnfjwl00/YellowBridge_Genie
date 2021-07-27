@@ -8,7 +8,12 @@
 <title>YELLOW BRIDGE</title>
 </head>
 <body>
+		<c:if test="${ loginUser.grade == '1'}">
+		<c:import url="WEB-INF/views/admin/header.jsp"/>
+		</c:if>
+		<c:if test="${ loginUser.grade == '0'|| empty loginUser}">
 		<c:import url="WEB-INF/views/common/header.jsp"/>
+		</c:if>
 		<c:import url="WEB-INF/views/common/mainContents/mainContents.jsp"/>
 		<c:import url="WEB-INF/views/common/footer.jsp"/>
 </body>

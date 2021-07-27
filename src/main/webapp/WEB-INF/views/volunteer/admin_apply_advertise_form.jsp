@@ -5,8 +5,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content= "text/html; charset=UTF-8">
+<!-- BootStrap CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+ <!-- 서머노트를 위해 추가해야할 부분 -->
+ <script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
+
 <title>봉사 신청 등록</title>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
 <style>
 	.serviceform{
 		width: 65%;
@@ -83,7 +99,7 @@
 </style>
 </head>
 <body>
-<c:import url="../common/header.jsp"/>
+<c:import url="header.jsp"/>
 <div class="serviceform">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청 등록</b></h1>
@@ -102,8 +118,10 @@
 					</tr>
 					<tr>
 						<td>
-							<select name="shelterName">
-								<option value="카테고리선택">카테고리선택</option>
+							<div class="form-group">
+							<label>분류</label>
+							<select name="shelterName" id="category">
+			           			<option value="카테고리선택">카테고리선택</option>
 			           			<option value="대구 반야월 쉼터">대구 반야월 쉼터</option>
 			           			<option value="구미 사랑 보호소">구미 사랑 보호소</option>
 			           			<option value="양산 사랑이네 집">양산 사랑이네 집</option>
@@ -112,6 +130,7 @@
 			           			<option value="경산 아이들 쉼터">경산 아이들 쉼터</option>
 			           			<option value="청도 허그안 쉼터">청도 허그안 쉼터</option>
 			           		</select>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -130,10 +149,10 @@
 		
 		<div class="apply-bottom">
 			<div id="apply-info2">
-				<textarea cols="140" rows="15" name="serviceContent" placeholder="봉사에 관한 자세한 설명을 입력해주세요." style="resize:none;" required></textarea>
+				<textarea cols="140" rows="15" id="summernote" name="serviceContent" placeholder="봉사에 관한 자세한 설명을 입력해주세요." style="resize:none;" required></textarea>
 			</div>
 			<div style="text-align: center;">
-				<input type="submit" name="applybtn" id="applybtn" value="등록하기">
+				<input type="submit"  onclick="return cate();" name="applybtn" id="applybtn" value="등록하기">
 			</div>
 		</div>
 	</form>
@@ -141,14 +160,14 @@
 <c:import url="../common/footer.jsp"/>
 <script type="text/javascript">
 	function cate(){
-		if($('#category').val() == '카테고리선택'){
+		if($('#category').val().trim() == '카테고리선택'){
 			alert('카테고리를 선택해주세요.');
 			$('#category').focus();
 			return false;
 		}
 	}
 </script>	
-	<script>
+<script>
 	function readImage(input) {
 	    // 인풋 태그에 파일이 있는 경우
 	    if(input.files && input.files[0]) {
@@ -170,6 +189,37 @@
 	inputImage.addEventListener("change", function(e){
 	    readImage(e.target)
 	});
-	</script>
+</script>
+<script>
+$('#summernote').summernote({
+	  // 에디터 높이
+	  height: 500,
+	  // 에디터 한글 설정
+	  lang: "ko-KR",
+	  // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
+	  focus : true,
+	  toolbar: [
+		    // 글꼴 설정
+		    ['fontname', ['fontname']],
+		    // 글자 크기 설정
+		    ['fontsize', ['fontsize']],
+		    // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
+		    ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+		    // 글자색
+		    ['color', ['forecolor','color']],
+		    // 표만들기
+		    ['table', ['table']],
+		    // 글머리 기호, 번호매기기, 문단정렬
+		    ['para', ['ul', 'ol', 'paragraph']],
+		    // 줄간격
+		    ['height', ['height']],
+		  ],
+		  // 추가한 글꼴
+		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
+		 // 추가한 폰트사이즈
+		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+	});
+	
+</script>
 </body>
 </html>

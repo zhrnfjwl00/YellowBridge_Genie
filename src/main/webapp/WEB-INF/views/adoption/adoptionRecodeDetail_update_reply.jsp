@@ -63,8 +63,7 @@
 			
 		</div>
 		<div class="downloadFile">
-		첨부파일 
-				<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
+		첨부파일 <a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
 		</div>
 		
 		<c:url var="adopUpdateForm" value="adopUpdateForm.ado">
@@ -99,7 +98,13 @@
 		<table class="replyTable">
 			<tr>
 				<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control" value="${ar.rContent}"></td>
-						<td><button id="rupdateBtn" class="replyWriteBtn btn btn-success rupdateBtn">수정</button></td>
+						<td>
+						<button id="rupdateBtn" class="replyWriteBtn btn btn-success">수정</button>
+						
+						
+						
+						
+						</td>
 			</tr>
 		</table>
 		
@@ -116,18 +121,18 @@
 	<c:import url="../common/footer.jsp"/>
 <script>
 	$(function(){
+	
+ 		getReplyList(); // 시작하자마자 댓글이 보이게 하기 위해 설정 
 		
-/* 		getReplyList(); // 시작하자마자 댓글이 보이게 하기 위해 설정 
- */		
-	/* 	setInterval(function(){  // 다른사람이 봤을때도 계속 갱신 하기 위해 설정, 10초마다갱신
-			getReplyList();
+	 	setInterval(function(){  // 다른사람이 봤을때도 계속 갱신 하기 위해 설정, 10초마다갱신
+			getReplyList(); 
 		}, 1000);
-		 */
-		$('#rupdateBtn').on("click", function(){
+	
+		$('#rupdateBtn').on('click', function(){
 			var rContent = $('#rContent').val();
-			var refBid = adopId;
-			var rId = ${ar.rId};
-			var page = ${page};
+			var refBid =${ adopboard.adopId };
+			var rId = ${ ar.rId };
+			var page = ${ page };
 			
 			$.ajax({
 				url: 'adoprUpdate.ado',
@@ -138,18 +143,16 @@
 					if(data == 'success'){
 						$('#rContent').val('');
 						location.href='<%=request.getContextPath()%>/adoptionRecodeDetail.ado?adopId=' + refBid + '&page=' + page;
-						getReplyList(); // 댓글 리스트 불러오기
+						/* getReplyList(); // 댓글 리스트 불러오기 */
 					}
 				}
 			});
 		});
 	});
 	
-	</script>
 	
-	<script>
-/* 	function getReplyList(){
-		var adopId = ${adopboard.adopId};
+ 	function getReplyList(){
+		var adopId = ${ adopboard.adopId }
 		
 		$.ajax({
 			url: 'adoprList.ado',
@@ -202,73 +205,7 @@
 				}
 			}
 		});
-	} */
-</script>
-
-	
-<script type="text/javascript">
-	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
-/*
-	$(document).ready(function(){
-		var formObj = $("form[name='readForm']");
-		
-		 // 수정 
-		$(".update_btn").on("click", function(){
-			formObj.attr("action", "adopUpdateForm.ado");
-			formObj.attr("method", "get");
-			formObj.submit();				
-		});
-		
-		// 삭제
-		$(".delete_btn").on("click", function(){
-			
-			var deleteYN = confirm("삭제하시겠습니까?");
-			if(deleteYN == true){
-				
-			formObj.attr("action", "/board/delete");
-			formObj.attr("method", "post");
-			formObj.submit();
-				
-			}
-		})
-		
-		// 목록
-		$(".list_btn").on("click", function(){
-			
-			location.href = "/board/list?page=${scri.page}"
-					      +"&perPageNum=${scri.perPageNum}"
-					      +"&searchType=${scri.searchType}&keyword=${scri.keyword}";
-		})
-		
-		$(".replyWriteBtn").on("click", function(){
-			var formObj = $("form[name='replyForm']");
-			formObj.attr("action", "/board/replyWrite");
-			formObj.submit();
-		});
-		
-		//댓글 수정 View
-		$(".replyUpdateBtn").on("click", function(){
-			location.href = "/board/replyUpdateView?bno=${read.bno}"
-							+ "&page=${scri.page}"
-							+ "&perPageNum=${scri.perPageNum}"
-							+ "&searchType=${scri.searchType}"
-							+ "&keyword=${scri.keyword}"
-							+ "&rno="+$(this).attr("data-rno");
-		});
-		
-		//댓글 삭제 View
-		$(".replyDeleteBtn").on("click", function(){
-			location.href = "/board/replyDeleteView?bno=${read.bno}"
-				+ "&page=${scri.page}"
-				+ "&perPageNum=${scri.perPageNum}"
-				+ "&searchType=${scri.searchType}"
-				+ "&keyword=${scri.keyword}"
-				+ "&rno="+$(this).attr("data-rno");
-		});
-	})
-	
-	*/
-	
+	} 
 </script>
 </body>
 </html>

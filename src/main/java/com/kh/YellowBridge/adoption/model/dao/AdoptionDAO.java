@@ -78,13 +78,13 @@ public class AdoptionDAO {
 		return (ArrayList) sqlSession.selectList("adoptionMapper.selectAnimalList", null, rowBounds);
 	}
 	
-	// 관리자_입양공고 게시물 리스트
-	public ArrayList<AnimalInfo> admin_selectAnimalList(SqlSessionTemplate sqlSession, PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	// 관리자_입양공고 및 요청관리 게시물 리스트
+		public ArrayList<AnimalInfo> admin_selectAnimalList(SqlSessionTemplate sqlSession, PageInfo pi) {
+			int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+			RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-		return (ArrayList) sqlSession.selectList("adoptionMapper.selectAdopFile", null, rowBounds);
-	}
+			return (ArrayList) sqlSession.selectList("adoptionMapper.admin_selectAnimalList", null, rowBounds);
+		}
 
 	// 입양 공고 등록
 	public int insertAnimal(SqlSessionTemplate sqlSession, AnimalInfo a) {
@@ -122,11 +122,9 @@ public class AdoptionDAO {
 		return sqlSession.insert("adoptionMapper.insertAppForm", ar);
 	}
 
-	public ArrayList<AnimalRequest> selectRequestList(SqlSessionTemplate sqlSession, int memberNo, PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	public ArrayList<AnimalRequest> selectRequestList(SqlSessionTemplate sqlSession, int memberNo) {
 
-		return (ArrayList) sqlSession.selectList("adoptionMapper.selectRequestList", memberNo, rowBounds);
+		return (ArrayList) sqlSession.selectList("adoptionMapper.selectRequestList", memberNo);
 	}
 
 	public int getAnimalListCount(SqlSessionTemplate sqlSession, int memberNo) {
@@ -159,7 +157,6 @@ public class AdoptionDAO {
 	}
 
 	public int updateAdopReply(SqlSessionTemplate sqlSession, AdoptionReply adopr) {
-		// TODO Auto-generated method stub
 		return sqlSession.update("adoptionMapper.updateAdopReply", adopr);
 	}
 
@@ -171,6 +168,20 @@ public class AdoptionDAO {
 		return sqlSession.insert("adoptionMapper.insertAdopFile", affi);
 	}
 
+	public int updateRecodeBoard(SqlSessionTemplate sqlSession, AdoptionBoard adopboard) {
+		return sqlSession.update("adoptionMapper.updateRecodeBoard", adopboard);
+	}
 
-	
+	public int deleteAdopFile(SqlSessionTemplate sqlSession, int fileNo) {
+		return sqlSession.update("adoptionMapper.deleteAdopFile", fileNo);
+	}
+
+	public int updateAdopFile(SqlSessionTemplate sqlSession, AdoptionFile aF) {
+		return sqlSession.insert("adoptionMapper.updateAdopFile", aF);
+	}
+
+	public int changeRequestState(SqlSessionTemplate sqlSession, AnimalRequest a) {
+		return sqlSession.update("adoptionMapper.changeRequestState", a);
+	}
+
 }

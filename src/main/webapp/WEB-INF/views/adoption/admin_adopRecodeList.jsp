@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html lang="en">
 <head>
-<title>관리자 계정 입양일지 리스트 출력</title>
+<title>YELLOW BRIDGE</title>
 <meta charset="utf-8">
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -15,10 +15,8 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption.css">
 <style>
 	#example{text-align: center;}
-	
 	#example tr th{padding: 10px; font-size: 18px; font-weight: bold;  border-bottom: 1px solid black;}
 	#example tr td{padding: 7px; font-size: 16px;}
-	
 	.serviceBoard {
 		width: 65%;
 		margin: 0px auto;
@@ -26,41 +24,66 @@
 	.serviceBoardtext{
 		margin-top: 150px;
 		letter-spacing: -1px;
+		text-align:center;
+		
+	}
+	
+	.row {
+	position: relative;
 	}
 	
 	.tableCheck{width: 5%;}
-	.tableNo{width: 10%;}
-	.tableTitle{width: 25%;}
+	.tableNo{width: 5%;}
+	.tableTitle{width: 20%;}
 	.tableRescueDate{width: 20%;}
-	.tableRequestMember{width: 25%;}
-	.tablerequestDate{width: 10%;}
+	.tableRequestMember{width: 20%;}
+	.tablerequestDate{width: 15%;}
 	.tableState{width: 10%;}
 	#searchArea{padding-bottom:25px;}
-	.btnDiv{padding-top:25px; float: right;}
+	.btnDiv{padding-top:430px; position: absolute;; left: 5px;}
+	.btnDiv2{padding-top:430px; position: absolute; right: 5px;}
+	
+	.pagenation{align:center;}
+	
+	#writeBtn,#changeBtn{
+    	background-color: #BDCC94;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+	
+	#updateBtn{
+    	background-color: lightgray;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+	
+	
 </style>
 
 </head>
 <body>
 <div class="serviceBoard">
 	<c:import url="../admin/header.jsp"/>
-	<div style="text-align:center;" class="serviceBoardtext">
-		<h1 style="color:#BDCC94;"><b>입양동물 관리</b></h1>
+	<div class="serviceBoardtext">
+		<h1 style="color:#BDCC94;"><b>입양공고/요청 관리</b></h1>
 	</div>
 	
 	<div class="container" style="margin-top:30px; text-align:center;">
 		<div class="row">
-				<div class="col-sm-12">
-					<div id="searchArea" align="center">
-						<select id="searchCondition" name="searchCondition">
-							<option>-------</option>
-							<option value="writer">작성자</option>
-							<option value="title">제목</option>
-							<option value="category">카테고리</option>
-						</select>
-						<!-- 
-					<input id="searchValue" type="search">
-					<button onclick="searchBoard();">검색</button> -->
-					</div>
 					<table id="example" class="display" style="width: 100%">
 						<thead>
 							<tr>
@@ -77,23 +100,41 @@
 							<c:forEach var="animal" items="${ animallist }">
 								<fmt:formatDate var="formatRegDate"
 									value="${ animal.rescueDate }" pattern="yyyy.MM.dd" />
+								<fmt:formatDate var="formatRegDate2"
+									value="${ animal.animalRequestDate }" pattern="yyyy.MM.dd" />
+									
 								<tr>
+								
 									<td><input type="checkbox" name="checkbox" value="${ animal.animalNo }">
 									<td align="center" class="tableNo">${ animal.animalNo }</td>
 									<td align="center" class="tableTitle">${ animal.animalType }</td>
 									<td align="center" class="tableWriter">${ formatRegDate }</td>
 									<td align="center" class="tableDate">${ animal.requestMemberNickname }</td>
-									<td align="center" class="tableDate">${ animal.animalRequestDate }</td>
+									<td align="center" class="tableDate">${ formatRegDate2 }</td>
 									<td align="center" class="adopView">${ animal.animalRequestState }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 					<div class="btnDiv">
-						<button onclick="location.href='animalNoticeWriterForm.ado'">공고등록</button>
-						<div id="update"><p>선택한 공고 </p> <button id="updateBtn">삭제하기</button>
+					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='animalNoticeWriterForm.ado'">공고등록</button>
+					<button type="button" class="btn btn-primary" id="updateBtn">선택공고삭제</button>
+					</div>
+					
+					<div class="btnDiv2">
+						<select id="selectbox" name="selectbox">
+							  <option>상태값선택</option>
+							  <option value="입양대기">입양대기</option>
+							  <option value="입양진행중">입양진행중</option>
+							  <option value="입양반려">입양반려</option>
+							  <option value="입양취소">입양취소</option>
+							  <option value="입양완료">입양완료</option>
+							</select>
+							<button type="button" class="btn btn-primary" id="changeBtn">으로 변경</button>
 					</div>
 						<!-- <button type="button" class="btn btn-primary" id = "writeBtn" onclick="location.href='adoptionRecodeWrite.ado';">글쓰기</button> -->
+				</div>
+			</div>
 					</div>
 					<!-- 페이지 -->
 								<div id="pagingNav" class="pagenation">
@@ -133,11 +174,6 @@
 									</c:if>
 								</div>
 									<!-- 페이지  끝 -->
-				</div>
-			</div>
-		
-	</div>
-</div>
 	<script type="text/javascript">
 		$('#updateBtn').on('click', function() {
 			if ($('input[name=checkbox]:checked').length < 1) {
@@ -154,11 +190,45 @@
 					data : { checkbox : checkbox },
 					success : function(data) {
 						window.location.reload();
+						alert('선택한 공고가 삭제되었습니다.');
 						console.log('성공');
 						
 					},
 					error : function() {
 						console.log('공고삭제에 실패했습니다.');
+					}
+				});
+			}
+		});
+		</script>
+		<script>
+		
+		
+		
+		$('#changeBtn').on('click', function() {
+			if ($('input[name=checkbox]:checked').length < 1) {
+				alert('1개 이상 선택해주세요.');
+			} else {
+				var checkbox = [];
+				var selectbox = $("#selectbox option:selected").val();
+				
+				$('input[name=checkbox]:checked').each(function() {
+					checkbox.push($(this).val());
+				});
+
+				$.ajax({
+					url : 'admin_changeState.ado',
+					type : 'post',
+					data : { checkbox : checkbox, selectbox:selectbox},
+					success : function(data) {
+						alert('입양상태 변경이 완료되었습니다.');
+						window.location.reload();
+						console.log('성공');
+						
+					},
+					error : function() {
+						alert('입양상태 변경실패');
+						console.log('입양상태 변경실패');
 					}
 				});
 			}

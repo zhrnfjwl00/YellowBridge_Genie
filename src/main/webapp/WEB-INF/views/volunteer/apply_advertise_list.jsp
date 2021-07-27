@@ -78,9 +78,6 @@
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
 	</div>
-	<div class="btnDiv">
-		<button type="submit" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/volAdminAdForm.vol'">글쓰기</button>
-	</div>
 	<div id="service">
 		<div id="service-list" class="service-list" align="center">
 			<div id="searchArea" align="center">
