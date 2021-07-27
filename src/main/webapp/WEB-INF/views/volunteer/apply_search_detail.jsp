@@ -87,7 +87,6 @@
 	<div style="text-align:center; padding-bottom:30px;" class="servicetext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청 조회</b></h1>
 	</div>
-	
 	<div id="tableDiv">
 	<table border="1" align="center">
 		<tr>

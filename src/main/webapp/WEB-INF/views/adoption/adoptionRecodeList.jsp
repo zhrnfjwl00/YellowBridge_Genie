@@ -46,17 +46,17 @@
 	<div class="container" style="margin-top:30px; text-align:center;">
 		<div class="row">
 			<div class="col-sm-12">
-				<div id="searchArea" align="center">
+				<!-- <div id="searchArea" align="center">
 					<select id="searchCondition" name="searchCondition">
 						<option>-------</option>
 						<option value="writer">작성자</option>
 						<option value="title">제목</option>
 						<option value="category">카테고리</option>
 					</select>
-					<!-- 
+					
 					<input id="searchValue" type="search">
-					<button onclick="searchBoard();">검색</button> -->
-				</div>
+					<button onclick="searchBoard();">검색</button>
+				</div> -->
 				  
 				<table id="example" class="display" style="width:100%">
 					<thead>
@@ -69,13 +69,13 @@
 						</tr>
 					</thead>
 					<tbody id = "listArea">
-					<%-- <c:if test="${ empty vollist }">
+					 <c:if test="${ empty adoplist }">
 						<tr>
 							<td colspan="6">작성된 게시물이 없습니다.</td>
 						</tr>
-					</c:if> --%>
+					</c:if> 
 					
-					<%-- <c:if test="${ !empty vollist }"> --%>
+					<c:if test="${ !empty adoplist }"> 
 						<c:forEach var="adop" items="${ adoplist }">
 							<tr>
 								<td align="center" class="tableNo">${ adop.adopId }</td>
@@ -85,6 +85,7 @@
 									<c:url var="adoptionRecodeDetail" value="adoptionRecodeDetail.ado">
 										<c:param name="adopId" value="${ adop.adopId }"/>
 										<c:param name="page" value="${ pi.currentPage }"/>
+										<c:param name="loginId" value="${ loginUser.id }"/>
 									</c:url>
 									<a href="${ adoptionRecodeDetail }">${ adop.adopTitle }</a>
 								</td>
@@ -94,47 +95,47 @@
 								<td align="center" class="adopView">${ adop.adopView }</td>
 							</tr>
 						</c:forEach>
-					<%-- </c:if> --%>
+					 </c:if> 
 					
 						<!-- 페이징 처리 -->
 							<tr align="center" height="20" id="buttonTab">
 								<td colspan="6">
 								
 									<!-- [이전] -->
-									<c:if test="${ pi.currentPage <= 1 }">
-										[이전] &nbsp;
-									</c:if>
-									<c:if test="${ pi.currentPage > 1 }">
+										<c:if test="${ pi.currentPage <= 1 }"> [이전] &nbsp; </c:if>
+										<c:if test="${ pi.currentPage > 1 }">
 										<c:url var="before" value="adopRecode.ado">
-											<c:param name="page" value="${ pi.currentPage - 1 }"/>
-										</c:url>
-										<a href="${ before }">[이전]</a> &nbsp;
-									</c:if>
+										<c:param name="page" value="${ api.currentPage - 1 }"/>
+										</c:url> <a href="${ before }">[이전] &nbsp;</a> </c:if>
 									
 									<!-- 페이지 -->
 									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-										<c:if test="${ p eq pi.currentPage }">
-											<font color="red" size="4"><b>[${ p }]</b></font>
-										</c:if>
-										
-										<c:if test="${ p ne pi.currentPage }">
-											<c:url var="pagination" value="adopRecode.ado">
-												<c:param name="page" value="${ p }"/>
-											</c:url>
-											<a href="${ pagination }">${ p }</a> &nbsp;
-										</c:if>
-									</c:forEach>
+									<c:if test="${ p eq pi.currentPage }">
+										<font color="red" size="4"><b>[${ p }]</b></font>
+									</c:if>
+									
+									<c:if test="${ p ne pi.currentPage }">
+										<c:url var="pagination" value="adopRecode.ado">
+											<c:param name="page" value="${ p }"/>
+										</c:url>
+										<a href="${ pagination }">${ p }</a> &nbsp;
+									</c:if>
+								</c:forEach>
 									
 									<!-- [다음] -->
-									<c:if test="${ pi.currentPage >= pi.maxPage }">
-										[다음]
-									</c:if>
-									<c:if test="${ pi.currentPage < pi.maxPage }">
-										<c:url var="after" value="adopRecode.ado">
-											<c:param name="page" value="${ pi.currentPage + 1 }"/>
-										</c:url> 
-										<a href="${ after }">[다음]</a>
-									</c:if>
+										<c:if test="${ pi.currentPage >= pi.maxPage }">
+											[다음]
+										</c:if>
+										<c:if test="${ pi.currentPage < api.maxPage }">
+											<c:url var="after" value="adopRecode.ado">
+												<c:param name="page" value="${ pi.currentPage + 1 }"/>
+											</c:url> 
+											<a href="${ after }">[다음]</a>
+										</c:if>
+									
+									
+									
+									
 								</td>
 							</tr>
 					</tbody>

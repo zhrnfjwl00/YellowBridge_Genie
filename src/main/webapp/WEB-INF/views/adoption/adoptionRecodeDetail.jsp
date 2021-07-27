@@ -37,9 +37,11 @@
 			<input type="hidden" id="adopId" name="adopId" value="${adopboard.adopId}" />
 			<input type="hidden" id="adopTitle" name="adopTitle" value="${adopboard.adopTitle}"> 
 			<input type="hidden" id="adopWriter" name="adopWriter" value="${adopboard.adopWriter}"> 
+			<input type="hidden" id="id" name="id" value="${loginId}">
 			<input type="hidden" id="adopContent" name="adopContent" value="${adopboard.adopContent}"> 
 			<input type="hidden" id="adopView" name="adopView" value="${adopboard.adopView}"> 
 			<input type="hidden" id="adopCreateDate" name="adopCreateDate" value="${adopboard.adopCreateDate}"> 
+			<input type="hidden" id="page" name="page" value="${page}"> 
 		</form> 
 	
 		<div class="form-group">
@@ -61,8 +63,7 @@
 			
 		</div>
 		<div class="downloadFile">
-		첨부파일 
-				<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
+		첨부파일<a href="${ contextPath }/resources/auploadFiles/${ af.fileChangeName }" download="${ af.fileName }">${ af.fileName }</a>
 		</div>
 		
 		<c:url var="adopUpdateForm" value="adopUpdateForm.ado">
@@ -71,6 +72,7 @@
 		</c:url>
 		<c:url var="adopDelete" value="adopDelete.ado">
 			<c:param name="adopId" value="${ adopboard.adopId }"/>
+			<c:param name="fileNo" value="${ af.fileNo }"/>
 		</c:url>
 		<c:url var="adopList" value="adopRecode.ado">
 			<c:param name="page" value="${ page }"/>
@@ -126,11 +128,21 @@
 			<div class="form-group">
 				<table>
 					<tr>
-						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
+						<td colspan="1"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
+						<td colspan="6">
+						<!-- 로그인하지 않은 사용자에게는 로그인 불가멘트 노출 및 클릭시 로그인 페이지로 이동 -->
+						<c:if test="${ empty login }">
+						<a href='<%=request.getContextPath()%>/loginView.me' class="btn btn-default btn-block" role="button">
+							<i class="fa fa-efit" >로그인한 사용자만 댓글 등록이 가능합니다. </i>
+						</a>
+						</c:if>
+						</td>
 					</tr>
 					<tr>
+							<c:if test="${ !empty sessionScope.loginUser }">
 						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
 						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+						</c:if>
 					</tr>
 				</table>
 						
@@ -175,9 +187,12 @@
 			});
 		});
 	});
+	</script>
 	
+	<script>
 	function getReplyList(){
 		var adopId = ${adopboard.adopId};
+		var id = $('#id').val();
 		
 		$.ajax({
 			url: 'adoprList.ado',
@@ -191,15 +206,42 @@
 				$('#rCount').text('댓글(' + data.length + ')');
 				// 댓글 몇개 들어가있는지 확인 
 				if(data.length > 0){
+					var $tr = $('<tr>');
+					var $a = $('<a>');
+					var $trWriter = $('<th>').text('작성자');
+					var $trContent = $('<th colspan=7>').text('내용');
+					var $trCreateDate = $('<th>').text('작성일');
+					var $trUpdate = $('<th>').text('수정');
+					var $trDelete = $('<th>').text('삭제');
+					
+					$tr.append($trWriter);
+					$tr.append($trContent);
+					$tr.append($trCreateDate);
+					$tr.append($trUpdate);
+					$tr.append($trDelete);
+					$tableBody.append($tr);
+					
 					for(var i in data){
 						var $tr = $('<tr>');
-						var $rWriter = $('<td width=100>').text(data[i].rWriter);
-						var $rContent = $('<td>').text(data[i].rContent);
-						var $rCreateDate = $('<td width=100>').text(data[i].rCreateDate);
+						var $rWriterNickname = $('<td>').text(data[i].rNickname);
+						var $rContent = $('<td colspan=7>').text(data[i].rContent);
+						var $rCreateDate = $('<td>').text(data[i].rCreateDate);
+						var page = ${page};
+						var $writerId = data[i].rWriter;
+						var $userId = id;
+						if( $userId.trim() == $writerId.trim() ){
+							var $rUpdateBtn = $('<td width=50><a href="adoprUpdateForm.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">수정</a></td>');						
+							var $rdeleteBtn = $('<td width=50><a href="adoprDelete.ado?rId='+ data[i].rId + '&adopId=' + adopId + '&page=' + page + '">삭제</a></td>');						
+						} else {
+							var $rUpdateBtn = $('<td>').text('수정');
+							var $rdeleteBtn = $('<td>').text('삭제');
+						}
 						
-						$tr.append($rWriter);
+						$tr.append($rWriterNickname);
 						$tr.append($rContent);
 						$tr.append($rCreateDate);
+						$tr.append($rUpdateBtn);
+						$tr.append($rdeleteBtn);
 						$tableBody.append($tr);
 					}
 				} else {
@@ -213,70 +255,13 @@
 		});
 	}
 </script>
+
 	
 <script type="text/javascript">
-	// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
-/*
-	$(document).ready(function(){
-		var formObj = $("form[name='readForm']");
-		
-		 // 수정 
-		$(".update_btn").on("click", function(){
-			formObj.attr("action", "adopUpdateForm.ado");
-			formObj.attr("method", "get");
-			formObj.submit();				
+ 		// 목록이동 버튼
+		$(document).on('click', '#listBtn', function(){
+			location.href = "${pageContext.request.contextPath}/adopRecode.ado";
 		});
-		
-		// 삭제
-		$(".delete_btn").on("click", function(){
-			
-			var deleteYN = confirm("삭제하시겠습니까?");
-			if(deleteYN == true){
-				
-			formObj.attr("action", "/board/delete");
-			formObj.attr("method", "post");
-			formObj.submit();
-				
-			}
-		})
-		
-		// 목록
-		$(".list_btn").on("click", function(){
-			
-			location.href = "/board/list?page=${scri.page}"
-					      +"&perPageNum=${scri.perPageNum}"
-					      +"&searchType=${scri.searchType}&keyword=${scri.keyword}";
-		})
-		
-		$(".replyWriteBtn").on("click", function(){
-			var formObj = $("form[name='replyForm']");
-			formObj.attr("action", "/board/replyWrite");
-			formObj.submit();
-		});
-		
-		//댓글 수정 View
-		$(".replyUpdateBtn").on("click", function(){
-			location.href = "/board/replyUpdateView?bno=${read.bno}"
-							+ "&page=${scri.page}"
-							+ "&perPageNum=${scri.perPageNum}"
-							+ "&searchType=${scri.searchType}"
-							+ "&keyword=${scri.keyword}"
-							+ "&rno="+$(this).attr("data-rno");
-		});
-		
-		//댓글 삭제 View
-		$(".replyDeleteBtn").on("click", function(){
-			location.href = "/board/replyDeleteView?bno=${read.bno}"
-				+ "&page=${scri.page}"
-				+ "&perPageNum=${scri.perPageNum}"
-				+ "&searchType=${scri.searchType}"
-				+ "&keyword=${scri.keyword}"
-				+ "&rno="+$(this).attr("data-rno");
-		});
-	})
-	
-	*/
-	
 </script>
 </body>
 </html>

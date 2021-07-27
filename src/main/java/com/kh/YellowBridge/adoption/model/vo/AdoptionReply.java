@@ -7,23 +7,23 @@ public class AdoptionReply {
 	private String rContent;
 	private int refBid;
 	private String rWriter;
+	private String rNickname;
 	private String rWriterNo;
 	private Date rCreateDate;
-	private Date rModifyDate;
 	private String rStatus;
 	
 	public AdoptionReply() {}
 
-	public AdoptionReply(int rId, String rContent, int refBid, String rWriter, String rWriterNo, Date rCreateDate,
-			Date rModifyDate, String rStatus) {
+	public AdoptionReply(int rId, String rContent, int refBid, String rWriter, String rNickname, String rWriterNo,
+			Date rCreateDate, String rStatus) {
 		super();
 		this.rId = rId;
 		this.rContent = rContent;
 		this.refBid = refBid;
 		this.rWriter = rWriter;
+		this.rNickname = rNickname;
 		this.rWriterNo = rWriterNo;
 		this.rCreateDate = rCreateDate;
-		this.rModifyDate = rModifyDate;
 		this.rStatus = rStatus;
 	}
 
@@ -59,6 +59,14 @@ public class AdoptionReply {
 		this.rWriter = rWriter;
 	}
 
+	public String getrNickname() {
+		return rNickname;
+	}
+
+	public void setrNickname(String rNickname) {
+		this.rNickname = rNickname;
+	}
+
 	public String getrWriterNo() {
 		return rWriterNo;
 	}
@@ -75,14 +83,6 @@ public class AdoptionReply {
 		this.rCreateDate = rCreateDate;
 	}
 
-	public Date getrModifyDate() {
-		return rModifyDate;
-	}
-
-	public void setrModifyDate(Date rModifyDate) {
-		this.rModifyDate = rModifyDate;
-	}
-
 	public String getrStatus() {
 		return rStatus;
 	}
@@ -94,7 +94,7 @@ public class AdoptionReply {
 	@Override
 	public String toString() {
 		return "AdoptionReply [rId=" + rId + ", rContent=" + rContent + ", refBid=" + refBid + ", rWriter=" + rWriter
-				+ ", rWriterNo=" + rWriterNo + ", rCreateDate=" + rCreateDate + ", rModifyDate=" + rModifyDate
+				+ ", rNickname=" + rNickname + ", rWriterNo=" + rWriterNo + ", rCreateDate=" + rCreateDate
 				+ ", rStatus=" + rStatus + "]";
 	}
 

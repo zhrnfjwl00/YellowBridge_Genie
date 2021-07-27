@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="qnaMapper">
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status='Y'
+	</select>
+	
+	<select id="selectList" resultMap="qnaboardResultSet">
+		select board_no, board_title, board_content, board_view, board_create_date, board_modify_date, PARENT_CATE,
+				board_status, board_writer, member_nickname
+		from board
+		    left join PARENT_CATEGORY using (PARENT_CATE)
+		    left join member on (board_writer = member_id)
+		where board_status='Y' and PARENT_CATE=50
+		order by board_no desc
+	</select>
+	
+	
+	<resultMap type="QnaBoard" id="qnaboardResultSet">
+		<id property="qId" column="BOARD_NO"/>
+		<result property="qTitle" column="BOARD_TITLE"/>
+		<result property="qContent" column="BOARD_CONTENT"/>
+		<result property="qCount" column="BOARD_VIEW"/>
+		<result property="qCategory" column="LIST"/>
+		<result property="qCreateDate" column="BOARD_CREATE_DATE"/>
+		<result property="qModifyDate" column="BOARD_MODIFY_DATE"/>
+		<result property="qStatus" column="BOARD_STATUS"/>
+		<result property="qCateNo" column="CATE_NO"/>
+		<result property="qWriter" column="BOARD_WRITER"/>
+		<result property="qWriterNickname" column="MEMBER_NICKNAME"/>
+		<result property="qWriterName" column="MEMBER_NAME"/>
+	</resultMap>
+	
+	
+
+
+	<insert id="insertqnaBoard">
+		INSERT 
+		INTO BOARD 
+		VALUES (SEQ_BNO.nextval, #{qTitle}, #{qContent},0, SYSDATE, SYSDATE, 'Y', NULL, 50, #{qWriter})
+	</insert>
+	
+	
+	<insert id="insertFile">
+		INSERT 
+		INTO FILE_INFO 
+		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{changeName}, SYSDATE, 1, 
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL)
+	</insert>
+	
+	
+	<update id="updateView">
+		UPDATE BOARD
+		SET BOARD_VIEW = BOARD_VIEW + 1
+		WHERE BOARD_NO=#{qId} AND PARENT_CATE=50
+	</update>
+
+
+	<update id="addReadCount">
+		update board
+		set BOARD_VIEW = BOARD_VIEW + 1	
+		where board_no = #{qId}
+	</update>
+
+	<select id="selectBoard" resultMap="qnaboardResultSet">
+		select *
+		from board
+		where board_no = #{qId}
+	</select>
+
+	<select id="detailFile" resultMap="scfileInfoResultMap">
+		SELECT FILE_NO,FILE_NAME,FILE_CHANGE,FILE_CREATE_DATE,FILE_LEVEL,
+				FILE_PATH,FILE_STATUS,BOARD_NO
+		FROM FILE_INFO
+		WHERE BOARD_NO=#{qId}
+	</select>
+	
+	<resultMap type="scFileInfo" id="scfileInfoResultMap">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="changeName" column="FILE_CHANGE"/>
+		<result property="fileCreateDate" column="FILE_CREATE_DATE"/>
+		<result property="fileLevel" column="FILE_LEVEL"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="fileStatus" column="FILE_STATUS"/>
+		<result property="BoardNo" column="BOARD_NO"/>
+	</resultMap>
+
+
+
+	
+	
+	<update id="deleteBoard">
+		UPDATE BOARD
+		SET BOARD_STATUS='N'
+		where board_no = #{rId}
+	</update>
+	
+	<insert id="insertReply">
+		INSERT INTO COMMENTS
+		VALUES(SEQ_COMMNO.nextval, #{rContent}, SYSDATE, 'Y',  DEFAULT, #{refBid},#{rWriter})
+	</insert>
+	
+	
+	<select id="selectReplyList"  resultMap="ReplyResultSet" parameterType="_int">
+		SELECT *
+		FROM COMMENTS
+    		LEFT JOIN MEMBER on (MEMBER_ID = COMMETS_WRITER)
+		WHERE COMMETS_STATUS='Y' and BOARD_NO=#{qId}
+		ORDER BY COMMENTS_NO DESC
+	</select>
+	
+	
+	<resultMap type="com.kh.YellowBridge.service.model.vo.Reply" id="ReplyResultSet">
+		<id property="rId" column="COMMENTS_NO"/>
+		<result property="rContent" column="COMMETS_COTENT"/>
+		<result property="refBid" column="BOARD_NO"/>
+		<result property="rWriter" column="MEMBER_ID"/>
+		<result property="rWriterNo" column="MEMBER_NO"/>
+		<result property="rNickname" column="MEMBER_NICKNAME"/>
+		<result property="rCreateDate" column="COMMETS_DATE"/>
+		<result property="rStatus" column="COMMETS_STATUS"/>
+	</resultMap>
+	
+	<update id="servicerDelete">
+		update COMMENTS
+		set COMMETS_STATUS='N'
+		where COMMENTS_NO=#{rId}
+	</update>
+
+</mapper>

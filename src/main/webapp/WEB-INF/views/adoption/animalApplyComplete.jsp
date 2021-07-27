@@ -32,8 +32,8 @@
 
 				<div class="btn_area">
 					<!-- 			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a> -->
-					<button type="submit">입양신청조회</button>
-					<button>메인으로</button>
+					<button id="adopInfo">입양신청조회</button>
+					<button id="goMain">메인으로</button>
 					<!--  			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a>
 					<a href="javascript:void(0);" onclick="location.href=''">취소</a> -->
 				</div>
@@ -54,4 +54,15 @@
 	</div>
 	<c:import url="../common/footer.jsp" />
 </body>
+<script type="text/javascript">
+ 		// 입양신청조회 버튼
+		$(document).on('click', '#adopInfo', function(){
+			location.href = "${pageContext.request.contextPath}/adopInfo.ado";
+		});
+ 		
+ 		// 메인이동 버튼
+		$(document).on('click', '#goMain', function(){
+			location.href ='<%=request.getContextPath()%>/index.jsp'
+		});
+</script>
 </html>

@@ -36,13 +36,19 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return aDAO.getAnimalListCount(sqlSession);
 	}
 
-	// 입양공고 리스트 조회
+	// 사용자_입양공고 리스트 조회
 	@Override
 	public ArrayList<AnimalInfo> selectAnimalList(PageInfo pi) {
 		return aDAO.selectAnimalList(sqlSession, pi);
 	}
+	
+	// 관리자_입양공고 리스트 조회
+	@Override
+	public ArrayList<AnimalInfo> admin_selectAnimalList(PageInfo pi) {
+		return aDAO.admin_selectAnimalList(sqlSession, pi);
+	}
 
-	// 입양공고 등록
+	// 관리자_입양공고 등록
 	@Override
 	public int insertAnimal(AnimalInfo a, AdoptionFile af) {
 		int result = aDAO.insertAnimal(sqlSession, a);
@@ -78,13 +84,18 @@ public class AdoptionServiceImpl implements AdoptionService {
 
 	// 입양일지 게시물 추가
 	@Override
-	public int insertAdopBoard(AdoptionBoard a, AdoptionFile af) {
-		int result = aDAO.insertAdopBoard(sqlSession, a);
+	public int insertAdopBoard(AdoptionBoard a) {
+		return aDAO.insertAdopBoard(sqlSession, a);
 
-		if (result > 0) {
-			return aDAO.insertAnimalFile(sqlSession, af);
-		}
-		return result;
+//		if (result > 0) {
+//			return aDAO.insertAnimalFile(sqlSession, af);
+//		}
+//		return result;
+	}
+	
+	@Override
+	public int insertAdopFile(AdoptionFile affi) {
+		return aDAO.insertAdopFile(sqlSession, affi);
 	}
 
 	// 입양일지 게시물 삭제
@@ -121,10 +132,7 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return aDAO.selectApplyAnimal(sqlSession, animalNo);
 	}
 
-	@Override
-	public int insertAppForm(AnimalRequest ar) {
-		return aDAO.insertAppForm(sqlSession, ar);
-	}
+	
 
 	@Override
 	public AnimalRequest selectAppForm(int memberNo) {
@@ -151,4 +159,57 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return aDAO.selectAlist(sqlSession);
 	}
 
+	@Override
+	public int deleteAnimalNotice(Integer animalNo) {
+		return aDAO.deleteAnimalNotice(sqlSession, animalNo);
+	}
+
+	@Override
+	public int insertAppForm(AnimalRequest ar, int animalNo) {
+		int result = aDAO.insertAppForm(sqlSession, ar);
+		
+		if(result > 0) {
+			 aDAO.updateAnimalStatus(sqlSession, animalNo);
+		}
+		return result;
+	}
+
+	@Override
+	public AdoptionReply selectAdopReply(int rId) {
+		return aDAO.selectAdopReply(sqlSession, rId);
+	}
+
+	@Override
+	public int updateAdopReply(AdoptionReply adopr) {
+		return aDAO.updateAdopReply(sqlSession, adopr);
+	}
+
+	@Override
+	public int adoptionrDelete(int rId) {
+		return aDAO.adoptionrDelete(sqlSession, rId);
+	}
+
+	// 입양일지 수정
+	@Override
+	public int updateRecodeBoard(AdoptionBoard adopboard) {
+		return aDAO.updateRecodeBoard(sqlSession, adopboard);
+	}
+
+
+	@Override
+	public int deleteAdopFile(int fileNo) {
+		return aDAO.deleteAdopFile(sqlSession, fileNo);
+	}
+
+	@Override
+	public int updateAdopFile(AdoptionFile aF) {
+		return aDAO.updateAdopFile(sqlSession, aF);
+	}
+
+	// 입양일지 수정 중 첨부파일 삭제
+	@Override
+	public int aDeleteAdopFile(int fileNo) {
+		return aDAO.deleteAdopFile(sqlSession, fileNo);
+	}
+	
 }

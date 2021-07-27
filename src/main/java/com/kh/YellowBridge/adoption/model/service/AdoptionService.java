@@ -23,8 +23,11 @@ public interface AdoptionService {
 
 	// 입양공고 게시물 리스트
 	ArrayList<AnimalInfo> selectAnimalList(PageInfo pi);
+	
+	// 입양일지 등록 
+	int insertAdopBoard(AdoptionBoard a);
 
-	int insertAdopBoard(AdoptionBoard a, AdoptionFile af);
+	int insertAdopFile(AdoptionFile affi);
 
 	int deleteAdopBoard(int adopId);
 
@@ -43,7 +46,7 @@ public interface AdoptionService {
 	AnimalInfo selectApplyAnimal(int animalNo);
 
 	// 입양 신청서 작성
-	int insertAppForm(AnimalRequest ar);
+	int insertAppForm(AnimalRequest ar, int animalNo);
 
 	AnimalRequest selectAppForm(int memberNo);
 
@@ -55,5 +58,39 @@ public interface AdoptionService {
 	Member selectMember(int memberNo);
 
 	ArrayList<AnimalInfo> selectAList();
+//
+//	void deleteAnimalNotice(String no);
+
+	int deleteAnimalNotice(Integer animalNo);
+
+	ArrayList<AnimalInfo> admin_selectAnimalList(PageInfo pi);
+
+	// 댓글 수정
+	AdoptionReply selectAdopReply(int rId);
+
+	int updateAdopReply(AdoptionReply adopr);
+
+	int adoptionrDelete(int rId);
+
+	// 입양일지 수정
+	int updateRecodeBoard(AdoptionBoard adopboard);
+
+	int deleteAdopFile(int fileNo);
+
+	int updateAdopFile(AdoptionFile aF);
+
+
+	
+	
+	
+	
+
+	int aDeleteAdopFile(int fileNo);
+
+
+
+
+
+
 
 }

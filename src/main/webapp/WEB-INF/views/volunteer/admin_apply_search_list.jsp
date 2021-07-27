@@ -77,6 +77,27 @@
 	#update select {
 		width: 150px !important;
 	}
+	
+	nav{margin-left: 25px; margin-top: 10px;}
+	
+	.content{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		width: 95%;
+		min-height: 500px;
+	}
+	
+	.menuwrap{background: #EDFFC0; width: 100%; height: 50px; margin-bottom: 50px;}
+	.adminmenu{
+		background: #DDE88F; color: navy; text-align: center; font-weight: bold; 
+		vertical-align: middle; width: 300px; height: 50px; display: table-cell;
+	}
+	#navDiv{width: 600px; margin-left: auto; margin-right: auto;}
+	#searchArea{margin-bottom: 30px;}
+	.adminmenu:hover {background: beige; color:orangered; font-weight:bold; cursor:pointer;}
+	#adminsearchlist{background: #F6FFDE; color:green; border:1px solid green;}
+	
 </style>
 </head>
 <body>
@@ -86,6 +107,16 @@
 	
 	<div style="text-align:center;" class="serviceApplyBoardtext">
 		<h1 style="color:#BDCC94;"><b>봉사 신청 조회</b></h1>
+	</div>
+	
+	<br clear="all">
+	<br>
+	
+	<div class="menuwrap">
+	 <nav id="navDiv">
+		<div class="adminmenu" id="adminsearchlist"><b>봉사 신청서 관리</b></div>
+		<div class="adminmenu" id="adminserviceapply">공고 관리</div>
+	 </nav>
 	</div>
 	
 	<div id="searchArea" align="center">
@@ -103,7 +134,7 @@
 	<table id="serviceApplyBoardTable" class="display" style="width:100%">
 		<thead>
 			<tr>
-				<th align="center" class="selected"><input type="checkbox" name="selected" id="allSelected"></th>
+				<th align="center" class="selected"><input type="checkbox" name="selected" class="cate" id="allSelected" onclick="selectAll();"></th>
 				<th align="center" class="tableNo">NO.</th>
                 <th align="center" class="tableShelter">보호소</th>
                 <th align="center" class="tableCo">신청내역</th>
@@ -122,7 +153,7 @@
 		
 		<c:forEach var="vol" items="${ adminaplist }">
 			<tr>
-				<td class="selected"><input type="checkbox" name="checkbox" id="oneSelected" value="${ vol.serviceappNo }"></td>
+				<td class="selected"><input type="checkbox" name="checkbox" id="oneSelected" class="cate" onclick="selectOne();" value="${ vol.serviceappNo }"></td>
 				<td align="center" class="tableNo">${ vol.serviceappNo }</td>
 				<td align="center" class="tableShelter">${ vol.shelterName }</td>
 			
@@ -262,6 +293,44 @@
 		}
 	});
    
+</script>
+<script>
+	var all = document.getElementById("allSelected");
+	var category = document.getElementsByClassName("cate");
+
+	function selectAll(){
+		if(all.checked){
+			for(var i = 0; i < category.length; i++){
+				category[i].checked = true;
+			}
+		} else{
+			for(var i = 0; i < category.length; i++){
+				category[i].checked = false;
+			}
+		} 
+	}
+	
+	function selectOne(){
+		var count = 0;
+		
+		for(var i = 0; i < category.length; i++){
+			if(category[i].checked){
+				count++;
+			} 
+		}
+		
+		if(count != 5){
+			all.checked = false;
+		} else{
+			all.checked = true;
+		}
+	}
+</script>
+<script>
+		$('.adminmenu').on('click', function() {
+			var id = $(this).attr('id');
+			location.href='<%=request.getContextPath()%>/' + id + '.vol';
+		});
 </script>
 </body>
 </html>
