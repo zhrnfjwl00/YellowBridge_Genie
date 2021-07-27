@@ -593,4 +593,15 @@ public class AdoptionController {
 	
 	}
 	/* -------------------- 입양공고 메인페이지 노출 끝  -------------------- */
+	
+	
+	@RequestMapping("aDiaryList.ado")
+	@ResponseBody
+	public void adopDiaryList(HttpServletResponse response) throws JsonIOException, IOException {
+		ArrayList<AdoptionBoard> diaryList = aService.selectDiaryList();
+		response.setContentType("application/json; charset=UTF-8");
+		new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(diaryList, response.getWriter());
+
+	
+	}
 }

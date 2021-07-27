@@ -218,7 +218,7 @@
 			});
 		});
 		
-			
+		$('.nickGuide').hide();
 		$('#nickname').on('keyup', function(){
 			var nickname = $(this).val().trim();
 			

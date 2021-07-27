@@ -29,7 +29,7 @@
 	
 	.menu { 
 	width: 615px; 
-	height:230px; 
+	height:100px; 
 	margin: 0 auto;
 	}
 	
@@ -113,19 +113,8 @@
 	</div>
 <div class="area2">
 		<div class="menu">
-			<h1> 마이페이지 </h1>
-				<!-- 활동정보 -->
-				<span><button type="button" onclick="location.href='mypage.jsp'" id="button1">활동정보</button></span>
-				
-				<!-- 회원정보 -->
-				<span><button type="button" onclick="location.href='mupdateView.me'" id="button2">회원정보</button></span>
-				
-				<!-- 회원탈퇴 -->
-				<c:url var="mdelete" value="mdelete.me">
-					<c:param name="id" value="${ loginUser.id }"/>
-				</c:url>
-				<span><button type="button" onclick="location.href='mdeleteView.me'" id="button3">회원탈퇴</button></span>
-			</div>	
+			<h1 style="font-weight: bolder; font-size:50px; "> 마이페이지 </h1>
+		</div>	
 	
 	<div class="updateArea">
 			
@@ -226,7 +215,7 @@
 							<c:param name="id" value="${ loginUser.id }"/>
 						</c:url>
 						<%-- <button type="button" onclick="location.href='${ mdelete }'">탈퇴하기</button> --%>
-						<input type="reset" id="resetButton" value="취소하기">
+						<input type="reset" id="resetButton" onclick="location.href ='<%=request.getContextPath()%>/myinfo.me'" value="취소하기">
 					</td>
 				</tr>
 			</table>
