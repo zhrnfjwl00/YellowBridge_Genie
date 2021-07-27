@@ -36,7 +36,7 @@
 						<div class="sub" style="display: none;">
 							<ul class="inner">
 								<li><a href="admin_adoption.ado">입양관리</a></li>
-								<li><a href="">봉사관리</a></li>
+								<li><a href="adminsearchlist.vol">봉사관리</a></li>
 								<li><a href="">후원관리</a></li>
 							</ul>
 						</div></li>

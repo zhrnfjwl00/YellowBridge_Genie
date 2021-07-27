@@ -13,9 +13,6 @@
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard" alias="VolunteerBoard"/>
 		<typeAlias type="com.kh.YellowBridge.volunteer.model.vo.VolunteerApply" alias="VolunteerApply"/>
 		<typeAlias type="com.kh.YellowBridge.member.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.YellowBridge.service.model.vo.ScBoard" alias="ScBoard" />
-		<typeAlias type="com.kh.YellowBridge.service.model.vo.QnaBoard" alias="QnaBoard" />
-		<typeAlias type="com.kh.YellowBridge.service.model.vo.ScFileInfo" alias="scFileInfo" />
 	</typeAliases>
 	
 	
@@ -24,8 +21,6 @@
 		<mapper resource="mapper/adoption-mapper.xml"/>
 		<mapper resource="mapper/volunteer-mapper.xml"/>
 		<mapper resource="mapper/member-mapper.xml"/>
-		<mapper resource="mapper/servicecenter-mapper.xml"/>
-		<mapper resource="mapper/qna-mapper.xml"/>
 	</mappers>
 
 </configuration>
