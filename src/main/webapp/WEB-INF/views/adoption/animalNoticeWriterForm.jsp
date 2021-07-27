@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption2.css">
 </head>
 <body>
-	<c:import url="../common/header.jsp" />
+	<c:import url="../admin/header.jsp" />
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">

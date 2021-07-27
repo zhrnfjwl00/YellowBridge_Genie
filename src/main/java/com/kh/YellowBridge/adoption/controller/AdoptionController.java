@@ -122,7 +122,7 @@ public class AdoptionController {
 		}
 	}
 	
-	// 관리자_입양공고 조회 리스트
+	// 관리자_입양공고/요청 조회,관리 리스트
 		@RequestMapping("admin_adoption.ado")
 		public ModelAndView adminRecodeList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
 				@DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
@@ -133,7 +133,7 @@ public class AdoptionController {
 			}
 			int listCount = aService.getAnimalListCount();
 
-			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			PageInfo pi = RecodePagination.getPageInfo(currentPage, listCount);
 
 			ArrayList<AnimalInfo> animallist = aService.admin_selectAnimalList(pi);
 			System.out.println(animallist);
@@ -145,6 +145,7 @@ public class AdoptionController {
 			}
 			return mv;
 		}
+		
 
 		// 관리자_입양공고 삭제 (선택된 공고만 삭제)
 		@ResponseBody
@@ -161,6 +162,25 @@ public class AdoptionController {
 			// @RequestParam(value="checkArr[]")로 받고
 			// 타입은 배열이니까 꼭 List<Integer> 로 받아옴.
 
+			return "redirect:admin_adoption.ado";
+		}
+		
+		// 관리자_입양요청상태 변경 (선택된 공고만 변경)
+		@ResponseBody
+		@RequestMapping("admin_changeState.ado")
+		public String changeState(@RequestParam(required=false, value = "checkbox[]") List<Integer> animalNo, @RequestParam(required=false, value = "selectbox") String requestState, @ModelAttribute AnimalRequest a) {
+			System.out.println("checkbox[] 값이 잘 갔는지 확인 " + animalNo);
+			System.out.println("selectbox 값이 잘 갔는지 확인" + requestState);
+			
+			for (int i = 0; i < animalNo.size(); i++) {
+				a.setRequestAnimalNo(animalNo.get(i));  
+				a.setRequestState(requestState);
+				
+				System.out.println(a);
+				
+				int result = aService.changeRequestState(a);
+				
+			}
 			return "redirect:admin_adoption.ado";
 		}
 	
@@ -234,28 +254,18 @@ public class AdoptionController {
 
 	// 사용자_입양신청조회 리스트
 	@RequestMapping("adopInfo.ado")
-	public ModelAndView adopInfo(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv, HttpSession session, HttpServletRequest request) {
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = page;
-		}
+	public ModelAndView adopInfo(ModelAndView mv, HttpSession session, HttpServletRequest request, @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
 		if ((Member) session.getAttribute("loginUser") == null) {
 			request.setAttribute("msg", "로그인 후 이용하세요");
 		}
 
 		int memberNo = ((Member) session.getAttribute("loginUser")).getNo();
-		int listCount = aService.getRequestListCount(memberNo);
 
-		Member member = aService.selectMember(memberNo);
-
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-
-		ArrayList<AnimalRequest> requestlist = aService.selectRequestList(memberNo, pi);
+		ArrayList<AnimalRequest> requestlist = aService.selectRequestList(memberNo);
 		System.out.println(requestlist);
 
 		if (requestlist != null) {
-			mv.addObject("requestlist", requestlist).addObject("pi", pi).addObject("member", member)
-					.setViewName("adopInfo");
+			mv.addObject("requestlist", requestlist).setViewName("adopInfo");
 		} else {
 			throw new AdoptionException("입양신청조회 리스트 조회에 실패하였습니다.");
 		}
@@ -270,13 +280,14 @@ public class AdoptionController {
 	/* -------------------- (사용자) 입양일지 시작 -------------------- */
 	// 사용자_입양일지 리스트, 페이징처리
 	@RequestMapping("adopRecode.ado")
-	public ModelAndView boardList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv) {
+	public ModelAndView boardList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv, HttpServletRequest request) {
 		int currentPage = 1;
 		
 		if (page != null) {
 			currentPage = page;
 		}
 		int listCount = aService.getListCount();
+		 System.out.println("listCount : " + listCount);
 
 		PageInfo pi = RecodePagination.getPageInfo(currentPage, listCount);
 

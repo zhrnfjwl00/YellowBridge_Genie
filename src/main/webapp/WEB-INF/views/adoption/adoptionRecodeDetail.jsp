@@ -78,9 +78,10 @@
 			<c:param name="page" value="${ page }"/>
 		</c:url>
 		
+		<c:if test="${ loginUser.id eq adopboard.adopWriter}">
 		<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ adopDelete }'">삭제</button>
 		<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${ adopUpdateForm }'">수정</button> 
-		
+		</c:if>
 		<br>
 		
 		<div class="form-group">
@@ -129,14 +130,14 @@
 				<table>
 					<tr>
 						<td colspan="1"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
+						<c:if test="${ empty sessionScope.loginUser }">
 						<td colspan="6">
 						<!-- 로그인하지 않은 사용자에게는 로그인 불가멘트 노출 및 클릭시 로그인 페이지로 이동 -->
-						<c:if test="${ empty login }">
 						<a href='<%=request.getContextPath()%>/loginView.me' class="btn btn-default btn-block" role="button">
 							<i class="fa fa-efit" >로그인한 사용자만 댓글 등록이 가능합니다. </i>
 						</a>
-						</c:if>
 						</td>
+						</c:if>
 					</tr>
 					<tr>
 							<c:if test="${ !empty sessionScope.loginUser }">
