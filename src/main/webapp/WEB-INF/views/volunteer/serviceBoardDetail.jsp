@@ -154,7 +154,7 @@
 					
 					if(data == 'success'){
 						$('#rContent').val('');
-						getReplyList(id); // 댓글 리스트 불러오기
+						getReplyList(); // 댓글 리스트 불러오기
 					}
 				}
 			});
