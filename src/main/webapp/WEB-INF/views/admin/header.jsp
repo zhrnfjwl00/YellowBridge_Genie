@@ -20,7 +20,7 @@
 <div class="inner">
 	<h1><a href=""><img src="<%= request.getContextPath() %>/resources/images/logo.png"></a></h1>
 	<div class="innerMenu">
-	<<span class="util">
+	<span class="util">
 			<c:if test="${ empty sessionScope.loginUser }">
 				<a onclick="location.href ='<%=request.getContextPath()%>/loginView.me'" style="cursor:pointer;">로그인</a>
 				<a onclick="location.href ='<%=request.getContextPath()%>/memberJoinTermsView.me'" style="cursor:pointer;">회원가입</a>

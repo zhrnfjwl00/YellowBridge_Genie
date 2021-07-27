@@ -183,7 +183,18 @@ public class AdoptionDAO {
 	public int changeRequestState(SqlSessionTemplate sqlSession, AnimalRequest a) {
 		return sqlSession.update("adoptionMapper.changeRequestState", a);
 	}
-	
+
+	public int getAdminRequestListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adoptionMapper.getAdminRequestListCount");
+	}
+
+	public ArrayList<AnimalRequest> admin_selectRequestList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adoptionMapper.admin_selectRequestList", null, rowBounds);
+	}
+
 	public ArrayList<AdoptionBoard> selectDiaryList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("adoptionMapper.selectaDiary");
 	}

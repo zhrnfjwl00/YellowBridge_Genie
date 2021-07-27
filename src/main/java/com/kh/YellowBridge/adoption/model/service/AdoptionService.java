@@ -79,15 +79,13 @@ public interface AdoptionService {
 
 	int updateAdopFile(AdoptionFile aF);
 
-
-	
-	
-	
-	
-
 	int aDeleteAdopFile(int fileNo);
 
 	int changeRequestState(AnimalRequest a);
+
+	int getAdminRequestListCount();
+
+	ArrayList<AnimalRequest> admin_selectRequestList(PageInfo pi);
 
 	ArrayList<AdoptionBoard> selectDiaryList();
 
