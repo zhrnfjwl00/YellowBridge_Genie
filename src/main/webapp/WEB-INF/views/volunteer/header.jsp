@@ -50,7 +50,8 @@
 					<li class=""><a href="">입양</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="adopProcess.ado">입양절차</a></li>
+								<!-- <li><a href="adopProcess.ado">입양절차</a></li> -->
+								<li><a href="admin_adoption.ado">입양절차</a></li> <!-- 관리자 화면 확인위해 잠시 설정 -->
 								<li><a href="adopNotice.ado">입양공고</a></li>
 								<li><a href="adopInfo.ado">입양신청조회</a></li>
 								<li><a href="adopRecode.ado">입양일지</a></li>
@@ -79,12 +80,12 @@
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">고객사항</a>
+					<li class="servicecenter"><a href="notice.sc">고객사항</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="">공지사항</a></li>
-								<li><a href="">Q&A</a></li>
-								<li><a href="">FAQ</a></li>
+								<li><a href="notice.sc">공지사항</a></li>
+								<li><a href="qna.sc">Q&A</a></li>
+								<li><a href="faq.sc">FAQ</a></li>
 							</ul>
 						</div></li>
 				</ul>
