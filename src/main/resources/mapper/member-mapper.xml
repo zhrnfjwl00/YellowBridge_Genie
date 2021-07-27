@@ -61,8 +61,125 @@
 		where member_id=#{id} and status='Y'
 	</select>
 	
+	<select id="getAListCount" resultType="_int">
+		select count(*)
+		from board	
+		where board_status='Y' and parent_cate='10' 
+                               and board_writer=#{memberNickName}
+	</select>
+	
+	<resultMap
+		type="com.kh.YellowBridge.adoption.model.vo.AdoptionBoard"
+		id="adopBoardResultSet">
+		<id property="adopId" column="BOARD_NO" />
+		<result property="adopTitle" column="BOARD_TITLE" />
+		<result property="adopContent" column="BOARD_CONTENT" />
+		<result property="adopView" column="BOARD_VIEW" />
+		<result property="adopWriter" column="BOARD_WRITER" />
+		<result property="adopCreateDate" column="BOARD_CREATE_DATE" />
+		<result property="adopModifyDate" column="BOARD_MODIFY_DATE" />
+		<result property="adopStatus" column="BOARD_STATUS" />
+		<result property="adopCateNo" column="PARENT_CATE" />
+		<result property="adopWriterNickname" column="MEMBER_NICKNAME" />
+		<result property="adopWriterName" column="MEMBER_NAME" />
+	</resultMap>
+		
+	<select id="selectAList" resultMap="adopBoardResultSet">
+		select *
+ 		from board 
+ 		where board_status='Y' and parent_cate='10'
+                               and board_writer=#{memberNickName}
+ 		order by board_no desc
+	</select>
+	
+	<select id="getSListCount" resultType="_int">
+		select count(*)
+		from board	
+		where board_status='Y' and parent_cate='200' 
+                               and board_writer=#{memberNickName}
+	</select>
+	
+	<resultMap type="VolunteerBoard" id="volboardResultSet"> 
+		<id property="volId" column="BOARD_NO"/>
+		<result property="volTitle" column="BOARD_TITLE"/>
+		<result property="volContent" column="BOARD_CONTENT"/>
+		<result property="volCount" column="BOARD_VIEW"/>
+		<result property="volCategory" column="LIST"/>
+		<result property="volCreateDate" column="BOARD_CREATE_DATE"/>
+		<result property="volModifyDate" column="BOARD_MODIFY_DATE"/>
+		<result property="volStatus" column="BOARD_STATUS"/>
+		<result property="volCateNo" column="CATE_NO"/>
+		<result property="volWriter" column="BOARD_WRITER"/>
+		<result property="volWriterNickname" column="MEMBER_NICKNAME"/>
+		<result property="volWriterName" column="MEMBER_NAME"/>
+		<result property="volParentCate" column="PARENT_CATE"/>
+		<result property="rCount" column="COMMENTS_NO"/>
+	</resultMap> 
+	
+	<select id="selectSList" resultMap="volboardResultSet">
+		select *
+ 		from board 
+ 		where board_status='Y' and parent_cate='200'
+                               and board_writer=#{memberNickName}
+ 		order by board_no desc
+	</select>
+	
+	<select id="memberIdSelect" resultMap="memberResultSet">
+		select	member_id
+		from member 
+		where member_name = #{name} and member_phone=#{phone}
+	</select>
+	
+	<select id="getMListCount" resultType="_int">
+		select count(*)
+		from board	
+		where board_status='Y' and parent_cate='50' 
+                               and board_writer=#{memberNickName}
+	</select>
 	
 	
-
-
+	<resultMap type="QnaBoard" id="qnaboardResultSet">
+		<id property="qId" column="BOARD_NO"/>
+		<result property="qTitle" column="BOARD_TITLE"/>
+		<result property="qContent" column="BOARD_CONTENT"/>
+		<result property="qCount" column="BOARD_VIEW"/>
+		<result property="qCategory" column="LIST"/>
+		<result property="qCreateDate" column="BOARD_CREATE_DATE"/>
+		<result property="qModifyDate" column="BOARD_MODIFY_DATE"/>
+		<result property="qStatus" column="BOARD_STATUS"/>
+		<result property="qCateNo" column="CATE_NO"/>
+		<result property="qWriter" column="BOARD_WRITER"/>
+		<result property="qWriterNickname" column="MEMBER_NICKNAME"/>
+		<result property="qWriterName" column="MEMBER_NAME"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	<select id="selectMList" resultMap="qnaboardResultSet">
+		select *
+ 		from board 
+ 		where board_status='Y' and parent_cate='50'
+                               and board_writer=#{memberNickName}
+ 		order by board_no desc
+	</select>
+	
+	
+	<select id="getFListCount" resultType="_int">
+		select count(*)
+		from board	
+		where board_status='Y' and parent_cate='60' 
+                               and board_writer=#{memberNickName}
+	</select>
+	
+	<select id="selectFList" resultMap="qnaboardResultSet">
+		select *
+ 		from board 
+ 		where board_status='Y' and parent_cate='60'
+                               and board_writer=#{memberNickName}
+ 		order by board_no desc
+	</select>
+	
+	
 </mapper>

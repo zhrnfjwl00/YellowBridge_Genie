@@ -20,9 +20,7 @@
 	</select>
 
 
-	<resultMap
-		type="com.kh.YellowBridge.adoption.model.vo.AdoptionBoard"
-		id="adopBoardResultSet">
+	<resultMap type="com.kh.YellowBridge.adoption.model.vo.AdoptionBoard" id="adopBoardResultSet">
 		<id property="adopId" column="BOARD_NO" />
 		<result property="adopTitle" column="BOARD_TITLE" />
 		<result property="adopContent" column="BOARD_CONTENT" />
@@ -371,5 +369,15 @@
 		<result column="GRADE" property="grade" />
 		<result column="STATUS" property="mStatus" />
 	</resultMap>
+	
+	<select id="selectaDiary" resultMap="adopBoardResultSet">
+	select *
+	from (select *
+	      from board 
+	      where parent_cate = 10
+	      order by board_view desc)
+	where 5 >= rownum 
+	</select>
+
 
 </mapper>

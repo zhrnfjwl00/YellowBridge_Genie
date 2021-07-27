@@ -16,7 +16,7 @@
 	
 	.area2{
 	width:1200px;
-	height: 530px;
+	height: 400px;
 	margin: 0 auto;	
 
 	}
@@ -25,7 +25,7 @@
  	 
 	.menu { 
 	width: 615px; 
-	height:150px; 
+	height:100px; 
 	margin: 0 auto;
 	}
 	
@@ -103,20 +103,10 @@
 </div>
 <div class="area2">
 	<div class="myInfoArea">
-		<h1> 마이페이지 </h1>
+
 		<div class="menu">
 			
-			<!-- 활동정보 -->
-			<span><button type="button" onclick="" id="button1">활동정보</button></span>
-			
-			<!-- 회원정보 -->
-			<span><button type="button" onclick="location.href='mupdateView.me'" id="button2">회원정보</button></span>
-			
-			<!-- 회원탈퇴 -->
-			<c:url var="mdelete" value="mdelete.me">
-				<c:param name="id" value="${ loginUser.id }"/>
-			</c:url>
-			<span><button type="button" onclick="location.href='mdeleteView.me'" id="button3">회원탈퇴</button></span>
+	
 		</div>
 		
 		<div class="dupPwArea">
@@ -127,6 +117,9 @@
 				
 	
 			<br>
+			<c:url var="mdelete" value="mdelete.me">
+				<c:param name="id" value="${ loginUser.id }"/>
+			</c:url>
 			<button type="button" onclick="location.href='${ mdelete }'" id="DeleteBtn">회원탈퇴</button>
 			<button type="button" onclick="location.href='myinfo.me'"id="CancelBtn" >취소하기</button>
 		</div>

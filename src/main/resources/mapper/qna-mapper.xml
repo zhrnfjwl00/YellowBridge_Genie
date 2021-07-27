@@ -129,5 +129,13 @@
 		set COMMETS_STATUS='N'
 		where COMMENTS_NO=#{rId}
 	</update>
-
+	
+	<select id="selectNoticeList" resultMap="qnaboardResultSet">
+		select *
+		from (select *
+		      from board 
+		      where parent_cate = '40'
+		      order by board_view desc)
+		where 5 >= rownum 
+	</select>
 </mapper>

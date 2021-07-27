@@ -1,5 +1,8 @@
 package com.kh.YellowBridge.member.controller;
 
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -17,9 +20,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.YellowBridge.adoption.model.exception.AdoptionException;
+import com.kh.YellowBridge.adoption.model.vo.AdoptionBoard;
+import com.kh.YellowBridge.adoption.model.vo.AnimalPagination;
+import com.kh.YellowBridge.common.PageInfo;
+import com.kh.YellowBridge.common.Pagination;
 import com.kh.YellowBridge.member.model.exception.MemberException;
 import com.kh.YellowBridge.member.model.service.MemberService;
 import com.kh.YellowBridge.member.model.vo.Member;
+import com.kh.YellowBridge.service.model.vo.QnaBoard;
+import com.kh.YellowBridge.service.model.vo.ScBoard;
+import com.kh.YellowBridge.volunteer.model.vo.VolunteerBoard;
+import com.kh.YellowBridge.adoption.model.vo.AdoptionBoard;
 import com.sun.tracing.dtrace.Attributes;
 
 @SessionAttributes("loginUser")
@@ -58,18 +70,12 @@ public class MemberController {
 	
 	
 	
-//	@RequestMapping("logout.me")
-//	public ModelAndView memberLogout(SessionStatus status, ModelAndView mv) {
-//		status.setComplete();
-//		mv.setViewName("../../../index");
-//		return mv;
-//		
-//	}
-	
 	@RequestMapping("logout.me")
-	public String memberLogout(SessionStatus status) {
+	public ModelAndView memberLogout(SessionStatus status, ModelAndView mv) {
 		status.setComplete();
-		return "redirect:index.jsp";
+		mv.setViewName("../../../index");
+		return mv;
+		
 	}
 
 	
@@ -112,11 +118,50 @@ public class MemberController {
 	
 //---------------------------------------------------------------------------------//
 	
-	
+	// 마이페이지 
 	@RequestMapping("myinfo.me")
-	public String myInfoView() {
-		return "mypage";
+	public ModelAndView adopDiaryList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session, HttpServletRequest request) {
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		String memberNickName = ((Member)session.getAttribute("loginUser")).getNickname();
+		
+		
+		int alistCount = mService.getAListCount(memberNickName);
+		int slistCount = mService.getSListCount(memberNickName);
+		int nlistCount = mService.getMListCount(memberNickName);
+		int flistCount = mService.getFListCount(memberNickName);
+		System.out.println(flistCount);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, alistCount);
+		PageInfo spi = Pagination.getPageInfo(currentPage, slistCount);
+		PageInfo npi = Pagination.getPageInfo(currentPage, nlistCount);
+		PageInfo fpi = Pagination.getPageInfo(currentPage, flistCount);
+		System.out.println(fpi);
+		
+		
+		ArrayList<AdoptionBoard> alist = mService.selectAList(memberNickName, pi);
+		ArrayList<VolunteerBoard> slist = mService.selectSList(memberNickName, spi);
+		ArrayList<QnaBoard> nlist = mService.selectMList(memberNickName, npi);
+		ArrayList<QnaBoard> flist = mService.selectFList(memberNickName, fpi);
+		System.out.println(flist);
+		
+		if(alist != null) {
+			mv.addObject("alist", alist).addObject("pi", pi).setViewName("mypage");
+			mv.addObject("slist", slist).addObject("spi", spi).setViewName("mypage");
+			mv.addObject("nlist", nlist).addObject("npi", npi).setViewName("mypage");
+			mv.addObject("flist", flist).addObject("fpi", fpi).setViewName("mypage");
+		} else {
+			throw new MemberException("회원탈퇴 실패");
+		}
+		return mv;
+		
+		
 	}
+	
 	
 	@RequestMapping("mupdateView.me")
 	public String UpdateForm() {
@@ -139,12 +184,6 @@ public class MemberController {
 		
 		Member mm =(Member)session.getAttribute("loginUser");
 
-		System.out.println(bCryptPasswordEncoder.matches(m.getPwd(), mm.getPwd()));
-		System.out.println(mm.getPwd());
-		System.out.println(m.getPwd());
-		System.out.println(m);
-		System.out.println(mm);
-		System.out.println(pwd);
 		
 		
 		if(bCryptPasswordEncoder.matches(pwd, mm.getPwd())) {
@@ -214,7 +253,7 @@ public class MemberController {
 	@RequestMapping("dupNickname.me")
 	@ResponseBody
 	public String duplicateNickname(@RequestParam("nickname") String nickname) {
-		//System.out.println(nickname);
+	
 		int result = mService.checkNickname(nickname);
 		return result + "";
 	}
@@ -224,23 +263,43 @@ public class MemberController {
 	@RequestMapping("memberCheck.me")
 	@ResponseBody
 	public String memberCheck(@RequestParam("id") String userId) {
-		System.out.println(userId);
+		
 		int result = mService.memberCheck(userId);
 		return result + "";
 	}
 	
 	
-	@RequestMapping("idFindView.me")
-	public String findIdForm() {
-		return "/memberFindId";
+	@RequestMapping("memberIdPwFindView.me")
+	public String memberInPwFind() {
+		return "memberIdPwFindForm";
 	}
- 
-	@RequestMapping("pwdFindView.me")
-	public String findPwForm() {
-		return "/memberFindPw";
-	}
-	 	
 	
+	
+	
+	@RequestMapping("memberIdFine.me")
+	@ResponseBody
+	public ModelAndView memberIdSearch(@ModelAttribute Member m,
+								 		@RequestParam("name") String name,
+								 		@RequestParam("phone") String phone, ModelAndView mv) {
+		
+		m.setName(name);
+		m.setPhone(phone);
+		System.out.println("member =" + m);
+		
+		Member userId = mService.memberIdSearch(m); 
+		System.out.println("userId =" + userId);
+		
+		if(userId != null) {
+			mv.addObject("userId", userId).setViewName("memberIdPwFindForm");
+		}else {
+			throw new MemberException("탐색 실패");
+		}
+		return mv;
+		
+		
+		
+	}
+
 }
  	
  	

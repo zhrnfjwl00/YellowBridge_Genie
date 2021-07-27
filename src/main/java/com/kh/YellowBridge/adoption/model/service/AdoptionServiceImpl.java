@@ -217,5 +217,11 @@ public class AdoptionServiceImpl implements AdoptionService {
 		return aDAO.changeRequestState(sqlSession, a);
 	}
 
+	@Override
+	public ArrayList<AdoptionBoard> selectDiaryList() {
+		return aDAO.selectDiaryList(sqlSession);
+	}
+	
+
 	
 }

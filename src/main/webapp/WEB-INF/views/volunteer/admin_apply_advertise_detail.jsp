@@ -255,7 +255,7 @@ ${ volboard.serviceEnd }
 		</table>
 			
 		<div align="center" class="buttonDiv">
-			<input type="button" onclick="location.href='<%= request.getContextPath() %>/serviceapply.vol'" id="goMain" value="메인으로">
+			<input type="button" onclick="location.href='<%= request.getContextPath() %>/adminserviceapply.vol'" id="goMain" value="메인으로">
 		</div>
 </div>
 <c:import url="../common/footer.jsp"/>
