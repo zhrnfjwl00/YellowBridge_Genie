@@ -9,23 +9,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>입양공고</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption.css">
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 	<c:import url="../common/header.jsp" />
+
+
+
 
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">
 
-				<h2>입양공고</h2> <button onclick="location.href='animalNoticeWriterForm.ado'">공고등록</button>
+				<h2>입양공고</h2> 
+
+
 				<hr>
 			</div>
 				<c:forEach var="animal" items="${ animallist }">
-				<fmt:formatDate var="formatRegDate" value="${rescueDate}" pattern="yyyy.MM.dd"/>
+				<fmt:formatDate var="formatRegDate" value="${ animal.rescueDate }" pattern="yyyy.MM.dd"/>
 			<div class="list">
 				<form action="animalApplyWriterForm.ado" method="post" enctype="multipart/form-data">
-				<%-- <c:foreach items="${list}" var="list" varstatus="status"> --%>
-<%-- 						<fmt:formatDate pattern="yyyy-MM-dd" values="${ animal.rescueDate }"/> --%>
 						<input type="hidden" name="animalNo" value="${ animal.animalNo }">
 						<input type="hidden" name="animalType" value="${ animal.animalType }"> 
 						<input type="hidden" name="animalAge" value="${ animal.animalAge }"> 
@@ -43,9 +48,7 @@
 					<img src="<%=request.getContextPath()%>/resources/auploadFiles/${ animal.animalFile }"  width="348" height="261" border="0/">
 					<ul>
 						<li class="full"><strong>No.</strong>${ animal.animalNo }</li>
-						<li class="full"><strong>구조일</strong> <i>
-								${ formatRegDate }
-						</i></li>
+						<li class="full"><strong>구조일</strong>${ formatRegDate }</li>
 						<li class="full"><strong>구조장소</strong></li>
 						<li class="full">${ animal.rescueLocation }</li>
 						<li class="half"><strong>축종</strong> ${ animal.animalType }</li>
@@ -121,5 +124,36 @@
 	</div>
 	<!--E:sub_wrap-->
 	<c:import url="../common/footer.jsp" />
+	<script>
+	/* 
+	$.fn.radioSelect = function(val) {
+		this.each(function() {
+		var $this = $(this);
+		if($this.val() == val)
+		$this.attr('checked', true);
+		});
+		return this;
+		};
+
+
+	
+		$(":radio[name='r3']").radioSelect(radioVal); //파라미터에 해당하는 값을 가진 라디오버튼이 선택됨
+
+	
+	
+	
+	 */
+/* $(document).ready(function(){
+	$('input[name="test"]').change(function(){
+		$("input:radio[name='test']:radio[value='test1']").prop('checked', true); // 선택하기
+	});
+});
+ */
+
+/* 
+$("input:radio[name='test']:radio[value='test1']").prop('checked', true); // 선택하기
+
+$("input:radio[name='test']:radio[value='test1']").prop('checked', false); // 해제하기  */
+</script>
 </body>
 </html>

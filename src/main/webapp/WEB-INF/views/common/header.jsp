@@ -13,8 +13,6 @@
 
 <style>
 	#info{border:none; margin-left: 10px; background-color: hsla(120, 100%, 50%, 0);}
-
-
 	#logout{border: none; background-color: hsla(120, 100%, 50%, 0);}
 </style>
 </head>
@@ -48,7 +46,7 @@
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">입양</a>
+					<li class=""><a href="adopProcess.ado">입양</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
 								<!-- <li><a href="adopProcess.ado">입양절차</a></li> -->

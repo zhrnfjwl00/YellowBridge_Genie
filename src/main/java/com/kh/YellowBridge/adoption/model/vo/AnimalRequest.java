@@ -1,5 +1,7 @@
 package com.kh.YellowBridge.adoption.model.vo;
 
+import java.util.Date;
+
 public class AnimalRequest {
 	private int requestNo;
 	private String requestReason;
@@ -12,14 +14,14 @@ public class AnimalRequest {
 	private int requestMemberNo;
 	private int requestAnimalNo;
 	private String requestState;
-	private String requestDate;
+	private Date requestDate;
 
 	public AnimalRequest() {
 	}
 
 	public AnimalRequest(int requestNo, String requestReason, String requestAgreement, String requestExperience,
 			String requestPoss, String requestQuestion1, String requestQuestion2, String requestTnrAgree,
-			int requestMemberNo, int requestAnimalNo, String requestState, String requestDate) {
+			int requestMemberNo, int requestAnimalNo, String requestState, Date requestDate) {
 		super();
 		this.requestNo = requestNo;
 		this.requestReason = requestReason;
@@ -123,11 +125,11 @@ public class AnimalRequest {
 		this.requestState = requestState;
 	}
 
-	public String getRequestDate() {
+	public Date getRequestDate() {
 		return requestDate;
 	}
 
-	public void setRequestDate(String requestDate) {
+	public void setRequestDate(Date requestDate) {
 		this.requestDate = requestDate;
 	}
 
@@ -139,5 +141,6 @@ public class AnimalRequest {
 				+ ", requestTnrAgree=" + requestTnrAgree + ", requestMemberNo=" + requestMemberNo + ", requestAnimalNo="
 				+ requestAnimalNo + ", requestState=" + requestState + ", requestDate=" + requestDate + "]";
 	}
+
 
 }

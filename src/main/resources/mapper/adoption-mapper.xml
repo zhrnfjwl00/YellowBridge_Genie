@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="adoptionMapper">
 	<select id="getListCount" resultType="_int">
-		SELECT COUNT(*)
-		FROM BOARD
-		WHERE BOARD_STATUS='Y' AND cate_no='1'
+		select count(*)
+		from board
+		where board_status='Y' and PARENT_CATE=10
 	</select>
 
 	<select id="selectList" resultMap="adopBoardResultSet">
@@ -267,19 +267,25 @@
 	
 	<!-- 관리자 입양공고관리 리스트 -->
 	<select id="admin_selectAnimalList" resultMap="AnimalListResultSet">
-		SELECT ANIMAL_NO, ANIMAL_TYPE, RESCUE_DATE, REQUEST_STATE, ANIMAL_REQUEST_NO, MEMBER_NO, MEMBER_NICKNAME, REQUEST_DATE
+		SELECT ANIMAL_NO, ANIMAL_TYPE, RESCUE_DATE, REQUEST_STATE, ANIMAL_REQUEST_NO, MEMBER_NO, MEMBER_NICKNAME, REQUEST_DATE, ANIMAL_STATUS
 		FROM ANIMAL_INFO
 		JOIN ANIMAL_REQUEST USING (ANIMAL_NO)
         JOIN MEMBER USING (MEMBER_NO)
+        WHERE ANIMAL_STATUS = 'Y'
 		ORDER BY ANIMAL_NO DESC
 	</select>
-	
 	
 	<!-- 관리자 입양 공고 삭제 -->
 	<update id="deleteAnimalNotice">
 		update animal_info
 		set animal_STATUS='N'
 		where animal_no = #{ animalNo }
+	</update>
+	
+	<update id="changeRequestState">
+		update ANIMAL_REQUEST
+		set REQUEST_STATE=#{ requestState }
+		where ANIMAL_NO=#{ requestAnimalNo }
 	</update>
 
 	<!-- 입양신청서 -->
@@ -299,7 +305,6 @@
 	
 	</update>
 	
-
 	<select id="selectAppForm" resultMap="adopAppResultSet">
 		select *
 		from (select ANIMAL_REQUEST_NO, ANIMAL_NO, ANIMAL_TYPE, MEMBER_NO,
@@ -317,7 +322,7 @@
 	<select id="selectRequestList" resultMap="adopAppResultSet">
 		select *
 		from (select ANIMAL_REQUEST_NO, ANIMAL_NO, ANIMAL_TYPE, MEMBER_NO,
-		MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, REQUEST_STATE, REQUEST_DATE
+		MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, REQUEST_STATE, REQUEST_DATE, REQUEST_REASON
 		from ANIMAL_REQUEST
 		left join member using (MEMBER_NO)
 		left join ANIMAL_INFO using (ANIMAL_NO)

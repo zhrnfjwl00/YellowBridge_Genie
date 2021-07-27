@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
 <style>
 	#example{text-align: center;}
 	
@@ -24,6 +25,7 @@
 		margin-top: 150px;
 		letter-spacing: -1px;
 	}
+		.pagenation{align:center;}
 	
 	.tableNo{width: 10%;}
 	.tableTitle{width: 55%;}
@@ -32,6 +34,29 @@
 	.tableCount{width: 10%;}
 	#searchArea{padding-bottom:25px;}
 	.btnDiv{padding-top:25px; float: right;}
+	
+	#writeBtn{
+    	background-color: #BDCC94;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+	
+	
+/*페이징*/
+.pagenation {width:1100px; height:auto; margin:0 auto 50px auto; text-align:center; clear:both; padding-top: 30px;}
+.pagenation a {display:inline-block; width:40px; height:40px; line-height:40px; font-size:16px; color:#444; margin-right:10px; margin-top:10px; text-align:center; background:#f3f3f3; border:1px solid #ccc;}
+.pagenation a.img {border:0; background:none; padding-top:12px; height:28px;}
+.pagenation .select {background:#95998A;display:inline-block; width:40px; height:40px; line-height:43px; font-size:16px; color:#fff; font-family: 'NanumGothicWebBold'!important; font-weight:normal; margin-right:10px; text-align:center; border:1px solid #2e5fa4;}
+
+
+	
 </style>
 
 </head>
@@ -39,25 +64,13 @@
 <div class="serviceBoard">
 	<c:import url="../common/header.jsp"/>
 	<div style="text-align:center;" class="serviceBoardtext">
-		<h1 style="color:#BDCC94;"><b>입양 일지</b></h1>
+		<h1 style="color:#BDCC94; margin-bottom: -20px;"><b>입양 일지</b></h1>
 		<h5><b>반려동물과의 행복했던 추억을 남겨주세요.</b></h5>
 	</div>
 	
 	<div class="container" style="margin-top:30px; text-align:center;">
 		<div class="row">
 			<div class="col-sm-12">
-				<!-- <div id="searchArea" align="center">
-					<select id="searchCondition" name="searchCondition">
-						<option>-------</option>
-						<option value="writer">작성자</option>
-						<option value="title">제목</option>
-						<option value="category">카테고리</option>
-					</select>
-					
-					<input id="searchValue" type="search">
-					<button onclick="searchBoard();">검색</button>
-				</div> -->
-				  
 				<table id="example" class="display" style="width:100%">
 					<thead>
 						<tr>
@@ -87,7 +100,7 @@
 										<c:param name="page" value="${ pi.currentPage }"/>
 										<c:param name="loginId" value="${ loginUser.id }"/>
 									</c:url>
-									<a href="${ adoptionRecodeDetail }">${ adop.adopTitle }</a>
+									<a href="${ adoptionRecodeDetail }" style="color: gray;">${ adop.adopTitle }</a>
 								</td>
 								
 								<td align="center" class="tableWriter">${ adop.adopWriter }</td>
@@ -97,57 +110,59 @@
 						</c:forEach>
 					 </c:if> 
 					
-						<!-- 페이징 처리 -->
-							<tr align="center" height="20" id="buttonTab">
-								<td colspan="6">
-								
-									<!-- [이전] -->
-										<c:if test="${ pi.currentPage <= 1 }"> [이전] &nbsp; </c:if>
-										<c:if test="${ pi.currentPage > 1 }">
-										<c:url var="before" value="adopRecode.ado">
-										<c:param name="page" value="${ api.currentPage - 1 }"/>
-										</c:url> <a href="${ before }">[이전] &nbsp;</a> </c:if>
-									
-									<!-- 페이지 -->
-									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-									<c:if test="${ p eq pi.currentPage }">
-										<font color="red" size="4"><b>[${ p }]</b></font>
-									</c:if>
-									
-									<c:if test="${ p ne pi.currentPage }">
-										<c:url var="pagination" value="adopRecode.ado">
-											<c:param name="page" value="${ p }"/>
-										</c:url>
-										<a href="${ pagination }">${ p }</a> &nbsp;
-									</c:if>
-								</c:forEach>
-									
-									<!-- [다음] -->
-										<c:if test="${ pi.currentPage >= pi.maxPage }">
-											[다음]
-										</c:if>
-										<c:if test="${ pi.currentPage < api.maxPage }">
-											<c:url var="after" value="adopRecode.ado">
-												<c:param name="page" value="${ pi.currentPage + 1 }"/>
-											</c:url> 
-											<a href="${ after }">[다음]</a>
-										</c:if>
-									
-									
-									
-									
-								</td>
-							</tr>
+						
 					</tbody>
 				</table>
+				<c:if test="${ !empty sessionScope.loginUser }">
 				<div class="btnDiv">
-					<button type="button" class="btn btn-primary" id = "writeBtn" onclick="location.href='adoptionRecodeWrite.ado';">글쓰기</button>
+					<button type="button" class="btn btn-primary" id ="writeBtn" onclick="location.href='adoptionRecodeWrite.ado';">글쓰기</button>
 				</div>
+				</c:if>
 			</div>
 		</div>
+			</div>
+			</div>
+		<!-- 페이지 -->
+								<div id="pagingNav" class="pagenation">
+									<c:if test="${ pi.currentPage <= 1 }">
+										<a href="${ before }" class="img"><img src="<%=request.getContextPath()%>/resources/images/btn_prev.png" alt="이전 목록 보기"></a> 
+									</c:if>
+									<c:if test="${ pi.currentPage > 1 }">
+										<c:url var="before" value="adopRecode.ado">
+											<c:param name="page" value="${ pi.currentPage - 1 }"/>
+										</c:url>
+										<a href="${ before }" class="img"><img src="<%=request.getContextPath()%>/resources/images/btn_prev.png" alt="이전 목록 보기"></a> 
+									</c:if>
+									
+									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+										<c:if test="${ p eq pi.currentPage }">
+										<span class="select">${ p }</span> 
+										</c:if>
+										
+										<c:if test="${ p ne pi.currentPage }">
+											<c:url var="pagination" value="adopRecode.ado">
+												<c:param name="page" value="${ p }"/>
+											</c:url>
+											<a href="${ pagination }">${ p }</a>
+										</c:if>
+									</c:forEach>
+									
+									
+									<!-- [다음] -->
+									<c:if test="${ pi.currentPage >= pi.maxPage }">
+										<a href="${ after }" class="img"><img src="<%=request.getContextPath()%>/resources/images/btn_nxt.png" alt="다음 목록 보기"></a>
+									</c:if>
+									<c:if test="${ pi.currentPage < pi.maxPage }">
+										<c:url var="after" value="adopRecode.ado">
+											<c:param name="page" value="${ pi.currentPage + 1 }"/>
+										</c:url> 
+										<a href="${ after }" class="img"><img src="<%=request.getContextPath()%>/resources/images/btn_nxt.png" alt="다음 목록 보기"></a>
+									</c:if>
+								</div>
+									<!-- 페이지  끝 -->
 		
-	</div>
-</div>
+
+
 	<script type="text/javascript">
 	   // 게시글 상세보기
 		$(function(){

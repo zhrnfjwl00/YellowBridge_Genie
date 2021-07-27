@@ -20,14 +20,14 @@ public class AnimalInfo {
 	private String animalFile;
 	private String requestMemberNickname;
 	private String animalRequestState;
-	private String animalRequestDate;
+	private Date animalRequestDate;
 	
 	public AnimalInfo() {}
 
 	public AnimalInfo(int animalNo, String animalType, String animalGender, int animalAge, String animalColor,
 			String animalTnr, String animalCharacter, String animalWeight, String animalCondition, String animalFeature,
 			Date rescueDate, String rescueLocation, int animalBoardNo, String animalStatus, String animalFile,
-			String requestMemberNickname, String animalRequestState, String animalRequestDate) {
+			String requestMemberNickname, String animalRequestState, Date animalRequestDate) {
 		super();
 		this.animalNo = animalNo;
 		this.animalType = animalType;
@@ -185,11 +185,11 @@ public class AnimalInfo {
 		this.animalRequestState = animalRequestState;
 	}
 
-	public String getAnimalRequestDate() {
+	public Date getAnimalRequestDate() {
 		return animalRequestDate;
 	}
 
-	public void setAnimalRequestDate(String animalRequestDate) {
+	public void setAnimalRequestDate(Date animalRequestDate) {
 		this.animalRequestDate = animalRequestDate;
 	}
 
@@ -204,5 +204,5 @@ public class AnimalInfo {
 				+ ", animalRequestState=" + animalRequestState + ", animalRequestDate=" + animalRequestDate + "]";
 	}
 
-
+	
 }
