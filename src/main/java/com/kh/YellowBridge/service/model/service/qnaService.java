@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.service.model.vo.QnaBoard;
 import com.kh.YellowBridge.service.model.vo.Reply;
+import com.kh.YellowBridge.service.model.vo.ScBoard;
 import com.kh.YellowBridge.service.model.vo.ScFileInfo;
 import com.kh.YellowBridge.support.model.vo.FileInfo;
 
@@ -37,6 +38,11 @@ public interface qnaService {
 	ArrayList<Reply> selectReplyList(int qId);
 
 	int servicerDelete(int rId);
+
+	ArrayList<ScBoard> selectNoticeList();
+
+
+	
 
 
 

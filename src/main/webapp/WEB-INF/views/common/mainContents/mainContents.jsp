@@ -19,43 +19,52 @@
 	
 	.area{margin: 0 auto;}
 	
-	#aArea{ width: 270px; height: 450px;}
+	#aArea{ width: 270px; height: 400px;}
 	#aImage{ width:250px; height:250px; margin: 0 auto;} 
+	#aImage :hover{ opacity:0.5;}
 	#aContent{ width:200px; height:100px; margin: 0 auto;}
 	#aList li{font-weight: border; font-size:20px;}
+
 	
 	
-	#sArea{width: 250px; height: 450px;  }
+	#sArea{width: 250px; height: 450px;}
 	#sImage{ width:250px; height:250px; margin: 0 auto;} 
+	#sImage :hover{ opacity:0.5;}
 	#sContent{ width:200px; height:100px; margin: 0 auto;}
 	#sList li{font-weight: border; font-size:25px; text-align: center; }
+	
+	
+
+	
 
 </style>
 </head>
 <body>
-<section id="gotoMainContents" class="mainCont" tabindex="0">
+<section id="gotoMainContents" class="mainCont" tabindex="0" >
 	<article class="mainBox01">
 		<div class="rollingBox">
-			<ul class="rollingList">
-    				
+			<ul class="rollingList">		
 				<li class="on" style="background:#f2ffca; position:right;" >
 				<!-- #f2ffca -->
 				    <a href="">
 				        <img src="<%= request.getContextPath() %>/resources/images/mainImg.png" style="height: 380px;">
 				    </a>
 				</li>
+				
 			</ul>
-        </div>
+		</div>
+        
     </article>
     
+    <br><br>
     
     <!--::입양동물::-->
     <section class="best_services section_padding">
         <div class="container">
             <div class="row justify-content-center">
                 <!-- 제목 div -->
-                <div class="col-xl-6">
-                    <div class="section_tittle text-center">
+                <div class="col-xl-6" >
+                    <div class="section_tittle text-center" >
                         <h2 onclick="GoAnimalNoticeWriterForm();" style="cursor:pointer">입양동물</h2>
                     </div>
                 </div>
@@ -73,11 +82,11 @@
     
      <!--::봉사::-->
     <section class="best_services section_padding">
-        <div class="container">
+        <div class="container" style=" height: 450px;" >
             <div class="row justify-content-center">
                 <div class="col-xl-6">
-                    <div class="section_tittle text-center">
-                        <h2 onclick="GoVolAdminAdList();" style="cursor:pointer">봉사</h2>
+                    <div class="section_tittle text-center" >
+                        <h2 onclick="GoVolAdminAdList();" style="cursor:pointer" >봉사</h2>
                     </div>
                 </div>
             </div>
@@ -89,74 +98,34 @@
         </div>
     </section>
     <!--::봉사 끝::-->
+    <br><br>
     
-    
-	<article class="mainBox03">	
-        <div class="mainEvent">
-
-            <ul class="evtNav">
-                <li class="on"><a href="javascript:void(0)"></a></li>
-            </ul>
-            <div class="evt1">
-                <ul style="left: 0px;">                
-                    <li>
-                        <a href="">
-                            <img src="<%= request.getContextPath() %>/resources/images/1609724181537.jpg" alt="" width="485" height="200">
-                        </a>
-                    </li>                    
-                <li>
-                        <a href="">
-                            <img src="<%= request.getContextPath() %>/resources/images/1609724181537.jpg" alt="" width="485" height="200">
-                        </a>
-                    </li></ul>
-            </div>                
-	        <div class="evt2">
-	            <ul>
-	                <li>
-	                    <a href="">
-	                        <img src="<%= request.getContextPath() %>/resources/images/1609724683629.jpg" alt="">
-	                    </a>
-	                </li>
-	                <li>
-                        <a href="">
-                            <img src="<%= request.getContextPath() %>/resources/images/default_evt2_banner2.jpg" alt="기본이벤트2" width="225" height="200">
-                        </a>
-                    
-	                </li>
-	            </ul>
-	        </div>
+	<article class="mainBox03" style=" width: 1200px;" >	
+        <div class="mainEvent"> 
         </div>
 			
 
-		<div class="boardBox">
-			<div><strong>입양일지</strong></div>
-			<ul>
-				<li><a href="">승승이 근황입니다~~</a><span>2021.06.11</span></li>
-				<li><a href="">171109, 210501에 입양한 둥이와 까미 입양후..</a><span>2021.06.10</span></li>
-				<li><a href="">담비 근황입니다!</a><span>2021.06.08</span></li>
-				<li><a href="">이제 완전 새 식구가 된 곰이에요!!</a><span>2021.05.25</span></li>
-				<li><a href="">꼬맹이 순희♡</a><span>2021.05.21</span></li>
+		<div class="boardBox"  style=" width: 550px; ">
+			<div><strong style="color:#95998a; font-size: 30px;">입양일지</strong></div>
+			<ul id="adopArea">
+				
 			</ul>
-			<a href="" class="more" aria-label="">더보기</a>
+			<a href="adopRecode.ado" class="more" aria-label="" style="font-size:20px;">더보기</a>
 		</div>
 
-		<div class="boardBox">
-			<div><strong>공지사항</strong></div>
-			<ul>
-                <li><a href="">반려동물 어울림 한마당</a><span>2020.12.01</span></li>
-                <li><a href="">금천구 유기동물입양 지원안내</a><span>2020.11.04</span></li>
-                <li><a href="">함께할 가족을 모집합니다.</a><span>2020.11.02</span></li>
-                <li><a href="">단아안 한의원에서 따뜻한 음악제를 통해 기부금을 전달 해주셨어요</a><span>2020.10.16</span></li>
-                <li><a href="">동물등록제 안내</a><span>2020.10.12</span></li>
+		<div class="boardBox" style="width: 550px; ">
+			<div><strong style="color:#95998a; font-size: 30px;">공지사항</strong></div>
+			<ul id="noticeArea">
+                
 			</ul>
-			<a href="" class="more" aria-label="">더보기</a>
+			<a href="" class="more" aria-label="" style="font-size:20px;">더보기</a>
 		</div>
 	</article>
 </section>
+
+
 <script>
 /* --------- 입양공고 ---------------------*/
-   
-   
     		$.ajax({
     			url: 'animalList.ado',
     			dataType: 'json',
@@ -196,7 +165,6 @@
 
 	
 /*------------- 봉사 ---------------------*/
-
 		$.ajax({
 			url: 'serviceList.vol',
 			dataType: 'json',
@@ -231,6 +199,68 @@
 		});
 	}
     
+	
+	
+	
+/*------------- 입양일지 ---------------------*/
+ 	function aDiaryList(){
+		$.ajax({
+			url: 'aDiaryList.ado',
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				
+				var $ul = $('#adopArea')
+				
+				for(var i in data){
+					$ul.append(
+						'<li>'+ '<a href="adoptionRecodeDetail.ado?adopId='+ data[i].adopId +'&page=1" style="font-size:25px;">'+ data[i].adopTitle +'</a>' + '<span style="font-size:25px;">' + data[i].adopModifyDate + '</span>' +'</li>'
+					);
+				}
+			}
+		});
+	}
+	
+	$(function(){
+		aDiaryList();
+		
+		var timer = setInterval(function(){
+			aDiaryList();
+		}, 5000);
+			
+		clearInterval(timer);
+	});
+
+	
+	function noticeList(){
+		$.ajax({
+			url:'noticeList.sc',
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				
+				var $ul = $('#noticeArea');
+				
+				for(var i in data){
+					$ul.append(
+						'<li>'+ '<a href="nodetail.sc?scId='+ data[i].scId +'&page=1" style="font-size:25px;">'+ data[i].scTitle +'</a>' + '<span style="font-size:25px;">' + data[i].scModifyDate + '</span>' +'</li>'
+					);
+				}
+			}
+		});
+	}
+	
+	$(function(){
+		noticeList();
+		
+		var timer = setInterval(function(){
+			aDiaryList();
+		}, 5000);
+			
+		clearInterval(timer);
+	});
+
+
 </script>
 
 

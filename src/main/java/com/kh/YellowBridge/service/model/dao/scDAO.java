@@ -46,4 +46,8 @@ public class scDAO {
 		return sqlSession.update("serviceMapper.deleteBoard", scId);
 	}
 
+	public ArrayList<ScBoard> selectNoticeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("serviceMapper.selectNoticeList");
+	}
+
 }

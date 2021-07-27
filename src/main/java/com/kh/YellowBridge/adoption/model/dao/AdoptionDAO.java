@@ -183,5 +183,8 @@ public class AdoptionDAO {
 	public int changeRequestState(SqlSessionTemplate sqlSession, AnimalRequest a) {
 		return sqlSession.update("adoptionMapper.changeRequestState", a);
 	}
-
+	
+	public ArrayList<AdoptionBoard> selectDiaryList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("adoptionMapper.selectaDiary");
+	}
 }

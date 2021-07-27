@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.service.model.vo.QnaBoard;
 import com.kh.YellowBridge.service.model.vo.Reply;
+import com.kh.YellowBridge.service.model.vo.ScBoard;
 import com.kh.YellowBridge.service.model.vo.ScFileInfo;
 import com.kh.YellowBridge.support.model.vo.FileInfo;
 
@@ -77,6 +78,12 @@ public class qnaDAO {
 		return sqlSession.update("qnaMapper.servicerDelete", rId);
 	}
 
+	public ArrayList<ScBoard> selectNoticeList(SqlSessionTemplate sqlSession) {
+
+		return (ArrayList)sqlSession.selectList("qnaMapper.selectNoticeList");
+	}
+
+	
 
 
 }

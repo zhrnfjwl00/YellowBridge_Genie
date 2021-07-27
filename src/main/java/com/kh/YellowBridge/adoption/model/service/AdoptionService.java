@@ -89,6 +89,8 @@ public interface AdoptionService {
 
 	int changeRequestState(AnimalRequest a);
 
+	ArrayList<AdoptionBoard> selectDiaryList();
+
 
 
 
