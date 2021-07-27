@@ -130,6 +130,37 @@
 		<url-pattern>*.ab</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 고객센터 게시판 관련 -->
+	<servlet>
+		<servlet-name>scServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/spring/appServlet/sc-context.xml
+			</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>scServlet</servlet-name>
+		<url-pattern>*.sc</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 자유 게시판 관련 -->
+	<servlet>
+		<servlet-name>freeServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/spring/appServlet/free-context.xml
+			</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>freeServlet</servlet-name>
+		<url-pattern>*.fr</url-pattern>
+	</servlet-mapping>
 	
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
