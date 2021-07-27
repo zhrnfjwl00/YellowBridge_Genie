@@ -145,8 +145,8 @@ public class AdoptionServiceImpl implements AdoptionService {
 	}
 
 	@Override
-	public ArrayList<AnimalRequest> selectRequestList(int memberNo, PageInfo pi) {
-		return aDAO.selectRequestList(sqlSession, memberNo, pi);
+	public ArrayList<AnimalRequest> selectRequestList(int memberNo) {
+		return aDAO.selectRequestList(sqlSession, memberNo);
 	}
 
 	@Override
@@ -211,5 +211,11 @@ public class AdoptionServiceImpl implements AdoptionService {
 	public int aDeleteAdopFile(int fileNo) {
 		return aDAO.deleteAdopFile(sqlSession, fileNo);
 	}
+
+	@Override
+	public int changeRequestState(AnimalRequest a) {
+		return aDAO.changeRequestState(sqlSession, a);
+	}
+
 	
 }

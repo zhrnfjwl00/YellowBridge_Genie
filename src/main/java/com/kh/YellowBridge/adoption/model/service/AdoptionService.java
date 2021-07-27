@@ -53,7 +53,7 @@ public interface AdoptionService {
 	// 입양신청 조회 리스트
 	int getRequestListCount(int memberNo);
 
-	ArrayList<AnimalRequest> selectRequestList(int memberNo, PageInfo pi);
+	ArrayList<AnimalRequest> selectRequestList(int memberNo);
 
 	Member selectMember(int memberNo);
 
@@ -86,6 +86,10 @@ public interface AdoptionService {
 	
 
 	int aDeleteAdopFile(int fileNo);
+
+	int changeRequestState(AnimalRequest a);
+
+
 
 
 

@@ -20,7 +20,22 @@
 		letter-spacing: -1px;
 	}
 	.form-group{padding-bottom: 5px;}
-	.btnDiv{padding-top:25px; float: right;}
+	.btnDiv{padding-top:15px; float: right;}
+	#writeBtn{
+    	background-color: #BDCC94;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+        padding: 7px 10px;
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -59,7 +74,7 @@
 				</tr>
 			</table>
 			<div class="btnDiv">
-			<button type="submit" class="btn btn-default">작성</button> 
+			<button type="submit" id="writeBtn">작성</button> 
 			</div>
 		</form>
 	</div>
