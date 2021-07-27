@@ -69,10 +69,6 @@
 			<table>
 				<tr>
 					<th id="title"> ${ volboard.volTitle } <b id="rCount"></b></th>
-					<th>
-					<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ serviceBoardDelete }'">삭제</button>
-					<button class="update_btn btn btn-warning" id="updateBtn">수정</button>
-					</th>
 				</tr>
 				<tr>
 					<td><b>작성자</b>&nbsp;&nbsp;${ volboard.volWriterNickname } &nbsp;&nbsp;</td>

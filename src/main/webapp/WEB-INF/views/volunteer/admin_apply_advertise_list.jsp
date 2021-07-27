@@ -68,16 +68,36 @@
     	border-radius: 5px;
     	padding: 8px 10px;
 	}
+	.btnDiv{ width:100%;  padding-bottom:30px; }
+	#writeBtn{float: right;}
+	
+	.menuwrap{background: #EDFFC0; width: 100%; height: 50px; margin-bottom: 50px;}
+	.adminmenu{
+		background: #DDE88F; color: navy; text-align: center; font-weight: bold; 
+		vertical-align: middle; width: 300px; height: 50px; display: table-cell;
+	}
+	#navDiv{width: 600px; margin-left: auto; margin-right: auto;}
+	#searchArea{margin-bottom: 30px;}
+	.adminmenu:hover {background: beige; color:orangered; font-weight:bold; cursor:pointer;}
+	#adminserviceapply{background: #F6FFDE; color:green; border:1px solid green;}
+	
 </style>
 </head>
 <body>
 
 <c:import url="../common/header.jsp"/>
 <div class="serviceapply">
-	<form action="serviceBoardWrite.vol" method="post" id="serviceBoardWrite" enctype="Multipart/form-data">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
 	</div>
+	
+	<div class="menuwrap">
+	 <nav id="navDiv">
+		<div class="adminmenu" id="adminsearchlist"><b>봉사 신청서 관리</b></div>
+		<div class="adminmenu" id="adminserviceapply">공고 관리</div>
+	 </nav>
+	</div>
+	
 	<div class="btnDiv">
 		<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/volAdminAdForm.vol'">글쓰기</button>
 	</div>
@@ -100,18 +120,18 @@
 					<input type="hidden" id="shelNo" name="shelNo" value="${ shel.serviceNo }">
 					<div id="contents">
 						<div class="shelter-img">
-							<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
+							<c:url var="volAdminAdDetail" value="volAdminAdDetail.vol">
 								<c:param name="volId" value="${ shel.serviceNo }"/>
 								<c:param name="page" value="${ vpi.currentPage }"/>
 							</c:url>
-							<a href="${ serviceAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.fileName }" ></a>
+							<a href="${ volAdminAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.fileName }" ></a>
 						</div>
 						<div id="shelter-info">
-						<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
+						<c:url var="volAdminAdDetail" value="volAdminAdDetail.vol">
 							<c:param name="volId" value="${ shel.serviceNo }"/>
 							<c:param name="page" value="${ vpi.currentPage }"/>
 						</c:url>
-							<a href="${ serviceAdDetail }" class="shelter-name">${ shel.serviceTitle }</a>
+							<a href="${ volAdminAdDetail }" class="shelter-name">${ shel.serviceTitle }</a>
 						</div>
 						<div class="shelter-price">10,000원</div>
 					</div>
@@ -126,45 +146,55 @@
 		<td colspan="6">
 		
 			<!-- [이전] -->
-			<c:if test="${ vpi.currentPage <= 1 }">
-				[이전] &nbsp;
-			</c:if>
+			<c:if test="${ vpi.currentPage <= 1 }">[이전]</c:if>
 			<c:if test="${ vpi.currentPage > 1 }">
-				<c:url var="before" value="serviceapply.vol">
+				<c:url value="${ loc }" var="blistBack">
 					<c:param name="page" value="${ vpi.currentPage - 1 }"/>
+					<c:if test="${ searchValue ne null }">
+						<c:param name="searchCondition" value="${ searchCondition }"/>
+						<c:param name="searchValue" value="${ searchValue }"/>
+					</c:if>
 				</c:url>
-				<a href="${ before }">[이전]</a> &nbsp;
+				<a href="${ blistBack }">[이전]</a>
 			</c:if>
+			<!-- loc변수: 현재 주소에 있는 값을 가지고 있는 변수 -->
 			
-			<!-- 페이지 -->
+			<!-- 숫자 -->
 			<c:forEach var="p" begin="${ vpi.startPage }" end="${ vpi.endPage }">
-				<c:if test="${ p eq vpi.currentPage }">
+				<!-- 현재 페이지와 번호버튼이 같을 때(선택된 경우) -->
+				<c:if test="${ p == vpi.currentPage }">
 					<font color="red" size="4"><b>[${ p }]</b></font>
 				</c:if>
-				
+				<!-- 현재 페이지와 번호버튼이 같지 않을 때 -->
 				<c:if test="${ p ne vpi.currentPage }">
-					<c:url var="pagination" value="serviceapply.vol">
+					<c:url var="blistCheck" value="${ loc }">
 						<c:param name="page" value="${ p }"/>
+						<c:if test="${ searchValue ne null }">
+							<c:param name="searchCondition" value="${ searchCondition }"/>
+							<c:param name="searchValue" value="${ searchValue }"/>
+						</c:if>
 					</c:url>
-					<a href="${ pagination }">${ p }</a> &nbsp;
+					<a href="${ blistCheck }">${ p }</a>
 				</c:if>
+				<!-- loc: search.bo -->
 			</c:forEach>
 			
 			<!-- [다음] -->
-			<c:if test="${ vpi.currentPage >= vpi.maxPage }">
-				[다음]
-			</c:if>
+			<c:if test="${ vpi.currentPage >= vpi.maxPage }">[다음]</c:if>
 			<c:if test="${ vpi.currentPage < vpi.maxPage }">
-				<c:url var="after" value="serviceapply.vol">
+				<c:url value="${ loc }" var="blistNext">
 					<c:param name="page" value="${ vpi.currentPage + 1 }"/>
-				</c:url> 
-				<a href="${ after }">[다음]</a>
+					<c:if test="${ searchValue ne null }">
+						<c:param name="searchCondition" value="${ searchCondition }"/>
+						<c:param name="searchValue" value="${ searchValue }"/>
+					</c:if>
+				</c:url>
+				<a href="${ blistNext }">[다음]</a>
 			</c:if>
 		</td>
 	</tr>
 	</table>
 	
-	</form>
 </div>
 <c:import url="../common/footer.jsp"/>
 
@@ -183,9 +213,15 @@
 		var searchCondition = $("#searchCondition").val();
 		var searchValue = $("#searchValue").val();
 		
-		location.href="searchAdvertise.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
+		location.href="adminsearchAdvertise.vol?searchCondition="+searchCondition+"&searchValue="+searchValue;
 	}
 	
+</script>
+<script>
+		$('.adminmenu').on('click', function() {
+			var id = $(this).attr('id');
+			location.href='<%=request.getContextPath()%>/' + id + '.vol';
+		});
 </script>
 </body>
 </html>

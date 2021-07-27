@@ -138,7 +138,7 @@
 		from SERVICE_INFO
 			join FILE_INFO using (SERVICE_NO)
 			left join category on (SHELTER_NAME = LIST)
-		where SERVICE_STATUS!='N' and FILE_STATUS!='N'
+		where SERVICE_STATUS='Y' and FILE_STATUS='Y'
 		order by SERVICE_NO desc
 	</select>
 	<resultMap type="Volunteer" id="volAdvertiseResultSet"> 
@@ -159,7 +159,7 @@
 	</resultMap> 
 	
 	<select id="selectAppBoard" resultMap="volAdvertiseResultSet">
-		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT,
 				SERVICE_STATUS, SERVICE_END, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list, FILE_STATUS
 		from SERVICE_INFO
 		    left join category on (SHELTER_NAME = LIST)
@@ -235,6 +235,7 @@
 		<result property="serviceNo" column="SERVICE_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="mName" column="MEMBER_NAME"/>
+		<result property="mId" column="MEMBER_ID"/>
 		<result property="mNickname" column="MEMBER_NICKNAME"/>
 		<result property="mPhone" column="MEMBER_PHONE"/>
 		<result property="mAddress" column="MEMBER_ADDRESS"/>
@@ -293,7 +294,7 @@
 	</select>
 	
 	<select id="selectvApplyDetail" parameterType="_int" resultMap="volAppResultSet">
-		select SERVICEAPP_NO, VOLUNTEER_REQ, SERVICEPAY_NAME, VOLUNTEER_PRICE, VOLUNTEER_DATE, VOLUNTEER_STATUS, VOLUNTEER_YN, SERVICE_NO, MEMBER_NO,
+		select SERVICEAPP_NO, VOLUNTEER_REQ, SERVICEPAY_NAME, VOLUNTEER_PRICE, VOLUNTEER_DATE, VOLUNTEER_STATUS, VOLUNTEER_YN, SERVICE_NO, MEMBER_NO, MEMBER_ID,
 				MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_ADDRESS, MEMBER_EMAIL, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL
 		from SERVICE_APP
 			left join member using (MEMBER_NO)
