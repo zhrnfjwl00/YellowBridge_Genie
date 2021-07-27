@@ -6,11 +6,64 @@
 <meta charset="utf-8">
 <title>입양절차</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption2.css">
+<style>
+.board_request {width:1100px; height:auto; margin:40px auto 50px auto;}
+.board_request table {width:100%; border-collapse:collapse; margin-bottom:20px;}
+.board_request table thead , .board_request table tbody {border-top:3px solid #95998A;}
+.board_request table thead + tbody {border-top:0;}
+.board_request table thead th, .board_request table tbody th{background:res; border-bottom:1px solid #ccc;font-family: 'NanumGothicWeb'!important; line-height:40px; font-weight:normal; text-align:center;}
+.board_request table span {color:#95998A;}
+.board_request table span b {font-family: 'NanumGothicWebBold'!important; font-weight:normal; color:#444;}
+.board_request table thead th img {vertical-align:middle; margin-right:5px;}
+.board_request table td {text-align:left; font-size:16px; color:#444; line-height:40px; background:#fff; border-bottom:1px solid #ccc; padding:10px; }
+.board_request table td button {background:#26579c; color:#fff; text-align:center; width:112px; height:35px; font-size:14px; display:inline-block; vertical-align:middle;margin-bottom:10px;}
+.board_request table td input[type="text"].textAreaSize{width: 800px;}
+.board_request table td input[type="text"]{width: 250px;}
+.board_request table td label {font-size:16px; color:#444;margin-right:15px; margin-left:5px; display:inline-block; vertical-align:middle;}
+.board_request table td textarea {padding:5px; font-size:16px; color:#444; background:#fff!important;}
+
+.request_info {background:#fff; font-size:16px; color:#666; line-height:30px; border:2px solid #ccc; padding:20px; margin-bottom:20px;}
+.request_info strong {font-family: 'NanumGothicWebBold'!important; font-weight:normal; color:#444;}
+.request_info span {color:#95998A;}
+.request_info u {text-decoration:none; border-bottom:1px solid #666;}
+
+.btn_area {width:1100px; height:auto; margin:40px auto 50px auto; text-align:center;}
+
+	.btn1{
+		width: 10%;
+		height: 40px;
+    	background-color: #BDCC94;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+	
+	.btn2{
+		width: 10%;
+		height: 40px;
+    	background-color: #BDCC94;
+        border: 1px solid white;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: -1px;
+        word-break: keep-all;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9375em;
+	}
+
+
+</style>
 </head>
 <body>
 	<c:import url="../common/header.jsp" />
-
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">
@@ -32,8 +85,8 @@
 
 				<div class="btn_area">
 					<!-- 			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a> -->
-					<button id="adopInfo">입양신청조회</button>
-					<button id="goMain">메인으로</button>
+					<button id="adopInfo" class="btn1">입양신청조회</button>
+					<button id="goMain" class="btn2">메인으로</button>
 					<!--  			<a href="javascript:void(0);" onclick="javascript:check();">신청서 등록</a>
 					<a href="javascript:void(0);" onclick="location.href=''">취소</a> -->
 				</div>

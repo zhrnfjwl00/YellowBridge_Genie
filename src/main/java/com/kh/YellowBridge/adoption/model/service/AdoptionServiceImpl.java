@@ -218,10 +218,19 @@ public class AdoptionServiceImpl implements AdoptionService {
 	}
 
 	@Override
+	public int getAdminRequestListCount() {
+		return aDAO.getAdminRequestListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<AnimalRequest> admin_selectRequestList(PageInfo pi) {
+		return aDAO.admin_selectRequestList(sqlSession, pi);
+	}
+
+	@Override
 	public ArrayList<AdoptionBoard> selectDiaryList() {
 		return aDAO.selectDiaryList(sqlSession);
 	}
-	
 
 	
 }
