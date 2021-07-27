@@ -58,12 +58,18 @@ public class MemberController {
 	
 	
 	
+//	@RequestMapping("logout.me")
+//	public ModelAndView memberLogout(SessionStatus status, ModelAndView mv) {
+//		status.setComplete();
+//		mv.setViewName("../../../index");
+//		return mv;
+//		
+//	}
+	
 	@RequestMapping("logout.me")
-	public ModelAndView memberLogout(SessionStatus status, ModelAndView mv) {
+	public String memberLogout(SessionStatus status) {
 		status.setComplete();
-		mv.setViewName("../../../index");
-		return mv;
-		
+		return "redirect:index.jsp";
 	}
 
 	
