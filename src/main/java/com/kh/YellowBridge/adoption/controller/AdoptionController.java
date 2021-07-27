@@ -146,6 +146,39 @@ public class AdoptionController {
 			return mv;
 		}
 		
+		
+		
+		
+		// 관리자_입양요청 조회,관리 리스트
+				@RequestMapping("admin_request.ado")
+				public ModelAndView adminRequestList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
+						@DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
+					int currentPage = 1; // 연산에서 사용할 변수
+
+					if (page != null) {
+						currentPage = page;
+					}
+					int listCount = aService.getAdminRequestListCount();
+
+					PageInfo pi = RecodePagination.getPageInfo(currentPage, listCount);
+
+					ArrayList<AnimalRequest> animallist = aService.admin_selectRequestList(pi);
+					System.out.println(animallist);
+
+					if (animallist != null) {
+						mv.addObject("animallist", animallist).addObject("pi", pi).setViewName("admin_adopRecodeList2");
+					} else {
+						throw new AdoptionException("관리자 입양요청 조회에 실패하였습니다.");
+					}
+					return mv;
+				}
+		
+		
+		
+		
+		
+		
+		
 
 		// 관리자_입양공고 삭제 (선택된 공고만 삭제)
 		@ResponseBody
@@ -181,7 +214,7 @@ public class AdoptionController {
 				int result = aService.changeRequestState(a);
 				
 			}
-			return "redirect:admin_adoption.ado";
+			return "redirect:admin_request.ado";
 		}
 	
 	/* -------------------- (관리자) 입양공고/요청관리 끝 -------------------- */
@@ -236,20 +269,11 @@ public class AdoptionController {
 		}
 	}
 
-	// 사용자_입양신청서 작성 완료페이지 (필요시 내용 노출 예정)
+	// 사용자_입양신청서 작성 완료페이지
 	@RequestMapping("animalApplyComplete.ado")
-	public ModelAndView animalApplyComplete(ModelAndView mv, HttpSession session) {
-		int memberNo = ((Member) session.getAttribute("loginUser")).getNo();
-		AnimalRequest ar = aService.selectAppForm(memberNo);
-
-		System.out.println("ar : " + ar);
-
-		if (ar != null) {
-			mv.addObject("ar", ar).setViewName("animalApplyComplete");
-		} else {
-			throw new AdoptionException("신청완료 페이지 보기에 실패하였습니다.");
-		}
-		return mv;
+	public String animalApplyComplete(HttpSession session) {
+		
+		return "animalApplyComplete";
 	}
 
 	// 사용자_입양신청조회 리스트

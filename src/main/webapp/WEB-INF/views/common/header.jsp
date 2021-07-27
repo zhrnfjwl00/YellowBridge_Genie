@@ -61,7 +61,7 @@
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">입양</a>
+					<li class="adoption"><a href="adopProcess.ado">입양</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
 								<li><a href="adopProcess.ado">입양절차</a></li>

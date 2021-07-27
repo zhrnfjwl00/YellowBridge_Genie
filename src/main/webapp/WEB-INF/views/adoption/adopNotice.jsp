@@ -52,10 +52,22 @@
 						<li class="full"><strong>구조장소</strong></li>
 						<li class="full">${ animal.rescueLocation }</li>
 						<li class="half"><strong>축종</strong> ${ animal.animalType }</li>
-						<li class="half"><strong>성별</strong> ${ animal.animalGender }</li>
+						<li class="half"><strong>성별</strong> 
+						<c:if test="${ animal.animalGender == 'M' }">
+						수컷
+						</c:if>
+						<c:if test="${ animal.animalGender == 'G' }">
+						암컷
+						</c:if></li>
 						<li class="half"><strong>연령</strong> ${ animal.animalAge }살</li>
 						<li class="half"><strong>모색</strong> ${ animal.animalColor }</li>
-						<li class="half"><strong>중성화수술</strong> ${ animal.animalTnr }</li>
+						<li class="half"><strong>중성화수술</strong> 
+						<c:if test="${ animal.animalTnr == 'Y' }">
+						했음
+						</c:if>
+						<c:if test="${ animal.animalTnr == 'N' }">
+						안했음
+						</c:if></li>
 						<li class="half"><strong>성격</strong> ${ animal.animalCharacter }</li>
 						<li class="half"><strong>체중</strong> ${ animal.animalWeight }kg</li>
 						<li class="half"><strong>건강상태</strong> ${ animal.animalCondition }</li>
