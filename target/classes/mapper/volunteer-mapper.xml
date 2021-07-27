@@ -133,9 +133,11 @@
 	</select>
 	
 	<select id="serviceApplyList" resultMap="volAdvertiseResultSet">
-		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, FILE_STATUS
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
+				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list, FILE_STATUS
 		from SERVICE_INFO
 			join FILE_INFO using (SERVICE_NO)
+			left join category on (SHELTER_NAME = LIST)
 		where SERVICE_STATUS='Y' and FILE_STATUS='Y'
 		order by SERVICE_NO desc
 	</select>
@@ -147,15 +149,18 @@
 		<result property="shelterInfo" column="SHELTER_INFO"/>
 		<result property="serviceContent" column="SERVICE_CONTENT"/>
 		<result property="serviceStatus" column="SERVICE_STATUS"/>
+		<result property="serviceEnd" column="SERVICE_END"/>
 		<result property="fileNo" column="FILE_NO"/>
 		<result property="fileName" column="FILE_NAME"/>
 		<result property="changeName" column="FILE_CHANGE"/>
 		<result property="filePath" column="FILE_PATH"/>
+		<result property="cateNo" column="cate_no"/>
+		<result property="cateName" column="list"/>
 	</resultMap> 
 	
 	<select id="selectAppBoard" resultMap="volAdvertiseResultSet">
-		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT, 
-				SERVICE_STATUS, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list, FILE_STATUS
+		select SERVICE_NO, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL, SHELTER_INFO, SERVICE_CONTENT,
+				SERVICE_STATUS, SERVICE_END, FILE_NO, FILE_CHANGE, FILE_NAME, FILE_PATH, cate_no, list, FILE_STATUS
 		from SERVICE_INFO
 		    left join category on (SHELTER_NAME = LIST)
 		    join FILE_INFO using (SERVICE_NO)
@@ -230,6 +235,7 @@
 		<result property="serviceNo" column="SERVICE_NO"/>
 		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="mName" column="MEMBER_NAME"/>
+		<result property="mId" column="MEMBER_ID"/>
 		<result property="mNickname" column="MEMBER_NICKNAME"/>
 		<result property="mPhone" column="MEMBER_PHONE"/>
 		<result property="mAddress" column="MEMBER_ADDRESS"/>
@@ -241,7 +247,7 @@
 	
 	<insert id="insertadminAd">
 		insert into SERVICE_INFO
-		values(SEQ_SNO.NEXTVAL, #{serviceTitle}, #{shelterName}, #{shelterTel}, #{shelterInfo}, #{serviceContent}, default)
+		values(SEQ_SNO.NEXTVAL, #{serviceTitle}, #{shelterName}, #{shelterTel}, #{shelterInfo}, #{serviceContent}, default, null)
 	</insert>
 	
 	<insert id="insertADVolFile">
@@ -288,7 +294,7 @@
 	</select>
 	
 	<select id="selectvApplyDetail" parameterType="_int" resultMap="volAppResultSet">
-		select SERVICEAPP_NO, VOLUNTEER_REQ, SERVICEPAY_NAME, VOLUNTEER_PRICE, VOLUNTEER_DATE, VOLUNTEER_STATUS, VOLUNTEER_YN, SERVICE_NO, MEMBER_NO,
+		select SERVICEAPP_NO, VOLUNTEER_REQ, SERVICEPAY_NAME, VOLUNTEER_PRICE, VOLUNTEER_DATE, VOLUNTEER_STATUS, VOLUNTEER_YN, SERVICE_NO, MEMBER_NO, MEMBER_ID,
 				MEMBER_NAME, MEMBER_NICKNAME, MEMBER_PHONE, MEMBER_ADDRESS, MEMBER_EMAIL, SERVICE_TITLE, SHELTER_NAME, SHELTER_TEL
 		from SERVICE_APP
 			left join member using (MEMBER_NO)
@@ -518,7 +524,6 @@
 		where SERVICE_STATUS='Y'
 	</select>
 	
-	
 	<select id="selectvList" resultMap="volAdvertiseResultSet">
 	select service_no, service_title, shelter_name, shelter_tel, shelter_info, service_content, service_status, 
        file_no, file_name, file_change
@@ -527,6 +532,62 @@
      		 	   join file_info using(service_no)
              order by service_no desc)
         where 4 >= rownum 
-        
 	</select>
+	
+	<select id="selectAdminSearchApplyResultList" parameterType="com.kh.YellowBridge.volunteer.model.vo.VolSearchCondition" resultMap="volAppResultSet">
+		select *
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		where VOLUNTEER_YN='Y'
+		<choose>
+			<when test="title != null">
+				and SERVICE_TITLE like '%' || #{title} || '%'
+			</when>
+			<when test="writer != null">
+				and MEMBER_ID like '%' || #{writer} || '%'
+			</when>
+			<otherwise>
+				and SHELTER_NAME like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
+		order by SERVICEAPP_NO desc
+	</select>
+	
+	<select id="getAdminSearchApplyResultListCount" resultType="_int">
+		select count(*)
+		from SERVICE_APP
+			left join member using (MEMBER_NO)
+			left join SERVICE_INFO using (SERVICE_NO)
+		where VOLUNTEER_YN='Y'
+		<choose>
+			<when test="title != null">
+				and SERVICE_TITLE like '%' || #{title} || '%'
+			</when>
+			<when test="writer != null">
+				and MEMBER_ID like '%' || #{writer} || '%'
+			</when>
+			<otherwise>
+				and SHELTER_NAME like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
+	</select>
+	
+	<update id="stopAd">
+		update SERVICE_INFO
+		set SERVICE_END='신청중지'
+		where SERVICE_NO=#{serviceNo}
+	</update>
+	
+	<update id="continueAd">
+		update SERVICE_INFO
+		set SERVICE_END='신청재개'
+		where SERVICE_NO=#{serviceNo}
+	</update>
+	
+	<update id="vdeleteFile">
+		update FILE_INFO
+		set FILE_STATUS='N'
+		where FILE_NO=#{fileNo}
+	</update>
 </mapper>
