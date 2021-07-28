@@ -4,7 +4,7 @@
 	<select id="getListCount" resultType="_int">
 		select count(*)
 		from board
-		where board_status='Y'
+		where board_status='Y'and PARENT_CATE=40
 	</select>
 	
 	<select id="selectList" resultMap="scboardResultSet">
@@ -62,7 +62,7 @@
 		INSERT 
 		INTO FILE_INFO 
 		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{changeName}, SYSDATE, 1, 
-					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL)
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL, NULL)
 	</insert>
 	
 	
