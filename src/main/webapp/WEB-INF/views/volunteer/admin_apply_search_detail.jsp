@@ -82,7 +82,7 @@
 </style>
 </head>
 <body>
-<c:import url="admin_header.jsp"/>
+<c:import url="../admin/header.jsp"/>
 <div class="applycomplete">
 	<div style="text-align:center; padding-bottom:30px;" class="servicetext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청 조회</b></h1>
