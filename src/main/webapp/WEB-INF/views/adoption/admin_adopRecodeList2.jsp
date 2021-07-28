@@ -67,14 +67,23 @@
         text-decoration: none;
         font-size: 0.9375em;
 	}
+	.area{
+	 width:100%;
+	 height: 150px; 
+	}
 	
+	.serviceBoard {
+	margin-top: -150px;
+}
 	
 </style>
 
 </head>
 <body>
 <div class="serviceBoard">
-	<c:import url="../admin/header.jsp"/>
+      <c:import url="../admin/header.jsp"/>
+      <div class="area">
+</div>
 	<div class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>입양공고/요청 관리</b></h1>
 	</div>
@@ -123,7 +132,9 @@
 							</c:forEach>
 						</tbody>
 					</table>
+					
 					<div class="btnDiv2">
+				
 						<select id="selectbox" name="selectbox">
 							  <option>상태값선택</option>
 							  <option value="입양대기">입양대기</option>
