@@ -68,6 +68,7 @@
     	border-radius: 5px;
     	padding: 8px 10px;
 	}
+	
 	.btnDiv{ width:100%;  padding-bottom:30px; }
 	#writeBtn{float: right;}
 	
