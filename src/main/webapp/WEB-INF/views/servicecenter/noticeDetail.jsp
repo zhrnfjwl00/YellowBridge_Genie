@@ -31,7 +31,7 @@
 <div class="container">
 	<c:import url="../common/header.jsp"/>
 	<div style="text-align:center;" class="serviceBoardtext">
-		<h1 style="color:#BDCC94;"><b>Q&A</b></h1>
+		<h1 style="color:#BDCC94;"><b>공지사항</b></h1>
 	</div>
 	
 	<c:url var="nodelete" value="nodelete.sc">
