@@ -235,7 +235,7 @@
 						var $trContent = $('<th colspan=7>').text('내용');
 						var $trCreateDate = $('<th>').text('작성일');
 						var $trUpdate = $('<th>').text('');
-						var $trDelete = $('<th>').text('삭제'); 
+						var $trDelete = $('<th>').text(''); 
 						
 						$tr.append($trWriter);
 						$tr.append($trContent);
@@ -256,10 +256,10 @@
 							var $userId = id;
 							if( $userId.trim() == $writerId.trim()){
 								var $rUpdateBtn = $('<td width=50><a href="volrUpdateForm.vol?rId='+ data[i].rId + '&qId=' + qId + '&page=' + page + '">수정</a></td>');						
-								var $rdeleteBtn = $('<td width=50><a href="rDelete.sc?rId='+ data[i].rId + '&qId=' + qId + '&page=' + page + '">삭제</a></td>');						
+								var $rdeleteBtn = $('<td width=50><a href="rDelete.sc?rId='+ data[i].rId + '&qId=' + qId + '&page=' + page + '"></a></td>');						
 							} else {
 								var $rUpdateBtn = $('<td>').text('');
-								var $rdeleteBtn = $('<td>').text('삭제');
+								var $rdeleteBtn = $('<td>').text('');
 							} 
 							
 							$tr.append($rWriterNickname);
