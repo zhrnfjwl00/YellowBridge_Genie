@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,13 +27,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.common.Pagination;
+import com.kh.YellowBridge.member.model.vo.Member;
 import com.kh.YellowBridge.support.model.exception.SupportException;
 import com.kh.YellowBridge.support.model.service.SupportService;
 import com.kh.YellowBridge.support.model.vo.Board;
+import com.kh.YellowBridge.support.model.vo.DateSearch;
 import com.kh.YellowBridge.support.model.vo.FileInfo;
+import com.kh.YellowBridge.support.model.vo.PaymentInfo;
 import com.kh.YellowBridge.support.model.vo.Reply;
 import com.kh.YellowBridge.support.model.vo.SearchCondition;
-import com.kh.YellowBridge.volunteer.model.vo.VolReply;
 
 @Controller
 public class SupportController {
@@ -40,13 +43,14 @@ public class SupportController {
 	@Autowired
 	private SupportService sService;
 	
-	
+	// 후원 페이지
 	@RequestMapping("supportPage.sup")
 	public String insertView(){
 		
 		return "supportPage";
 	}
 	
+	// 게시판 목록 조회
 	@RequestMapping("sList.sup")
 	public ModelAndView boardList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv){
 		int currentPage = 1; // 연산에서 사용할 변수
@@ -78,6 +82,7 @@ public class SupportController {
 		return "supportBoardWrite";
 	}
 	
+	// 글 작성
 	@RequestMapping("sinsert.sup")
 	public String insertBoard(@ModelAttribute Board b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
 		
@@ -104,6 +109,7 @@ public class SupportController {
 		}
 	}
 	
+	// 파일 저장
 	public FileInfo saveFile(MultipartFile uploadFile, HttpServletRequest request) {
 		FileInfo fi = new FileInfo();
 		
@@ -139,6 +145,7 @@ public class SupportController {
 		
 	}
 	
+	// 게시판 상세보기
 	@RequestMapping("sdetail.sup")
 	public String boardDatail(@RequestParam("bNo") int bNo, @RequestParam("page") int page, Model model) {
 		
@@ -155,7 +162,7 @@ public class SupportController {
 		
 	}
 	
-	
+	// 게시판 검색
 	@RequestMapping("search.sup")
 	public ModelAndView searchBoard(@RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue, ModelAndView mv, HttpServletRequest request) {
 		SearchCondition sc = new SearchCondition();
@@ -186,37 +193,8 @@ public class SupportController {
 		
 	}
 	
-	@RequestMapping("addReply.sup")
-	@ResponseBody
-	public String addReply(@ModelAttribute Reply r, HttpSession session) {
-		/*
-		 * 작성자는 loginUser에서 받아옴 
-		 * int rWriter = ((Member)session.getAttribute("loginUser")).getId(); //
-		 * r.setVolrWriter(rWriter);
-		 */
-		
-		int result = sService.addReply(r);
-		if(result > 0) {
-			return "success";
-		}
-		
-		throw new SupportException("게시글 댓글 등록에 실패하였습니다.");
-		
-	}
 	
-	@RequestMapping("rList.sup")
-	public void selectReplyList(@RequestParam("bNo") int bNo, HttpServletResponse response) throws JsonIOException, IOException{
-		ArrayList<Reply> list = sService.selectReplyList(bNo);
-		
-		response.setContentType("application/json; charset=UTF-8");
-		
-		GsonBuilder gb = new GsonBuilder();
-		GsonBuilder dateGb = gb.setDateFormat("yyyy-MM-dd");
-		Gson gson = dateGb.create();
-		gson.toJson(list, response.getWriter());
-		
-	}
-	
+	// 게시판 수정 화면
 	@RequestMapping("supdateView.sup")
 	public String updateView(@RequestParam("bNo") int bNo, @RequestParam("page") int page, Model model){
 		Board board = sService.detailBoard(bNo);
@@ -226,6 +204,7 @@ public class SupportController {
 		return "supportBoardUpdate";
 	}
 	
+	// 게시판 수정
 	@RequestMapping("supdate.sup")
 	public String updateBoard(@ModelAttribute Board b, @RequestParam("page") int page,
 			@RequestParam("reloadFile") MultipartFile reloadFile, HttpServletRequest request) {
@@ -258,6 +237,7 @@ public class SupportController {
 		
 	}
 	
+	// 게시판 첨부파일 삭제
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -269,6 +249,7 @@ public class SupportController {
 		}
 	}
 	
+	// 게시판 삭제
 	@RequestMapping("sdelete.sup")
 	public String deleteBoard(@RequestParam("bNo") int bNo) {
 		
@@ -282,6 +263,7 @@ public class SupportController {
 		
 	}
 	
+	// 댓글 삭제
 	@RequestMapping("rdelete.sup")
 	public String deleteReply(@RequestParam(value="rId", required=false) Integer rId, @RequestParam("bNo") int bNo, @RequestParam("page") int page) {
 		int result = sService.deleteReply(rId);
@@ -295,66 +277,186 @@ public class SupportController {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	// 후원하기 화면으로 이동
 	@RequestMapping("support.sup")
 	public String supportPay() {
-		
-		return null;
+		return "supportPage";
+	}
+	// 후원하기 정보 입력 화면 이동
+	@RequestMapping("supportPayView.sup")
+	public String supportPayView() {
+		return "supportPayView";
 	}
 	
+	// 결제 완료 후 정보 저장
+	@RequestMapping("insertPaymentInfo.sup")
+	public String supportInfo(@RequestParam("imp_uid") String imp_uid, @RequestParam("userName") String userName,
+							  @RequestParam("price") int price,  @RequestParam("addr") String addr,
+							  @RequestParam("email") String email, @RequestParam("tel") int tel,
+							  @RequestParam("memNo") int memNo, @RequestParam("confirmPwd") String confirmPwd) {
+		PaymentInfo pi = new PaymentInfo();
+		// 인증번호로 비회원 결제 구분
+		if(confirmPwd.equals("confirmPwd1111")) {
+			pi.setOrderStatus("회원");
+		} else {
+			pi.setOrderStatus("비회원");
+		}
+		
+		pi = new PaymentInfo(imp_uid, userName, price, email, tel, addr, memNo, confirmPwd, pi.getOrderStatus());
+		
+		int result = sService.insertPaymentInfo(pi);
+
+		if(result > 0) {
+			return "";
+		} else {
+			throw new SupportException("결제에 실패했습니다.");
+		}
+		
+	}
+	
+	// 결제 완료 후 화면 이동
+	@RequestMapping("supportPayComplete.sup")
+	public String supportPayComplete(@RequestParam("imp_uid") String imp_uid,
+									Model model) {
+		PaymentInfo pi = sService.supportPayComplete(imp_uid);
+		
+		model.addAttribute("pi", pi);
+		return "supportPay_completeView";
+	}
+	
+	// 비회원 인증 화면 이동
+	@RequestMapping("noMemPayDetail.sup")
+	public String noMemPayDetailView() {
+		
+		return "noMemPayDetail";
+	}
+	
+	// 비회원 결제 내역 조회 : 결제자명  + 인증번호
+	@RequestMapping("noMemPayResult.sup")
+	public String noMemPayResultList(@RequestParam("userName") String userName,
+									@RequestParam("confirmPwd") String confirmPwd,
+									Model model){
+		PaymentInfo pi = new PaymentInfo();
+		pi.setUserName(userName);
+		pi.setConfirmPwd(confirmPwd);
+		
+		ArrayList<PaymentInfo> piList = sService.noMemPayList(pi);
+		// 바로 결제내역 리스트 확인
+		if(piList != null) {
+			model.addAttribute("piList", piList);
+			return "noMemResultList";
+		}
+		
+		throw new SupportException("비회원 결제내역 조회에 실패했습니다.");
+		
+	}
+	
+	// 회원 결제 내역 조회 : memNo
+	@RequestMapping("paymentList.sup")
+	public String paymentList(@RequestParam("memNo") int memNo, Model model){
+		
+		ArrayList<PaymentInfo> piList = sService.memPayList(memNo);
+		
+		model.addAttribute("piList", piList);
+		
+		return "memResultList";
+	}
+	
+	// 댓글 목록 조회
+		@RequestMapping("rList.sup")
+		public void selectReplyList(@RequestParam("bNo") int bNo, HttpServletResponse response) throws JsonIOException, IOException{
+			ArrayList<Reply> list = sService.selectReplyList(bNo);
+				
+			response.setContentType("application/json; charset=UTF-8");
+			
+			GsonBuilder gb = new GsonBuilder();
+			GsonBuilder dateGb = gb.setDateFormat("yyyy-MM-dd");
+			Gson gson = dateGb.create();
+			gson.toJson(list, response.getWriter());
+				
+		}
+	
+	// 댓글 작성
+		@RequestMapping("addReply.sup")
+		@ResponseBody
+		public String addReply(@ModelAttribute Reply r, HttpSession session) {
+			
+			String rWriter = ((Member)session.getAttribute("loginUser")).getNickname(); 
+			int memNo = ((Member)session.getAttribute("loginUser")).getNo();
+			
+			r.setrWriter(rWriter);
+			r.setMemberNo(memNo);
+			
+			int result = sService.addReply(r);
+			if(result > 0) {
+				return "success";
+			}
+			
+			throw new SupportException("게시글 댓글 등록에 실패하였습니다.");
+			
+		}
+		
+		
+	// 댓글 수정 폼 이동
+	@RequestMapping("rupdate.sup")
+	public ModelAndView ReplyUpdateForm(@RequestParam("page") int page, @RequestParam("rId") int rId,
+									@RequestParam("bNo") int bNo, ModelAndView mv) {
+		
+		Board b = sService.detailBoard(bNo);
+		FileInfo fi = sService.detailFile(bNo);
+		Reply r = sService.selectOneReply(rId);
+		
+		if(b != null) {
+			mv.addObject("page", page).addObject("b", b).addObject("fi", fi).addObject("r", r).setViewName("supportBoard_replyUpdate");
+		} else {
+			throw new SupportException("댓글 수정에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping("updateReply.sup")
+	@ResponseBody
+	public String ReplyUpdate(@ModelAttribute Reply reply,HttpServletRequest request, Model model) {
+		
+		int result = sService.updateReply(reply);
+		
+		if(result > 0) {
+			return "success";
+		}else {
+			throw new SupportException("댓글 수정에 실패하였습니다.");
+		}
+	}
+	
+	/*
+	 * @RequestMapping("dateSearch.sup") public ModelAndView PiListDate(DateSearch
+	 * ds, ModelAndView mv) { System.out.println(ds); // 전체 결제 정보 날짜 범위내 검색 -> 화면에서
+	 * 출력시 결제정보 조회했던 내용에 맞춰 검열 해 화면에 출력
+	 * 
+	 * ArrayList<PaymentInfo> datePi = sService.searchPiList(ds); 
+	 * System.out.println(datePi);
+	 * 
+	 * if(datePi != null) { mv.addObject("datePi",
+	 * datePi).setViewName("dateSearch_complete"); } else { throw new
+	 * SupportException("결제정보 기간 조회에 실패하였습니다."); } return mv; }
+	 */
 	
 	
+	// 관리자 : 회원/비회원 결제내역조회
+	@RequestMapping("adminPaySelect.sup")
+	public String adminPaymentSelect(Model model) {
+		ArrayList<PaymentInfo> allPayList = sService.selectAllPi();
+		
+		if(allPayList != null) {
+			model.addAttribute("allPayList", allPayList);
+			return "adminPiResultList";
+			
+		} else {
+			throw new SupportException("회원/비회원 결제내역 조회에 실패했습니다.");
+		}
+		
+	}
 	
 
 }
