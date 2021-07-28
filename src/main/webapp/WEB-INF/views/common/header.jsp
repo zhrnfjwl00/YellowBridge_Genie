@@ -8,7 +8,7 @@
 <title>header_member</title>
 <link rel="stylesheet"  href="<%= request.getContextPath() %>/resources/css/common.css?ver=1">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/bootstrap.min.css?ver=1">
-<script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/common.js?ver=1"></script>
 
 <style>
@@ -20,8 +20,6 @@
 	
 	#header_total_area{background-color: white;   opacity:0.9; height:120px;}
 	
-	
-	
 	#image a{ text-align:center;}
 	
 	#header_total_area{height: 100px; }
@@ -30,6 +28,7 @@
 	
 	
 </style>
+
 </head>
 <body>
 <!-- 헤더 시작 -->
@@ -110,12 +109,12 @@
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">고객사항</a>
+					<li class="servicecenter"><a href="notice.sc">고객사항</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="">공지사항</a></li>
-								<li><a href="">Q&A</a></li>
-								<li><a href="">FAQ</a></li>
+								<li><a href="notice.sc">공지사항</a></li>
+								<li><a href="qna.sc">Q&A</a></li>
+								<li><a href="faq.sc">FAQ</a></li>
 							</ul>
 						</div></li>
 				</ul>
