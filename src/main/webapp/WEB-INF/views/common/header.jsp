@@ -8,7 +8,7 @@
 <title>header_member</title>
 <link rel="stylesheet"  href="<%= request.getContextPath() %>/resources/css/common.css?ver=1">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/bootstrap.min.css?ver=1">
-<script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/common.js?ver=1"></script>
 
 <style>
@@ -20,8 +20,6 @@
 	
 	#header_total_area{background-color: white;   opacity:0.9; height:120px;}
 	
-	
-	
 	#image a{ text-align:center;}
 	
 	#header_total_area{height: 100px; }
@@ -30,6 +28,7 @@
 	
 	
 </style>
+
 </head>
 <body>
 <!-- 헤더 시작 -->
@@ -82,23 +81,40 @@
 					<li class="support"><a href="supportPage.sup">후원</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="">후원하기</a></li>
-								<li><a href="">후훤내역조회</a></li>
+							
+								<c:if test="${!loginUser.id.equals('admin')}">
+									<li><a href="supportPage.sup">후원하기</a></li>
+								</c:if>
+								
+								<c:if test="${!loginUser.id.equals('admin') && !empty loginUser}">
+									<c:url var="piResult" value="paymentList.sup">
+										<c:param name="memNo" value="${loginUser.no}"/>
+									</c:url>
+									<li><a href="${piResult}">후원내역조회</a></li>
+								</c:if>
+								
+								<c:if test="${loginUser.id.equals('admin')}">
+										<li><a href="adminPaySelect.sup">회원/비회원 내역조회</a></li>
+								</c:if>
+								
+								<c:if test="${empty loginUser}">
+									<li><a href="noMemPayDetail.sup">후원내역조회</a></li>
+								</c:if>
+								
 								<li><a href="sList.sup">후원금사용내역조회</a></li>
-								<li><a href="">후원상품</a></li>
 							</ul>
 						</div></li>
-					<li class=""><a href="">커뮤니티</a>
+					<li class=""><a href="freeboard.fr">커뮤니티</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
 							</ul>
 						</div></li>
-					<li class=""><a href="">고객사항</a>
+					<li class="servicecenter"><a href="notice.sc">고객사항</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="">공지사항</a></li>
-								<li><a href="">Q&A</a></li>
-								<li><a href="">FAQ</a></li>
+								<li><a href="notice.sc">공지사항</a></li>
+								<li><a href="qna.sc">Q&A</a></li>
+								<li><a href="faq.sc">FAQ</a></li>
 							</ul>
 						</div></li>
 				</ul>

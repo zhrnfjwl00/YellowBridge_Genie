@@ -19,11 +19,11 @@
 	#example tr th{padding: 10px; font-size: 18px; font-weight: bold;  border-bottom: 1px solid black;}
 	#example tr td{padding: 7px; font-size: 16px;}
 	
-	.supportBoard {
+	.scBoard {
 		width: 65%;
 		margin: 0px auto;
 	}
-	.supportBoardtext{
+	.scBoardtext{
 		margin-top: 150px;
 		letter-spacing: -1px;
 	}
@@ -39,24 +39,17 @@
 
 </head>
 <body>
-<div class="supportBoard">
+<div class="scBoard">
 	<c:import url="../common/header.jsp"/>
-	<div style="text-align:center;" class="supportBoardtext">
-		<h1 style="color:#BDCC94;"><b>후원금 사용내역 조회 게시판</b></h1>
-		<h5><b>소중한 후원금 이렇게 쓰였습니다.</b></h5>
+	<div style="text-align:center;" class="scBoardtext">
+		<h1 style="color:#BDCC94;"><b>자유게시판</b></h1>
+		<h5><b>YELLOW BRIDGE 자유게시판</b></h5>
 	</div>
 	<div class="container" style="margin-top:30px; text-align:center;" >
 		<div class="row">
 			<div class="col-sm-12">
 			      <div id="searchArea" align="center" >
-					<select id="searchCondition" name="searchCondition">
-						<option>-------</option>
-						<option value="title">제목</option>
-						<option value="content">내용</option>
-					</select>
 					
-					<input id="searchValue" type="search">
-					<button onclick="searchBoard();">검색</button>
 				  </div>
 				  
 				<table id="example" class="display" style="width:100%">
@@ -69,36 +62,34 @@
 							<th class="tableCount">조회수</th>
 			            </tr>
 			        </thead>
-			        <tbody id = "listArea">
-			        	<c:forEach var="b" items="${ list }">
+			        <tbody id = "listArea">		
+			        	<c:forEach var="fr" items="${ fList }">
 							<tr>
-								<td align="center">${ b.bNo }</td>
-								
+								<td align="center">${ fr.bId }</td> <!-- 여기오류 -->
 								<td align="center">
-									<c:url var="sdetail" value="sdetail.sup">
-											<c:param name="bNo" value="${ b.bNo }"/>
+										<c:url var="freeDetail" value="freedetail.fr">
+											<c:param name="bId" value="${ fr.bId }"/>
 											<c:param name="page" value="${ pi.currentPage }"/>
 											</c:url>
-									<a href="${ sdetail }">${ b.bTitle }</a>
+										<a href="${ freeDetail }">${ fr.bTitle }</a>
 								</td>
 								
-								<td align="center">${ b.bWriter }</td>
-								<td align="center">${ b.bCreateDate }</td>
-								<td align="center">${ b.bView }</td>
-								</td>
+								<td align="center">${ fr.bWriter }</td> <!-- 여기오류 -->
+								<td align="center">${ fr.bCreateDate }</td>
+								<td align="center">${ fr.bCount }</td>
 							</tr>
 							</c:forEach>
 			        </tbody>
 			    </table>
 			    <br><br>
-			    <div align="center" height="20" id="buttonTab">
+			    <div align="center"id="buttonTab">
 			
 					<!-- [이전] -->
 					<c:if test="${ pi.currentPage <= 1 }">
 						[이전] &nbsp;
 					</c:if>
 					<c:if test="${ pi.currentPage > 1 }">
-						<c:url var="before" value="sList.sup">
+						<c:url var="before" value="freeboard.fr">
 							<c:param name="page" value="${ pi.currentPage - 1 }"/>
 						</c:url>
 						<a href="${ before }">[이전]</a> &nbsp;
@@ -111,7 +102,7 @@
 						</c:if>
 						
 						<c:if test="${ p ne pi.currentPage }">
-							<c:url var="pagination" value="sList.sup">
+							<c:url var="pagination" value="freeboard.fr">
 								<c:param name="page" value="${ p }"/>
 							</c:url>
 							<a href="${ pagination }">${ p }</a> &nbsp;
@@ -123,22 +114,19 @@
 						[다음]
 					</c:if>
 					<c:if test="${ pi.currentPage < pi.maxPage }">
-						<c:url var="after" value="sList.sup">
+						<c:url var="after" value="freeboard.fr">
 							<c:param name="page" value="${ pi.currentPage + 1 }"/>
 						</c:url> 
 						<a href="${ after }">[다음]</a>
 						</c:if>
-						</td>
-					</tr>
-	 					<c:if test="${loginUser.id.equals('admin')}">
- 							<div class="btnDiv">
-								<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='sinsertView.sup';">글쓰기</button>
- 						</c:if>
-					</div>
+					<div class="btnDiv">
+					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='<%= request.getContextPath() %>/freeinsertform.fr'">글쓰기</button>
+				</div>
 			</div>
 		</div>
 	</div>
 	</div>
+</div>
 	<c:import url="../common/footer.jsp"/>
 	<script type="text/javascript">
 	   // 게시글 상세보기
@@ -157,7 +145,7 @@
 			var searchCondition = $("#searchCondition").val();
 			var searchValue = $("#searchValue").val();
 			
-			location.href="search.sup?searchCondition="+searchCondition+"&searchValue="+searchValue;
+			location.href="search.sc?searchCondition="+searchCondition+"&searchValue="+searchValue;
 		}
 		
 	</script>
