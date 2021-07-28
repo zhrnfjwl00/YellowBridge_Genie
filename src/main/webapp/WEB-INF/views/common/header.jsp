@@ -88,7 +88,7 @@
 								<li><a href="">후원상품</a></li>
 							</ul>
 						</div></li>
-					<li class=""><a href="">커뮤니티</a>
+					<li class=""><a href="freeboard.fr">커뮤니티</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
 							</ul>

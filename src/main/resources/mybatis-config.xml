@@ -15,6 +15,8 @@
 		<typeAlias type="com.kh.YellowBridge.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.YellowBridge.service.model.vo.ScBoard" alias="ScBoard" />
 		<typeAlias type="com.kh.YellowBridge.service.model.vo.QnaBoard" alias="QnaBoard" />
+		<typeAlias type="com.kh.YellowBridge.free.model.vo.Free" alias="fBoard" />
+		<typeAlias type="com.kh.YellowBridge.free.model.vo.FrFileInfo" alias="frFileInfo" />
 		<typeAlias type="com.kh.YellowBridge.service.model.vo.ScFileInfo" alias="scFileInfo" />
 	</typeAliases>
 	
@@ -26,6 +28,7 @@
 		<mapper resource="mapper/member-mapper.xml"/>
 		<mapper resource="mapper/servicecenter-mapper.xml"/>
 		<mapper resource="mapper/qna-mapper.xml"/>
+		<mapper resource="mapper/free-mapper.xml"/>
 	</mappers>
 
 </configuration>
