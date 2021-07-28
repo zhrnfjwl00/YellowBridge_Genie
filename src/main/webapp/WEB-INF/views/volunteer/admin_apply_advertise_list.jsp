@@ -85,7 +85,7 @@
 </head>
 <body>
 
-<c:import url="../common/header.jsp"/>
+<c:import url="../admin/header.jsp"/>
 <div class="serviceapply">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceapplytext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청</b></h1>
@@ -124,7 +124,7 @@
 								<c:param name="volId" value="${ shel.serviceNo }"/>
 								<c:param name="page" value="${ vpi.currentPage }"/>
 							</c:url>
-							<a href="${ volAdminAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.fileName }" ></a>
+							<a href="${ volAdminAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.changeName }" ></a>
 						</div>
 						<div id="shelter-info">
 						<c:url var="volAdminAdDetail" value="volAdminAdDetail.vol">

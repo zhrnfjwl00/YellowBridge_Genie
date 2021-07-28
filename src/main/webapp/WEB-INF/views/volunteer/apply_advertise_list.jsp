@@ -101,7 +101,7 @@
 								<c:param name="volId" value="${ shel.serviceNo }"/>
 								<c:param name="page" value="${ vpi.currentPage }"/>
 							</c:url>
-							<a href="${ serviceAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.fileName }" ></a>
+							<a href="${ serviceAdDetail }"><img src="<%=request.getContextPath()%>/resources/voluploadFiles/${ shel.changeName }" ></a>
 						</div>
 						<div id="shelter-info">
 						<c:url var="serviceAdDetail" value="serviceAdDetail.vol">
