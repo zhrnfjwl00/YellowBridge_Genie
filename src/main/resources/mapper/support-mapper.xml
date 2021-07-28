@@ -41,7 +41,7 @@
 		INSERT 
 		INTO FILE_INFO 
 		VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{changeName}, SYSDATE, 1, 
-					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL)
+					#{filePath}, 'Y', SEQ_BNO.CURRVAL, NULL, NULL)
 	</insert>
 	
 	
@@ -64,7 +64,7 @@
 		SELECT FILE_NO,FILE_NAME,FILE_CHANGE,FILE_CREATE_DATE,FILE_LEVEL,
 				FILE_PATH,FILE_STATUS,BOARD_NO
 		FROM FILE_INFO
-		WHERE BOARD_NO=#{BoardNo}
+		WHERE BOARD_NO=#{bNo}
 	</select>
 	
 	<resultMap type="FileInfo" id="fileInfoResultMap">
@@ -109,12 +109,11 @@
 	
 	<insert id="insertReply">
 		INSERT INTO COMMENTS
-		VALUES(SEQ_COMMNO.nextval, #{rContent}, SYSDATE, 'Y', #{rWriter}, DEFAULT, #{refBid})
+		VALUES(SEQ_COMMNO.nextval, #{rContent}, SYSDATE, 'Y', #{rWriter}, #{memberNo}, #{refBid})
 	</insert>
 	
 	<select id="selectReplyList" resultMap="ReplyResultSet">
-		SELECT COMMENTS_NO, COMMETS_COTENT, COMMETS_DATE, COMMETS_STATUS, COMMETS_WRITER, MEMBER_NO, 
-				 BOARD_NO, MEMBER_NICKNAME
+		SELECT *
 		FROM COMMENTS
     		LEFT JOIN MEMBER USING(MEMBER_NO) 
     		LEFT JOIN BOARD USING(BOARD_NO)
@@ -128,9 +127,8 @@
 		<result property="rCreateDate" column="COMMETS_DATE"/>
 		<result property="rStatus" column="COMMETS_STATUS"/>
 		<result property="rWriter" column="COMMETS_WRITER"/>
-		<result property="refBid" column="MEMBER_NO"/>
-		<result property="memberNo" column="BOARD_NO"/>
-		<result property="memberNick" column="MEMBER_NICKNAME"/>
+		<result property="refBid" column="BOARD_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
 	</resultMap>
 	
 	<update id="updateBoard">
@@ -161,5 +159,68 @@
 		SET COMMETS_STATUS = 'N'
 		WHERE COMMENTS_NO=#{rId}
 	</update>
+	
+	<insert id="insertPaymentInfo">
+		INSERT INTO PAYMENTINFO
+		VALUES (SEQ_PAYINFO.NEXTVAL, #{imp_uid}, #{memNo}, #{confirmPwd}, #{userName},
+				#{tel}, #{email}, #{addr}, #{price}, SYSDATE, #{orderStatus}, '결제완료')
+	</insert>
+	
+	<select id="resultPaymentComplete" resultMap="ResultMapPi">
+		SELECT * 
+		FROM PAYMENTINFO
+		WHERE IMP_UID=#{imp_uid}
+	</select>
+	
+	<resultMap type="com.kh.YellowBridge.support.model.vo.PaymentInfo" id="ResultMapPi">
+		<id property="payNo" column="PAY_NO"/>
+		<result property="imp_uid" column="IMP_UID"/>
+		<result property="memNo" column="MEM_NO"/>
+		<result property="confirmPwd" column="CONFIRM_PWD"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="tel" column="USER_TEL"/>
+		<result property="email" column="USER_EMAIL"/>
+		<result property="addr" column="USER_ADD"/>
+		<result property="price" column="PRICE"/>
+		<result property="orderDate" column="ORDER_DATE"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
+		<result property="status" column="PAY_STATUS"/>
+	</resultMap>
+	
+	<select id="noMemResultList" resultMap="ResultMapPi">
+		SELECT *
+		FROM PAYMENTINFO
+		WHERE USER_NAME=#{userName} AND CONFIRM_PWD=#{confirmPwd} AND MEM_NO=0
+		ORDER BY PAY_NO DESC
+	</select>
+	
+	<select id="memResultList" resultMap="ResultMapPi">
+		SELECT *
+		FROM PAYMENTINFO
+		WHERE MEM_NO=#{memNo}
+		ORDER BY PAY_NO DESC
+	</select>
+	
+	<select id="selectOneReply" resultMap="ReplyResultSet">
+		SELECT *
+		FROM COMMENTS
+		WHERE COMMETS_STATUS='Y' AND COMMENTS_NO=#{rId}
+	</select>
+	
+	<update id="updateReply">
+		UPDATE COMMENTS
+		SET COMMETS_COTENT=#{rContent}
+		WHERE COMMENTS_NO=#{rId}
+	</update>
+	
+	<!-- <select id="searchPiList" parameterType="com.kh.YellowBridge.support.model.vo.DateSearch" resultMap="ResultMapPi">
+		SELECT *
+		FROM PAYMENTINFO
+   		WHERE ORDER_DATE BETWEEN TO_DATE(#{searchStartDate}, 'YYYY-MM-DD') AND TO_DATE(#{searchEndDate}, 'YYYY-MM-DD')
+	</select> -->
+	
+	<select id="selectAllPi" resultMap="ResultMapPi">
+		SELECT * FROM PAYMENTINFO
+	</select>
 	
 </mapper>

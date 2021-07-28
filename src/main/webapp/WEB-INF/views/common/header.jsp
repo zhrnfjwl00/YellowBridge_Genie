@@ -82,10 +82,27 @@
 					<li class="support"><a href="supportPage.sup">후원</a>
 						<div class="sub" style="display: none;">
 							<ul class="inner">
-								<li><a href="">후원하기</a></li>
-								<li><a href="">후훤내역조회</a></li>
+							
+								<c:if test="${!loginUser.id.equals('admin')}">
+									<li><a href="supportPage.sup">후원하기</a></li>
+								</c:if>
+								
+								<c:if test="${!loginUser.id.equals('admin') && !empty loginUser}">
+									<c:url var="piResult" value="paymentList.sup">
+										<c:param name="memNo" value="${loginUser.no}"/>
+									</c:url>
+									<li><a href="${piResult}">후원내역조회</a></li>
+								</c:if>
+								
+								<c:if test="${loginUser.id.equals('admin')}">
+										<li><a href="adminPaySelect.sup">회원/비회원 내역조회</a></li>
+								</c:if>
+								
+								<c:if test="${empty loginUser}">
+									<li><a href="noMemPayDetail.sup">후원내역조회</a></li>
+								</c:if>
+								
 								<li><a href="sList.sup">후원금사용내역조회</a></li>
-								<li><a href="">후원상품</a></li>
 							</ul>
 						</div></li>
 					<li class=""><a href="freeboard.fr">커뮤니티</a>
