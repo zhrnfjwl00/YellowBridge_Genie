@@ -6,13 +6,12 @@
 <head>
 <title>YELLOW BRIDGE</title>
 <meta charset="utf-8">
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption.css">
+
 <style>
 	#example{text-align: center;}
 	#example tr th{padding: 10px; font-size: 18px; font-weight: bold;  border-bottom: 1px solid black;}
@@ -39,11 +38,9 @@
 	.tableRequestMember{width: 20%;}
 	.tablerequestDate{width: 15%;}
 	.tableState{width: 10%;}
-	#searchArea{padding-bottom:25px;}
-	.btnDiv{padding-top:430px; position: absolute;; left: 5px;}
-	.btnDiv2{padding-top:430px; position: absolute; right: 5px;}
+	.btnDiv{ margin-top: 5px; position: absolute; left: 5px;}
 	
-	.pagenation{align:center;}
+	.pagenation{align:center; }
 	
 	#writeBtn,#changeBtn{
     	background-color: #BDCC94;
@@ -76,67 +73,105 @@
 
 </head>
 <body>
-<div class="serviceBoard">
-	<c:import url="../admin/header.jsp"/>
-	<div class="serviceBoardtext">
-		<h1 style="color:#BDCC94;"><b>입양공고/요청 관리</b></h1>
-	</div>
-	
-	<div class="container" style="margin-top:30px; text-align:center;">
-		<div class="row">
-					<table id="example" class="display" style="width: 100%">
-						<thead>
-							<tr>
-								<th class="tableCheck">선택</th>
-								<th class="tableNo">NO.</th>
-								<th class="tableTitle">동물명</th>
-								<th class="tableRescueDate">구조일</th>
-								<th class="tableRequestMember">입양신청자</th>
-								<th class="tablerequestDate">입양신청일</th>
-								<th class="tableState">입양상태</th>
-							</tr>
-						</thead>
-						<tbody id="listArea">
-							<c:forEach var="animal" items="${ animallist }">
-								<fmt:formatDate var="formatRegDate"
-									value="${ animal.rescueDate }" pattern="yyyy.MM.dd" />
-								<fmt:formatDate var="formatRegDate2"
-									value="${ animal.animalRequestDate }" pattern="yyyy.MM.dd" />
-									
-								<tr>
-								
-									<td><input type="checkbox" name="checkbox" value="${ animal.animalNo }">
-									<td align="center" class="tableNo">${ animal.animalNo }</td>
-									<td align="center" class="tableTitle">${ animal.animalType }</td>
-									<td align="center" class="tableWriter">${ formatRegDate }</td>
-									<td align="center" class="tableDate">${ animal.requestMemberNickname }</td>
-									<td align="center" class="tableDate">${ formatRegDate2 }</td>
-									<td align="center" class="adopView">${ animal.animalRequestState }</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					<div class="btnDiv">
-					<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='animalNoticeWriterForm.ado'">공고등록</button>
-					<button type="button" class="btn btn-primary" id="updateBtn">선택공고삭제</button>
+	<div class="serviceBoard">
+		<c:import url="../admin/header.jsp" />
+		<div class="serviceBoardtext">
+			<h1 style="color: #BDCC94;">
+				<b>입양공고/요청 관리</b>
+			</h1>
+		</div>
+
+		<div>
+			<ul class="nav nav-tabs">
+				<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="admin_adoption.ado">입양공고관리</a></li>
+				<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="admin_request.ado">입양요청관리</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade active show" id="home">
+
+
+					<div class="container"
+						style="margin-top: 20px; text-align: center;">
+						<div class="row">
+							<table id="example" class="display"
+								style="width: 100%; margin-top: 50px;">
+								<thead>
+									<tr>
+										<th class="tableCheck">선택</th>
+										<th class="tableNo">NO.</th>
+										<th class="tableTitle">동물명</th>
+										<th class="tableRescueDate">구조일</th>
+										<th class="tableRequestMember">입양신청자</th>
+										<th class="tablerequestDate">입양신청일</th>
+										<th class="tableState">입양상태</th>
+										<th class="tableState">공고노출상태</th>
+									</tr>
+								</thead>
+								<tbody id="listArea">
+									<c:forEach var="animal" items="${ animallist }">
+										<fmt:formatDate var="formatRegDate"
+											value="${ animal.rescueDate }" pattern="yyyy.MM.dd" />
+										<fmt:formatDate var="formatRegDate2"
+											value="${ animal.animalRequestDate }" pattern="yyyy.MM.dd" />
+										<tr>
+											<td align="center" class="tableNo"><input
+												type="checkbox" name="checkbox" value="${ animal.animalNo }">
+											</td>
+											<td align="center" class="tableNo">${ animal.animalNo }</td>
+											<td align="center" class="tableTitle">${ animal.animalType }</td>
+											<td align="center" class="tableWriter">${ formatRegDate }</td>
+											<c:if test="${ empty animal.requestMemberNickname }">
+											<td align="center" class="tableDate">-</td>
+											</c:if>
+											<c:if test="${ !empty animal.requestMemberNickname }">
+											<td align="center" class="tableDate">${ animal.requestMemberNickname }</td>											
+											</c:if>
+											
+											<c:if test="${ empty formatRegDate2 }">
+											<td align="center" class="tableDate">-</td>
+											</c:if>
+											<c:if test="${ !empty formatRegDate2 }">
+											<td align="center" class="tableDate">${ formatRegDate2 }</td>											
+											</c:if>
+											
+											
+											<c:if test="${ empty animal.animalRequestState }">
+											<td align="center" class="tableState">-</td>
+											</c:if>
+											<c:if test="${ !empty animal.animalRequestState }">
+											<td align="center" class="tableState">${ animal.animalRequestState }</td>											
+											</c:if>
+											
+											<c:if test="${ animal.animalStatus == 'N' }">
+											<td align="center" class="tableState">비노출</td>
+											</c:if>
+											<c:if test="${ animal.animalStatus == 'Y' }">
+											<td align="center" class="tableState"><p style="color: red;">노출</p></td>											
+											</c:if>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+
+
+							<div class="btnDiv">
+								<button type="button" class="btn btn-primary" id="writeBtn"
+									onclick="location.href='animalNoticeWriterForm.ado'">공고등록</button>
+								<button type="button" class="btn btn-primary" id="updateBtn">선택공고 비활성화</button><p style="font-size: 8px;">*비활성화시 입양공고에 노출되지 않습니다. </p>
+							</div>
+						</div>
 					</div>
-					
-					<div class="btnDiv2">
-						<select id="selectbox" name="selectbox">
-							  <option>상태값선택</option>
-							  <option value="입양대기">입양대기</option>
-							  <option value="입양진행중">입양진행중</option>
-							  <option value="입양반려">입양반려</option>
-							  <option value="입양취소">입양취소</option>
-							  <option value="입양완료">입양완료</option>
-							</select>
-							<button type="button" class="btn btn-primary" id="changeBtn">으로 변경</button>
-					</div>
-						<!-- <button type="button" class="btn btn-primary" id = "writeBtn" onclick="location.href='adoptionRecodeWrite.ado';">글쓰기</button> -->
 				</div>
 			</div>
-					</div>
-					<!-- 페이지 -->
+		</div>
+	</div>
+
+
+
+
+
+
+	<!-- 페이지 -->
 								<div id="pagingNav" class="pagenation">
 									<c:if test="${ pi.currentPage <= 1 }">
 										<a href="${ before }" class="img"><img src="<%=request.getContextPath()%>/resources/images/btn_prev.png" alt="이전 목록 보기"></a> 
@@ -173,11 +208,14 @@
 										<a href="${ after }" class="img"><img src="<%=request.getContextPath()%>/resources/images/btn_nxt.png" alt="다음 목록 보기"></a>
 									</c:if>
 								</div>
+								
+								
+								
 									<!-- 페이지  끝 -->
 	<script type="text/javascript">
 		$('#updateBtn').on('click', function() {
 			if ($('input[name=checkbox]:checked').length < 1) {
-				alert('선택된 입양공고가 없습니다.');
+				alert('선택된 공고가 없습니다.');
 			} else {
 				var checkbox = [];
 				$('input[name=checkbox]:checked').each(function() {
@@ -190,12 +228,12 @@
 					data : { checkbox : checkbox },
 					success : function(data) {
 						window.location.reload();
-						alert('선택한 공고가 삭제되었습니다.');
+						alert('선택한 공고가 비공개 되었습니다.');
 						console.log('성공');
 						
 					},
 					error : function() {
-						console.log('공고삭제에 실패했습니다.');
+						console.log('공고비공개에 실패했습니다.');
 					}
 				});
 			}

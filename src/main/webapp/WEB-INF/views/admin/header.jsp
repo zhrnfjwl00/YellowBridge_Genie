@@ -12,15 +12,26 @@
 <style>
 	#info{border:none; margin-left: 10px; background-color: hsla(120, 100%, 50%, 0);}
 	#logout{border: none; background-color: hsla(120, 100%, 50%, 0);}
+	
+	#logout{border: none; background-color: hsla(120, 100%, 50%, 0);}
+	
+	#header_total_area{background-color: white;   opacity:0.9; height:120px;}
+	
+	
+	
+	#image a{ text-align:center;}
+	
+	#header_total_area{height: 100px; }
+	
 </style>
 </head>
 <body>
 <!-- 헤더 시작 -->
-<header class="gnbFixed main">
+<header class="gnbFixed main"  id="header_total_area">
 <div class="inner">
 	<h1><a href=""><img src="<%= request.getContextPath() %>/resources/images/logo.png"></a></h1>
 	<div class="innerMenu">
-	<<span class="util">
+	<span class="util">
 			<c:if test="${ empty sessionScope.loginUser }">
 				<a onclick="location.href ='<%=request.getContextPath()%>/loginView.me'" style="cursor:pointer;">로그인</a>
 				<a onclick="location.href ='<%=request.getContextPath()%>/memberJoinTermsView.me'" style="cursor:pointer;">회원가입</a>

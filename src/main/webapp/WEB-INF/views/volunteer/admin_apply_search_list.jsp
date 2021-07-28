@@ -26,9 +26,9 @@
 	.selected{width:5%;}
 	.tableNo{width: 5%;}
 	.tableShelter{width: 20%;}
-	.tableCo{width:30%;}
+	.tableCo{width:27%;}
 	.tableName{width:7%;}
-	.tableId{width:8%;}
+	.tableId{width:11%;}
 	.tableTime{width:10%;}
 	.tableStatus{width:10%;}
 	

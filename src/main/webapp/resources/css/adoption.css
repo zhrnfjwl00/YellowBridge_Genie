@@ -43,7 +43,7 @@
 /*구조동물공고*/
 .rescue {width:1100px; height:auto; margin:0 auto 50px auto;}
 .rescue .list {width:348px; height:600px; float:left; margin:40px 8px 60px 8px; background:#fff; border:1px solid #ccc;}
-.rescue .list img {vertical-align:top;width:1348px; height:261px; /*margin-bottom:25px;*/}
+.rescue .list img {vertical-align:top;width:348px; height:261px; /*margin-bottom:25px;*/}
 .rescue .list ul {height:300px; padding:0 10px; margin-top:25px;}
 .rescue .list ul li {line-height:30px; color:#666;letter-spacing:-0.5px;font-size:14px;}
 .rescue .list ul li span.red {color:red;}

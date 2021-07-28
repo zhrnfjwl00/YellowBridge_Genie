@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.support.model.vo.Board;
+import com.kh.YellowBridge.support.model.vo.DateSearch;
 import com.kh.YellowBridge.support.model.vo.FileInfo;
+import com.kh.YellowBridge.support.model.vo.PaymentInfo;
 import com.kh.YellowBridge.support.model.vo.Reply;
 import com.kh.YellowBridge.support.model.vo.SearchCondition;
 
@@ -81,6 +83,41 @@ public class SupportDAO {
 
 	public int deleteReply(SqlSessionTemplate sqlSession, int rId) {
 		return sqlSession.update("supportMapper.deleteReply", rId);
+	}
+
+	public int insertPaymentInfo(SqlSessionTemplate sqlSession, PaymentInfo pi) {
+		
+		return sqlSession.insert("supportMapper.insertPaymentInfo", pi);
+	}
+
+	public PaymentInfo supportPayComplete(SqlSessionTemplate sqlSession, String imp_uid) {
+		return sqlSession.selectOne("supportMapper.resultPaymentComplete", imp_uid);
+	}
+
+	public ArrayList<PaymentInfo> noMemPayList(SqlSessionTemplate sqlSession, PaymentInfo pi) {
+		return (ArrayList)sqlSession.selectList("supportMapper.noMemResultList", pi);
+	}
+
+	public ArrayList<PaymentInfo> memPayList(SqlSessionTemplate sqlSession, int memNo) {
+		return (ArrayList)sqlSession.selectList("supportMapper.memResultList", memNo);
+	}
+
+	public Reply selectOneReply(SqlSessionTemplate sqlSession, int rId) {
+		return sqlSession.selectOne("supportMapper.selectOneReply", rId);
+	}
+
+	public int updateReply(SqlSessionTemplate sqlSession, Reply reply) {
+		return sqlSession.update("supportMapper.updateReply", reply);
+	}
+
+	/*
+	 * public ArrayList<PaymentInfo> searchPiList(SqlSessionTemplate sqlSession,
+	 * DateSearch ds) { return
+	 * (ArrayList)sqlSession.selectList("supportMapper.searchPiList", ds); }
+	 */
+
+	public ArrayList<PaymentInfo> selectAllPi(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("supportMapper.selectAllPi");
 	}
 
 

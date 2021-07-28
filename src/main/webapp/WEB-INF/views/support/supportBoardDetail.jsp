@@ -42,14 +42,14 @@
 					<table>
 						<tr>
 							<th> ${board.bTitle} 
-							<%-- <c:if test="${loginUser.id eq board.bWriter}"> --%>
+							<c:if test="${loginUser.id eq board.bWriter}">
 							<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${sdelete}'">삭제</button>
 							<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${supdateView}'">수정</button>
-							<%-- </c:if> --%>
+							</c:if>
 							</th>
 						</tr>
 						<tr>
-							<td> ${board.nickname} </td>
+							<td> ${board.bWriter} </td>
 						</tr>
 						<tr>
 							<td> ${board.bCreateDate} &nbsp;&nbsp;
@@ -80,30 +80,25 @@
 				
 				<br>
 				
+				<c:if test="${ !empty sessionScope.loginUser }">
 				<table class="replyTable">
 					<tr>
-						<td colspan="7"><label for="content">&nbsp;&nbsp;<b>댓글</b></label></td>
-					</tr>
-					<tr>
 						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
-						<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+								<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
 					</tr>
 				</table>
-				
-<%-- 				<c:url var="rdelete" value="rdelete.sup"> --%>
-<%-- 					<c:param name="rId" value="${rId}"/> --%>
-<%-- 				</c:url> --%>
-				
+				</c:if>
 				<table class="replyTable" id="rtb">
 					<thead>
-						<tr><td colspan="2"><b id="rCount"></b></td></tr>
+						<tr>
+							<td colspan="2"><b id="rCount"></b></td>
+						</tr>
 					</thead>
-					<tbody></tbody> 
+				<tbody></tbody>
 				</table>
-				
+					
 			</section>
 		</div>
-		
 	<c:import url="../common/footer.jsp"/>
 	</body>
 	<script type="text/javascript">
@@ -138,6 +133,7 @@
 	
 	function getReplyList(){
 		var bNo = ${board.bNo};
+		var $no = ${loginUser.no};
 		
 		$.ajax({
 			url: 'rList.sup',
@@ -150,30 +146,48 @@
 				
 				$('#rCount').text('댓글(' + data.length + ')');
 				if(data.length > 0){
-					for(var i in data){
 						var $tr = $('<tr>');
-						var $rWriter = $('<td width=100 style="font-weight: bolder;">').text(data[i].rWriter);
-						var $rContent = $('<td width=600>').text(data[i].rContent);
-						var $rCreateDate = $('<td width=100>').text(data[i].rCreateDate);
-// 						var rId = data[i].rId;
-// 						console.log(rId);
-// 						var realRId = rId.trim();
-						var bNo = ${board.bNo};
-						var page = ${page};
-						var $rdeleteBtn = $('<td width=50 id="deleteReplyBtn"><a href="rdelete.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">X</a></td>');
-																								
-						$tr.append($rWriter);
-						$tr.append($rContent);
-						$tr.append($rCreateDate);
-						$tr.append($rdeleteBtn);
+						var $a = $('<a>');
+						var $trWriter = $('<th>').text('작성자');
+						var $trContent = $('<th colspan=7>').text('내용');
+						var $trCreateDate = $('<th>').text('작성일');
+						var $trUpdate = $('<th>').text('수정');
+						var $trDelete = $('<th>').text('삭제');
+						
+						$tr.append($trWriter);
+						$tr.append($trContent);
+						$tr.append($trCreateDate);
+						$tr.append($trUpdate);
+						$tr.append($trDelete);
 						$tableBody.append($tr);
 						
-						
-					}
+						for(var i in data){
+							var $tr = $('<tr>');
+							var $rWriterNickname = $('<td>').text(data[i].rWriter);
+							var $rContent = $('<td colspan=7>').text(data[i].rContent);
+							var $rCreateDate = $('<td>').text(data[i].rCreateDate);
+							var bNo = ${board.bNo};
+							var page = ${page};
+							console.log($no);
+							console.log(data[i].memberNo);
+							
+							if( $no == data[i].memberNo){
+  								var $rUpdateBtn = $('<td width=50><a href="rupdate.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">수정</a></td>');						 
+								var $rdeleteBtn = $('<td width=50><a href="rdelete.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">삭제</a></td>');				
+							}  else {
+								var $rUpdateBtn = $('<td>').text('수정');
+								var $rdeleteBtn = $('<td>').text('삭제');
+							} 
+							
+							$tr.append($rWriterNickname);
+							$tr.append($rContent);
+							$tr.append($rCreateDate);
+							$tr.append($rUpdateBtn);
+							$tr.append($rdeleteBtn);
+							$tableBody.append($tr);
 					
-					
-					
-				} else {
+						}
+				} else{
 					var $tr = $('<tr>');
 					var $rContent = $('<td colspan=3>').text('등록된 댓글이 없습니다.');
 					
@@ -196,12 +210,6 @@
 	
 	</script>
 	
-	<script type="text/javascript">
-	
-		
-		
-	
-	</script>
 	<!-- <script type="text/javascript">
 		// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
 		$(document).ready(function(){
