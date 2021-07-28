@@ -13,21 +13,46 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>게시판</title>
 <style type="text/css">
-	#rupdateBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
-	#listBtn{float: center;}
-	
-	.serviceBoardtext{
-		margin-top: 150px;
-		letter-spacing: -1px;
-	}
-	.form-group #title{font-size:24px; font-weight:bold;padding-bottom:15px;}
-	.replyTable{margin: auto; }
+#rupdateBtn, #deleteBtn, #updateBtn {
+	float: right;
+	margin: 5px;
+}
+
+#listBtn {
+	float: center;
+}
+
+.serviceBoardtext {
+	margin-top: 150px;
+	letter-spacing: -1px;
+}
+
+.form-group #title {
+	font-size: 24px;
+	font-weight: bold;
+	padding-bottom: 15px;
+}
+
+.replyTable {
+	margin: auto;
+}
+
+.area {
+	width: 100%;
+	height: 150px;
+}
 </style>
 </head>
 <body>
 <div class="container">
-	<c:import url="../common/header.jsp"/>
-	
+<c:if test="${loginUser.id.equals('admin')}">
+			<c:import url="../admin/header.jsp" />
+		</c:if>
+
+		<c:if test="${!loginUser.id.equals('admin') && empty loginUser}">
+			<c:import url="../common/header.jsp" />
+		</c:if>
+		<div class="area"></div>
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>입양 일지</b></h1>
 	</div>

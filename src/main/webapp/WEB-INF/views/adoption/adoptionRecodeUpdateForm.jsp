@@ -45,13 +45,29 @@
         font-size: 0.9375em;
         padding: 7px 10px;
 	}
+	
+.area {
+	width: 100%;
+	height: 150px;
+}	
+.serviceBoardWrite {
+	margin-top: -150px;
+}
+
+	
 </style>
 </head>
 <body>
 <div class="serviceBoardWrite">
-	<c:import url="../common/header.jsp"/>
+<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
+   		<div class="area"></div>
 	<div style="text-align:center;" class="serviceBoardtext">
-		<h1 style="color:#BDCC94;"><b>입양일지등록</b></h1>
+		<h1 style="color:#BDCC94;"><b>입양일지수정</b></h1>
 	</div>
 	
     <div style="padding : 30px;">

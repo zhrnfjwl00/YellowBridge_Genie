@@ -100,7 +100,7 @@ public class AdoptionController {
 		int result = aService.insertAnimal(a, af);
 
 		if (result > 0) {
-			return "redirect:adopNotice.ado";
+			return "redirect:admin_adoption.ado";
 		} else {
 			throw new AdoptionException("입양 공고 등록에 실패하였습니다.");
 		}
