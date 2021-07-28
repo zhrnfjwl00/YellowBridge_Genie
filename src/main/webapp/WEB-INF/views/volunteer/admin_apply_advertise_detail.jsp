@@ -170,7 +170,7 @@
 </style>
 </head>
 <body>
-<c:import url="header.jsp"/>
+<c:import url="admin_header.jsp"/>
 <div class="servicedetail">
 ${ volboard.serviceEnd }
 	<div style="text-align:center;" class="serviceBoardtext">

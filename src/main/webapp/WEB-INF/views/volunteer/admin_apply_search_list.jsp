@@ -101,7 +101,7 @@
 </style>
 </head>
 <body>
-<c:import url="../common/header.jsp"/>
+<c:import url="admin_header.jsp"/>
 <div class="serviceApplyBoard">
 
 	
