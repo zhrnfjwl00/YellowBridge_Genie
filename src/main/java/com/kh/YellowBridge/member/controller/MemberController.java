@@ -128,12 +128,13 @@ public class MemberController {
 		}
 		
 		String memberNickName = ((Member)session.getAttribute("loginUser")).getNickname();
+		String memberId = ((Member)session.getAttribute("loginUser")).getId();
 		
 		
 		int alistCount = mService.getAListCount(memberNickName);
-		int slistCount = mService.getSListCount(memberNickName);
-		int nlistCount = mService.getMListCount(memberNickName);
-		int flistCount = mService.getFListCount(memberNickName);
+		int slistCount = mService.getSListCount(memberId);
+		int nlistCount = mService.getMListCount(memberId);
+		int flistCount = mService.getFListCount(memberId);
 		System.out.println(flistCount);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, alistCount);
@@ -144,9 +145,9 @@ public class MemberController {
 		
 		
 		ArrayList<AdoptionBoard> alist = mService.selectAList(memberNickName, pi);
-		ArrayList<VolunteerBoard> slist = mService.selectSList(memberNickName, spi);
-		ArrayList<QnaBoard> nlist = mService.selectMList(memberNickName, npi);
-		ArrayList<QnaBoard> flist = mService.selectFList(memberNickName, fpi);
+		ArrayList<VolunteerBoard> slist = mService.selectSList(memberId, spi);
+		ArrayList<QnaBoard> nlist = mService.selectMList(memberId, npi);
+		ArrayList<QnaBoard> flist = mService.selectFList(memberId, fpi);
 		System.out.println(flist);
 		
 		if(alist != null) {
@@ -298,6 +299,12 @@ public class MemberController {
 		
 		
 		
+	}
+	
+	
+	@RequestMapping("memberListForm.me")
+	public String memberListForm() {
+		return "memberListForm.jsp";
 	}
 
 }
