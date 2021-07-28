@@ -43,7 +43,7 @@
 	<c:import url="../common/header.jsp"/>
 	<div style="text-align:center;" class="scBoardtext">
 		<h1 style="color:#BDCC94;"><b>자유게시판</b></h1>
-		<h5><b>YELLOW BRIDGE 자유게시판</b></h5>
+		<h5><b>YELLOW BRIDGE 자유게시판 안녕하세요!!</b></h5>
 	</div>
 	<div class="container" style="margin-top:30px; text-align:center;" >
 		<div class="row">

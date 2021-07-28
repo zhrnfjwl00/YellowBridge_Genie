@@ -31,19 +31,19 @@ public interface MemberService {
 
 	ArrayList<AdoptionBoard> selectAList(String memberNickName, PageInfo pi);
 
-	int getSListCount(String memberNickName);
+	int getSListCount(String memberId);
 
-	ArrayList<VolunteerBoard> selectSList(String memberNickName, PageInfo spi);
+	ArrayList<VolunteerBoard> selectSList(String memberId, PageInfo spi);
 
 	Member memberIdSearch(Member m);
 
-	int getMListCount(String memberNickName);
+	int getMListCount(String memberId);
 
-	ArrayList<QnaBoard> selectMList(String memberNickName, PageInfo npi);
+	ArrayList<QnaBoard> selectMList(String memberId, PageInfo npi);
 
-	int getFListCount(String memberNickName);
+	int getFListCount(String memberId);
 
-	ArrayList<QnaBoard> selectFList(String memberNickName, PageInfo fpi);
+	ArrayList<QnaBoard> selectFList(String memberId, PageInfo fpi);
 
 
 
