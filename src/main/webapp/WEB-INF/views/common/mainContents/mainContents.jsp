@@ -178,7 +178,7 @@
 							$row.append(
 	    							'<div id="sArea" class="area">' +
 		    							'<div class="single_ihotel_list" id="sImage" onclick="GoVolAdminAdList();" style="cursor:pointer">' +
-		    							'<img src="<%= request.getContextPath() %>/resources/images/'+data[i].changeName+'"  style="width:250px; height:250px;">' +
+		    							'<img src="<%= request.getContextPath() %>/resources/voluploadFiles/'+data[i].changeName+'"  style="width:250px; height:250px;">' +
 		    							'</div>' +
 		    							'<br>' +
 		    							' <div id="sContent"  onclick="GoVolAdminAdList();" style="cursor:pointer">'+
