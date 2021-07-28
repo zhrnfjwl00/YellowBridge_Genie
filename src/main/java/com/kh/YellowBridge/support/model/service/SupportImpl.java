@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.kh.YellowBridge.common.PageInfo;
 import com.kh.YellowBridge.support.model.dao.SupportDAO;
 import com.kh.YellowBridge.support.model.vo.Board;
+import com.kh.YellowBridge.support.model.vo.DateSearch;
 import com.kh.YellowBridge.support.model.vo.FileInfo;
+import com.kh.YellowBridge.support.model.vo.PaymentInfo;
 import com.kh.YellowBridge.support.model.vo.Reply;
 import com.kh.YellowBridge.support.model.vo.SearchCondition;
 
@@ -100,6 +102,47 @@ public class SupportImpl implements SupportService{
 	@Override
 	public int deleteReply(int rId) {
 		return sDAO.deleteReply(sqlSession, rId);
+	}
+
+	@Override
+	public int insertPaymentInfo(PaymentInfo pi) {
+		return sDAO.insertPaymentInfo(sqlSession, pi);
+		
+	}
+
+	@Override
+	public PaymentInfo supportPayComplete(String imp_uid) {
+		return sDAO.supportPayComplete(sqlSession, imp_uid);
+	}
+
+	@Override
+	public ArrayList<PaymentInfo> noMemPayList(PaymentInfo pi) {
+		return sDAO.noMemPayList(sqlSession, pi);
+	}
+
+	@Override
+	public ArrayList<PaymentInfo> memPayList(int memNo) {
+		return sDAO.memPayList(sqlSession, memNo);
+	}
+
+	@Override
+	public Reply selectOneReply(int rId) {
+		return sDAO.selectOneReply(sqlSession, rId);
+	}
+
+	@Override
+	public int updateReply(Reply reply) {
+		return sDAO.updateReply(sqlSession, reply);
+	}
+
+	/*
+	 * @Override public ArrayList<PaymentInfo> searchPiList(DateSearch ds) { return
+	 * sDAO.searchPiList(sqlSession, ds); }
+	 */
+
+	@Override
+	public ArrayList<PaymentInfo> selectAllPi() {
+		return sDAO.selectAllPi(sqlSession);
 	}
 	
 }

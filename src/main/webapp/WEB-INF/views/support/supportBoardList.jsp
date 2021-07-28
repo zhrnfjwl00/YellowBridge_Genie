@@ -75,18 +75,14 @@
 								<td align="center">${ b.bNo }</td>
 								
 								<td align="center">
-<%-- 									<c:if test="${ !empty loginUser }">
- --%>										<c:url var="sdetail" value="sdetail.sup">
+									<c:url var="sdetail" value="sdetail.sup">
 											<c:param name="bNo" value="${ b.bNo }"/>
 											<c:param name="page" value="${ pi.currentPage }"/>
 											</c:url>
-										<a href="${ sdetail }">${ b.bTitle }</a>
-<%-- 									</c:if>
- --%><%-- 								<c:if test="${ empty loginUser }">
-<%-- 									</c:if>
- --%>								</td>
+									<a href="${ sdetail }">${ b.bTitle }</a>
+								</td>
 								
-								<td align="center">${ b.nickname }</td>
+								<td align="center">${ b.bWriter }</td>
 								<td align="center">${ b.bCreateDate }</td>
 								<td align="center">${ b.bView }</td>
 								</td>
@@ -134,11 +130,11 @@
 						</c:if>
 						</td>
 					</tr>
-<%-- 					<c:if test="${ !empty loginUser }">
- --%>					<div class="btnDiv">
-						<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='sinsertView.sup';">글쓰기</button>
-<%-- 					</c:if>
- --%>					</div>
+	 					<c:if test="${loginUser.id.equals('admin')}">
+ 							<div class="btnDiv">
+								<button type="button" class="btn btn-primary" id="writeBtn" onclick="location.href='sinsertView.sup';">글쓰기</button>
+ 						</c:if>
+					</div>
 			</div>
 		</div>
 	</div>

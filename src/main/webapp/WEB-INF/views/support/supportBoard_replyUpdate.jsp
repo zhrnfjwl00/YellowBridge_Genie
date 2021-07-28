@@ -29,31 +29,31 @@
 			</header>
 			<hr />
 			<c:url var="supdateView" value="supdateView.sup">
-					<c:param name="bNo" value="${ board.bNo }"/>
+					<c:param name="bNo" value="${ b.bNo }"/>
 					<c:param name="page" value="${ page }"/>
 			</c:url>
 				
 			<c:url var="sdelete" value="sdelete.sup">
-					<c:param name="bNo" value="${ board.bNo }"/>
+					<c:param name="bNo" value="${ b.bNo }"/>
 			</c:url>
 			
 			<section id="container">
 				<div class="form-group">
 					<table>
 						<tr>
-							<th> ${board.bTitle} 
-							<c:if test="${loginUser.id eq board.bWriter}">
+							<th> ${b.bTitle} 
+							<c:if test="${loginUser.id eq b.bWriter}">
 							<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${sdelete}'">삭제</button>
 							<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${supdateView}'">수정</button>
 							</c:if>
 							</th>
 						</tr>
 						<tr>
-							<td> ${board.bWriter} </td>
+							<td> ${b.bWriter} </td>
 						</tr>
 						<tr>
-							<td> ${board.bCreateDate} &nbsp;&nbsp;
-							 | &nbsp; 조회수 ${board.bView} </td> 
+							<td> ${b.bCreateDate} &nbsp;&nbsp;
+							 | &nbsp; 조회수 ${b.bView} </td> 
 							
 						</tr>
 						<tr>
@@ -80,14 +80,12 @@
 				
 				<br>
 				
-				<c:if test="${ !empty sessionScope.loginUser }">
 				<table class="replyTable">
 					<tr>
-						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control"/></td>
-								<td><button id="rinsertBtn"class="replyWriteBtn btn btn-success">작성</button></td>
+						<td colspan="6"><input type="text" id="rContent" name="rContent" class="form-control" value="${r.rContent}"/></td>
+								<td><button id="rupdateBtn"class="replyWriteBtn btn btn-success">수정</button></td>
 					</tr>
 				</table>
-				</c:if>
 				<table class="replyTable" id="rtb">
 					<thead>
 						<tr>
@@ -110,29 +108,30 @@
  			getReplyList();
  		}, 10000);
 		
-		$('#rinsertBtn').on('click', function(){
+		$('#rupdateBtn').on('click', function(){
 			var rContent = $('#rContent').val();
-			var refBid = ${board.bNo};
+			var refBid = ${b.bNo};
+			var rId = ${r.rId};
+			var page = ${page};
 			
 			$.ajax({
-				url: 'addReply.sup',
-				data: {rContent:rContent, refBid:refBid},
+				url: 'updateReply.sup',
+				data: {rContent:rContent, refBid:refBid, rId:rId},
 				success: function(data){
 					console.log(data);
 					
 					if(data == 'success'){
 						$('#rContent').val('');
+						<%-- location.href= '<%=request.getContextPath()%>/sdetail.sup?bNo=" + refBid + "&page=" + page; --%>
 						getReplyList(); // 댓글 리스트 불러오기
 					}
 				}
 			});
 		});
-		
-		
 	});
 	
 	function getReplyList(){
-		var bNo = ${board.bNo};
+		var bNo = ${b.bNo};
 		var $no = ${loginUser.no};
 		
 		$.ajax({
@@ -166,18 +165,9 @@
 							var $rWriterNickname = $('<td>').text(data[i].rWriter);
 							var $rContent = $('<td colspan=7>').text(data[i].rContent);
 							var $rCreateDate = $('<td>').text(data[i].rCreateDate);
-							var bNo = ${board.bNo};
 							var page = ${page};
-							console.log($no);
-							console.log(data[i].memberNo);
-							
-							if( $no == data[i].memberNo){
-  								var $rUpdateBtn = $('<td width=50><a href="rupdate.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">수정</a></td>');						 
-								var $rdeleteBtn = $('<td width=50><a href="rdelete.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">삭제</a></td>');				
-							}  else {
-								var $rUpdateBtn = $('<td>').text('수정');
-								var $rdeleteBtn = $('<td>').text('삭제');
-							} 
+  							var $rUpdateBtn = $('<td width=50><a href="rupdate.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">수정</a></td>');						 
+							var $rdeleteBtn = $('<td width=50><a href="rdelete.sup?rId='+ data[i].rId + '&bNo=' + bNo + '&page=' + page + '">삭제</a></td>');				
 							
 							$tr.append($rWriterNickname);
 							$tr.append($rContent);
@@ -198,102 +188,5 @@
 		});
 	}
 	
-	/* $(function(){
-		$('#deleteReplyBtn').on('click', function(){
-			var $rId = $(this).parent().children.eq(0).text();
-			location.href="rdelete.sup?rId="+ $rId;
-		});
-		
-	}); */
-	
-	
-	
 	</script>
-	
-	<!-- <script type="text/javascript">
-		// 참고** 미리 댓글부분 적어놓긴 했는데 수정하실 분들은 수정하셔도 됩니다! 
-		$(document).ready(function(){
-			var formObj = $("form[name='readForm']");
-			
-			// 수정 
-			$(".update_btn").on("click", function(){
-				formObj.attr("action", "/board/updateView");
-				formObj.attr("method", "get");
-				formObj.submit();				
-			})
-			
-			// 삭제
-			$(".delete_btn").on("click", function(){
-				
-				var deleteYN = confirm("삭제하시겠습니까?");
-				if(deleteYN == true){
-					
-				formObj.attr("action", "/board/delete");
-				formObj.attr("method", "post");
-				formObj.submit();
-					
-				}
-			})
-			
-			// 목록
-			/* $(".list_btn").on("click", function(){
-				
-				location.href = "/board/list?page=${scri.page}"
-						      +"&perPageNum=${scri.perPageNum}"
-						      +"&searchType=${scri.searchType}&keyword=${scri.keyword}";
-			}) */
-			
-			$(".replyWriteBtn").on("click", function(){
-				var formObj = $("form[name='replyForm']");
-				formObj.attr("action", "/board/replyWrite");
-				formObj.submit();
-			});
-			
-			//댓글 수정 View
-			$(".replyUpdateBtn").on("click", function(){
-				location.href = "/board/replyUpdateView?bno=${read.bno}"
-								+ "&page=${scri.page}"
-								+ "&perPageNum=${scri.perPageNum}"
-								+ "&searchType=${scri.searchType}"
-								+ "&keyword=${scri.keyword}"
-								+ "&rno="+$(this).attr("data-rno");
-			});
-			
-			//댓글 삭제 View
-			$(".replyDeleteBtn").on("click", function(){
-				location.href = "/board/replyDeleteView?bno=${read.bno}"
-					+ "&page=${scri.page}"
-					+ "&perPageNum=${scri.perPageNum}"
-					+ "&searchType=${scri.searchType}"
-					+ "&keyword=${scri.keyword}"
-					+ "&rno="+$(this).attr("data-rno");
-			});
-		});
-		
-		/* $(function(){
-			
-			getReplyList();
-			
-			setInterval(function(){
-				getReplyList();
-			}, 10000);
-			
-			$('#rSubmit').on('click', function(){
-				var rContent = $('#rContent').val();
-				var bNo = ${board.bNo};
-				
-				$.ajax({
-					url:'addReply.sup',
-					data:{rContent:rContent, bNo:bNo},
-					success: function(data){
-						console.log(data);
-						if(data == 'success'){
-							$('#rContent').val('');
-							getReplyList(); // 댓글 리스트 불러오기
-					  }
-					}
-				});
-			});
-		}); */
-	</script> -->
 </html>
