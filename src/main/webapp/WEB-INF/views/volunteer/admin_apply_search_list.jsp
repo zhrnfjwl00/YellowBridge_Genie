@@ -101,7 +101,7 @@
 </style>
 </head>
 <body>
-<c:import url="../common/header.jsp"/>
+<c:import url="../admin/header.jsp"/>
 <div class="serviceApplyBoard">
 
 	
@@ -114,7 +114,7 @@
 	
 	<div class="menuwrap">
 	 <nav id="navDiv">
-		<div class="adminmenu" id="adminsearchlist"><b>봉사 신청서 관리</b></div>
+		<div class="adminmenu" id="adminsearchlist" ><b>봉사 신청서 관리</b></div>
 		<div class="adminmenu" id="adminserviceapply">공고 관리</div>
 	 </nav>
 	</div>
@@ -248,6 +248,12 @@
 <c:import url="../common/footer.jsp"/>
 
 <script type="text/javascript">
+
+	$('.adminmenu').on('click', function() {
+		var id = $(this).attr('id');
+		location.href='<%=request.getContextPath()%>/' + id + '.vol';
+	});
+
    // 게시글 상세보기
 	$(function(){
 		$('#listArea td').on({'mouseenter':function(){
@@ -326,11 +332,6 @@
 		}
 	}
 </script>
-<script>
-		$('.adminmenu').on('click', function() {
-			var id = $(this).attr('id');
-			location.href='<%=request.getContextPath()%>/' + id + '.vol';
-		});
-</script>
+
 </body>
 </html>

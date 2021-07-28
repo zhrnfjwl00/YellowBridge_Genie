@@ -99,7 +99,7 @@
 </style>
 </head>
 <body>
-<c:import url="header.jsp"/>
+<c:import url="admin_header.jsp"/>
 <div class="serviceform">
 	<div style="text-align:center; padding-bottom:30px;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94; letter-spacing: -1px;"><b>봉사 신청 등록</b></h1>
