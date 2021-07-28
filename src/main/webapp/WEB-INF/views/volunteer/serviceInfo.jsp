@@ -67,7 +67,7 @@
 </style>
 </head>
 <body>
-<c:import url="../admin/header.jsp"/>
+<c:import url="../common/header.jsp"/>
 <div class="serviceinfo">
 	
 	<div style="text-align:center;" class="serviceinfotext">
