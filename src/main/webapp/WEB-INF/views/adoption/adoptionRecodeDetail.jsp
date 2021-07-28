@@ -78,7 +78,7 @@
 			<c:param name="page" value="${ page }"/>
 		</c:url>
 		
-		<c:if test="${ loginUser.id eq adopboard.adopWriter}">
+		<c:if test="${ loginUser.nickname == adopboard.adopWriter}">
 		<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${ adopDelete }'">삭제</button>
 		<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${ adopUpdateForm }'">수정</button> 
 		</c:if>
