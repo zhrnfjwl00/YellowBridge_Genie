@@ -126,7 +126,7 @@ public class AdoptionController {
 		@RequestMapping("admin_adoption.ado")
 		public ModelAndView adminRecodeList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
 				@DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate) {
-			int currentPage = 1; // 연산에서 사용할 변수
+			int currentPage = 1;
 
 			if (page != null) {
 				currentPage = page;
@@ -201,7 +201,8 @@ public class AdoptionController {
 		// 관리자_입양요청상태 변경 (선택된 공고만 변경)
 		@ResponseBody
 		@RequestMapping("admin_changeState.ado")
-		public String changeState(@RequestParam(required=false, value = "checkbox[]") List<Integer> animalNo, @RequestParam(required=false, value = "selectbox") String requestState, @ModelAttribute AnimalRequest a) {
+		public String changeState(@RequestParam(required=false, value = "checkbox[]") List<Integer> animalNo, 
+				@RequestParam(required=false, value = "selectbox") String requestState, @ModelAttribute AnimalRequest a) {
 			System.out.println("checkbox[] 값이 잘 갔는지 확인 " + animalNo);
 			System.out.println("selectbox 값이 잘 갔는지 확인" + requestState);
 			
@@ -212,7 +213,6 @@ public class AdoptionController {
 				System.out.println(a);
 				
 				int result = aService.changeRequestState(a);
-				
 			}
 			return "redirect:admin_request.ado";
 		}

@@ -83,10 +83,8 @@
 
 		<div>
 			<ul class="nav nav-tabs">
-				<li class="nav-item"><a class="nav-link active"
-					data-bs-toggle="tab" href="admin_adoption.ado">입양공고관리</a></li>
-				<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
-					href="admin_request.ado">입양요청관리</a></li>
+				<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="admin_adoption.ado">입양공고관리</a></li>
+				<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="admin_request.ado">입양요청관리</a></li>
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active show" id="home">
