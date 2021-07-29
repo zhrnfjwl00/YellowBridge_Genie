@@ -181,5 +181,17 @@
  		order by board_no desc
 	</select>
 	
+	<select id="getMemberListCount" resultType="_int">
+		select count(*)
+		from member	
+		where status='Y' 
+	</select>
+	
+	<select id="selectMemberList" resultMap="memberResultSet">
+	select *
+ 		from member
+ 		where status='Y' 
+ 		order by member_no desc
+	</select>
 	
 </mapper>

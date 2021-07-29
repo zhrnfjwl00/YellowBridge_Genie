@@ -74,7 +74,7 @@
 										<a href="${ qnaDetail }">${ qna.qTitle }</a>
 								</td>
 								
-								<td align="center">${ qna.qWriterNickname }</td>
+								<td align="center">${ qna.qWriter}</td>
 								<td align="center">${ qna.qCreateDate }</td>
 								<td align="center">${ qna.qCount }</td>
 							</tr>

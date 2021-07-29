@@ -303,15 +303,32 @@ public class MemberController {
 	
 	
 	@RequestMapping("memberListForm.me")
-	public String memberListForm() {
-		return "memberListForm.jsp";
+	public ModelAndView memberList(@RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session, HttpServletRequest request) {
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int mlistCount = mService.getMemberListCount();
+		System.out.println(mlistCount);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, mlistCount);
+		System.out.println(pi);
+		
+		ArrayList<Member> memberlist = mService.selectMemberList(pi);
+		System.out.println(memberlist);
+		
+		if(memberlist != null) {
+			mv.addObject("memberlist", memberlist).addObject("pi", pi).setViewName("memberListForm");
+		}
+		return mv;
 	}
 
 }
  	
  	
  	
- 	
- 	
+
  	
  	

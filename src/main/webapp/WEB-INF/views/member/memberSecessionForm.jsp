@@ -16,7 +16,6 @@
 	.secessionArea{
 	width:400px;
 	height: 200px;
-	border: 1px solid black;
 	margin: 0 auto;
 	text-align: center;
 	

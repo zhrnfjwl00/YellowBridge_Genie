@@ -40,7 +40,13 @@
 </head>
 <body>
 <div class="scBoard">
-	<c:import url="../common/header.jsp"/>
+	<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
 	<div style="text-align:center;" class="supportBoardtext">
 		<h1 style="color:#BDCC94;"><b>공지사항</b></h1>
 		<h5><b>YELLOW BRIDGE 서비스 공지사항</b></h5>
