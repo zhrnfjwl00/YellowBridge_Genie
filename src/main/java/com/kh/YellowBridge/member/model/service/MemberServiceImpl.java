@@ -106,6 +106,21 @@ public class MemberServiceImpl implements MemberService {
 		return mDAO.selectFList(sqlSession, memberId, fpi);
 	}
 
+	@Override
+	public int getMemberListCount() {
+		return mDAO.getMemberListCount(sqlSession);
+	}
+	
+
+	@Override
+	public ArrayList<Member> selectMemberList(PageInfo pi) {
+		return mDAO.selectMemberList(sqlSession, pi);
+	}
+
+	
+	
+
+	
 	
 
 

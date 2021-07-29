@@ -45,6 +45,15 @@ public interface MemberService {
 
 	ArrayList<QnaBoard> selectFList(String memberId, PageInfo fpi);
 
+	int getMemberListCount();
+
+	ArrayList<Member> selectMemberList(PageInfo pi);
+
+
+
+
+	
+
 
 
 	

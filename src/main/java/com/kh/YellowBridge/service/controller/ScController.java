@@ -80,17 +80,20 @@ public class ScController {
 	}
 	
 	@RequestMapping(value="qnainsert.sc",method=RequestMethod.POST)
-	public String QnaInsert(@ModelAttribute QnaBoard b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request) throws UnsupportedEncodingException {
+	public String QnaInsert(@ModelAttribute QnaBoard b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
 
 		FileInfo scfi = new FileInfo();
 
+		String qWriter = ((Member)session.getAttribute("loginUser")).getNickname();
+
+		
 		if(uploadFile != null && !uploadFile.isEmpty()) { 
 			FileInfo scfinfo = saveFile(uploadFile, request);
 
 			if(scfinfo.getChangeName() != null) {
 				scfi.setFileName(uploadFile.getOriginalFilename()); 
 				scfi.setChangeName(scfinfo.getChangeName()); scfi.setFilePath(scfinfo.getFilePath());
-			} }b.setqWriter("qnaWriter");
+			} }b.setqWriter(qWriter);
 
 			int result = qnaService.insertqnaBoard(b, scfi);
 
@@ -179,14 +182,17 @@ public class ScController {
 	public String NoInsert(@ModelAttribute ScBoard b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
 
 		FileInfo fi = new FileInfo();
+		
+		String scWriter = ((Member)session.getAttribute("loginUser")).getNickname();
 
+		
 		if(uploadFile != null && !uploadFile.isEmpty()) { 
 			FileInfo finfo = saveFile(uploadFile, request);
 
 			if(finfo.getChangeName() != null) {
 				fi.setFileName(uploadFile.getOriginalFilename()); 
 				fi.setChangeName(finfo.getChangeName()); fi.setFilePath(finfo.getFilePath());
-			} }b.setScWriter("admin");
+			} }b.setScWriter(scWriter);
 
 			int result = scService.insertscBoard(b, fi);
 

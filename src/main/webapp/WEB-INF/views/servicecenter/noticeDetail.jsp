@@ -29,7 +29,13 @@
 </head>
 <body>
 <div class="container">
-	<c:import url="../common/header.jsp"/>
+	<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
 	<div style="text-align:center;" class="serviceBoardtext">
 		<h1 style="color:#BDCC94;"><b>공지사항</b></h1>
 	</div>
