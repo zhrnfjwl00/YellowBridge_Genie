@@ -72,13 +72,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int getSListCount(String memberNickName) {
-		return mDAO.getSListCount(sqlSession, memberNickName);
+	public int getSListCount(String memberId) {
+		return mDAO.getSListCount(sqlSession, memberId);
 	}
 
 	@Override
-	public ArrayList<VolunteerBoard> selectSList(String memberNickName, PageInfo spi) {
-		return mDAO.selectSList(sqlSession, memberNickName, spi);
+	public ArrayList<VolunteerBoard> selectSList(String memberId, PageInfo spi) {
+		return mDAO.selectSList(sqlSession, memberId, spi);
 	}
 
 	@Override
@@ -87,25 +87,40 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int getMListCount(String memberNickName) {
-		return mDAO.getMListCount(sqlSession, memberNickName);
+	public int getMListCount(String memberId) {
+		return mDAO.getMListCount(sqlSession, memberId);
 	}
 
 	@Override
-	public ArrayList<QnaBoard> selectMList(String memberNickName, PageInfo npi) {
-		return mDAO.selectMList(sqlSession, memberNickName, npi );
+	public ArrayList<QnaBoard> selectMList(String memberId, PageInfo npi) {
+		return mDAO.selectMList(sqlSession, memberId, npi );
 	}
 
 	@Override
-	public int getFListCount(String memberNickName) {
-		return mDAO.getFListCount(sqlSession, memberNickName);
+	public int getFListCount(String memberId) {
+		return mDAO.getFListCount(sqlSession, memberId);
 	}
 
 	@Override
-	public ArrayList<QnaBoard> selectFList(String memberNickName, PageInfo fpi) {
-		return mDAO.selectFList(sqlSession, memberNickName, fpi);
+	public ArrayList<QnaBoard> selectFList(String memberId, PageInfo fpi) {
+		return mDAO.selectFList(sqlSession, memberId, fpi);
 	}
 
+	@Override
+	public int getMemberListCount() {
+		return mDAO.getMemberListCount(sqlSession);
+	}
+	
+
+	@Override
+	public ArrayList<Member> selectMemberList(PageInfo pi) {
+		return mDAO.selectMemberList(sqlSession, pi);
+	}
+
+	
+	
+
+	
 	
 
 
