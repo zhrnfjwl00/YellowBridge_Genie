@@ -112,6 +112,22 @@ public class MemberDAO {
 	}
 
 
+	public int getMemberListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("memberMapper.getMemberListCount");
+	}
+
+
+	public ArrayList<Member> selectMemberList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMemberList", rowBounds);
+	}
+
+
+	
+
+
 
 	
 

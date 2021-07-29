@@ -45,7 +45,13 @@
 </head>
 <body>
 <div class="supportBoard">
-	<c:import url="../common/header.jsp"/>
+	<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
 	<div style="text-align:center;" class="supportBoardtext">
 		<h1 style="color:#BDCC94;"><b>결제 내역 조회</b></h1>
 		<b style="color:#BDCC94;">총 결제 금액 : </b><h4 id="total"></h4>

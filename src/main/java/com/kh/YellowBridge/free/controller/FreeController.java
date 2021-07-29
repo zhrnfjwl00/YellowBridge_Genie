@@ -77,9 +77,11 @@ public class FreeController {
 	
 	@RequestMapping(value="freeinsert.fr",method=RequestMethod.POST)
 	public String InsertFree(@ModelAttribute Free b, @RequestParam("uploadFile") MultipartFile uploadFile,HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException {
-		String bWriter = ((Member)session.getAttribute("loginUser")).getId(); 
+		String bWriter = ((Member)session.getAttribute("loginUser")).getNickname();
 		FileInfo scfi = new FileInfo();
-
+		
+		
+		
 		if(uploadFile != null && !uploadFile.isEmpty()) { 
 			FileInfo scfinfo = saveFile(uploadFile, request);
 			if(scfinfo != null) {

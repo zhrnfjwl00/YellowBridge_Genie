@@ -47,7 +47,7 @@
     </div>
          <nav>
             <ul id="menuBody" class="nav7nd">
-               <li class=""><a href="">사용자관리 </a>
+               <li class=""><a href="memberListForm.me">사용자관리 </a>
                   <div class="sub" style="display: none;">
                   </div></li>
                <li class=""><a href="t">통계파악</a>
@@ -58,7 +58,6 @@
                <li class=""><a href="">관리</a>
                   <div class="sub" style="display: none;">
                      <ul class="inner">
-                     	<li><a href="memberListForm.me">회원관리</a>
                         <li><a href="admin_adoption.ado">입양관리</a></li>
                         <li><a href="adminsearchlist.vol">봉사관리</a></li>
                         <li><a href="adminPaySelect.sup">후원관리</a></li>
