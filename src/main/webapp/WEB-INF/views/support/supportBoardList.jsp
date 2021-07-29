@@ -40,7 +40,13 @@
 </head>
 <body>
 <div class="supportBoard">
-	<c:import url="../common/header.jsp"/>
+	<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
 	<div style="text-align:center;" class="supportBoardtext">
 		<h1 style="color:#BDCC94;"><b>후원금 사용내역 조회 게시판</b></h1>
 		<h5><b>소중한 후원금 이렇게 쓰였습니다.</b></h5>

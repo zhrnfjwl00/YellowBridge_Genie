@@ -149,11 +149,25 @@
 	margin: 40px auto 50px auto;
 	text-align: center;
 }
+
+.area {
+	width: 100%;
+	height: 150px;
+}
+
+.wrap_sub {
+	margin-top: -150px;
+}
 </style>
 </head>
 <body>
-	<c:import url="../common/header.jsp" />
-
+		<c:if test="${loginUser.id.equals('admin')}">
+			<c:import url="../admin/header.jsp" />
+		</c:if>
+		<c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+			<c:import url="../common/header.jsp" />
+		</c:if>
+		<div class="area"></div>
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">

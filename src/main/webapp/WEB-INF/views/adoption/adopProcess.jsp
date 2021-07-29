@@ -7,11 +7,15 @@
 <meta charset="UTF-8">
 <title>입양절차</title>
 <style>
+.area {
+	width: 100%;
+	height: 150px;
+}
 </style>
 </head>
 <body>
-	<c:import url="../common/header.jsp"/>
-		
+		<c:import url="../common/header.jsp" />
+		<div class="area"></div>
 		<div class="container" >
 		<div class="row">
 			<div class="col-sm-12" style="margin-top:130px" >

@@ -5,6 +5,8 @@
 
 <html>
 	<head>
+	
+		
 		<!-- 합쳐지고 최소화된 최신 CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 		<!-- 부가적인 테마 -->
@@ -15,6 +17,7 @@
 	 	<title>게시판</title>
 	 	
 	 	<style type="text/css">
+	 			#area1{width:100%; height:150px;}
 	 		#rinsertBtn, #deleteBtn, #updateBtn{float: right; margin: 5px;}
 	 		#listBtn{float: center;}
 			.replyTable{margin: auto; width: 900px;}
@@ -22,7 +25,15 @@
 	 	</style>
 	</head>
 	<body>
-		<c:import url="../common/header.jsp"/>
+	<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
+		<div id="area1">
+		</div>	
 		<div class="container">
 			<header>
 				<h1> 게시판</h1>
@@ -42,10 +53,10 @@
 					<table>
 						<tr>
 							<th> ${board.bTitle} 
-							<c:if test="${loginUser.id eq board.bWriter}">
-							<button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${sdelete}'">삭제</button>
-							<button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${supdateView}'">수정</button>
-							</c:if>
+							<c:if test="${loginUser.id.equals('admin')}">
+                       			 <button class="delete_btn btn btn-danger" id="deleteBtn" onclick="location.href='${sdelete}'">삭제</button>
+                     			 <button class="update_btn btn btn-warning" id="updateBtn" onclick="location.href='${supdateView}'">수정</button>
+                     		</c:if>
 							</th>
 						</tr>
 						<tr>

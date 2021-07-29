@@ -68,7 +68,9 @@
     	border-radius: 5px;
     	padding: 8px 10px;
 	}
+	
 	.btnDiv{ width:100%;  padding-bottom:30px; }
+	
 	#writeBtn{float: right;}
 	
 	.menuwrap{background: #EDFFC0; width: 100%; height: 50px; margin-bottom: 50px;}

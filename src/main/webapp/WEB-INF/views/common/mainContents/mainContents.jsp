@@ -47,7 +47,7 @@
 				<li class="on" style="background:#f2ffca; position:right;" >
 				<!-- #f2ffca -->
 				    <a href="">
-				        <img src="<%= request.getContextPath() %>/resources/images/mainImg.png" style="height: 380px;">
+				        <img src="<%= request.getContextPath() %>/resources/images/MainMainImage.png" style="height: 300px;  ">
 				    </a>
 				</li>
 				
@@ -214,7 +214,7 @@
 				
 				for(var i in data){
 					$ul.append(
-						'<li>'+ '<a href="adoptionRecodeDetail.ado?adopId='+ data[i].adopId +'&page=1" style="font-size:25px;">'+ data[i].adopTitle +'</a>' + '<span style="font-size:25px;">' + data[i].adopModifyDate + '</span>' +'</li>'
+						'<li>'+ '<a href="adoptionRecodeDetail.ado?adopId='+ data[i].adopId +'&page=1" style="font-size:15px;">'+ data[i].adopTitle +'</a>' + '<span style="font-size:10px;">' + data[i].adopModifyDate + '</span>' +'</li>'
 					);
 				}
 			}
@@ -232,6 +232,8 @@
 	});
 
 	
+	
+	
 	function noticeList(){
 		$.ajax({
 			url:'noticeList.sc',
@@ -243,7 +245,7 @@
 				
 				for(var i in data){
 					$ul.append(
-						'<li>'+ '<a href="nodetail.sc?scId='+ data[i].scId +'&page=1" style="font-size:25px;">'+ data[i].scTitle +'</a>' + '<span style="font-size:25px;">' + data[i].scModifyDate + '</span>' +'</li>'
+						'<li>'+ '<a href="nodetail.sc?scId='+ data[i].scId +'&page=1" style="font-size:15px;">'+ data[i].scTitle +'</a>' + '<span style="font-size:10px;">' + data[i].scModifyDate + '</span>' +'</li>'
 					);
 				}
 			}
@@ -260,6 +262,8 @@
 		clearInterval(timer);
 	});
 
+	
+	
 
 </script>
 

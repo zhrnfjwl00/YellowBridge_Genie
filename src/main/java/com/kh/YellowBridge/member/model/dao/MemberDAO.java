@@ -68,16 +68,16 @@ public class MemberDAO {
 	}
 
 
-	public int getSListCount(SqlSessionTemplate sqlSession, String memberNickName) {
-		return sqlSession.selectOne("memberMapper.getSListCount", memberNickName);
+	public int getSListCount(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.selectOne("memberMapper.getSListCount", memberId);
 	}
 
 
-	public ArrayList<VolunteerBoard> selectSList(SqlSessionTemplate sqlSession, String memberNickName, PageInfo spi) {
+	public ArrayList<VolunteerBoard> selectSList(SqlSessionTemplate sqlSession, String memberId, PageInfo spi) {
 		int offset = (spi.getCurrentPage() - 1) * spi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, spi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.selectSList", memberNickName, rowBounds);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectSList", memberId, rowBounds);
 	}
 
 
@@ -86,30 +86,46 @@ public class MemberDAO {
 	}
 
 
-	public int getMListCount(SqlSessionTemplate sqlSession, String memberNickName) {
-		return sqlSession.selectOne("memberMapper.getMListCount", memberNickName);
+	public int getMListCount(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.selectOne("memberMapper.getMListCount", memberId);
 	}
 
 
-	public ArrayList<QnaBoard> selectMList(SqlSessionTemplate sqlSession, String memberNickName, PageInfo npi) {
+	public ArrayList<QnaBoard> selectMList(SqlSessionTemplate sqlSession, String memberId, PageInfo npi) {
 		int offset = (npi.getCurrentPage() - 1) * npi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, npi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.selectMList", memberNickName, rowBounds);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMList", memberId, rowBounds);
 	}
 
 
-	public int getFListCount(SqlSessionTemplate sqlSession, String memberNickName) {
-		return sqlSession.selectOne("memberMapper.getFListCount", memberNickName);
+	public int getFListCount(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.selectOne("memberMapper.getFListCount", memberId);
 	}
 
 
-	public ArrayList<QnaBoard> selectFList(SqlSessionTemplate sqlSession, String memberNickName, PageInfo fpi) {
+	public ArrayList<QnaBoard> selectFList(SqlSessionTemplate sqlSession, String memberId, PageInfo fpi) {
 		int offset = (fpi.getCurrentPage() - 1) * fpi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, fpi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.selectFList", memberNickName, rowBounds);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectFList", memberId, rowBounds);
 	}
+
+
+	public int getMemberListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("memberMapper.getMemberListCount");
+	}
+
+
+	public ArrayList<Member> selectMemberList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMemberList", rowBounds);
+	}
+
+
+	
 
 
 

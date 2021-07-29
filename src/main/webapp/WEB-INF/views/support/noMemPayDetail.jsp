@@ -8,7 +8,9 @@
 <title>로그인 창</title>
 <style>
 	
-	.loginArea { width:500px; height:400px; text-align:center; padding:50px;  margin-left:550px; margin-top:150px;}
+	#area1{width:100%; height:200px;}
+	
+	.loginArea { width:500px; height:400px; text-align:center; padding:50px;  margin: 0 auto;}
     .loginArea h3 {font-size:50px; }
     
     #userName {padding-left: 70px; padding-bottom: 20px;}
@@ -29,6 +31,8 @@
 </head>
 <body>
 <c:import url="../common/header.jsp"/>
+<div id="area1">
+</div>
 	<div class="loginArea">
 		<form action="noMemPayResult.sup" method="post">
 			<h3>비회원 인증</h3> <br>

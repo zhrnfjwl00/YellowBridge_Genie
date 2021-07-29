@@ -69,7 +69,7 @@ public class ScController {
 			mv.addObject("qnalist", qnalist).addObject("pi", pi).setViewName("qna");
 
 		} else {
-			throw new QnAException("qna 전체조회에 실패하였습니다.");
+			throw new QnAException("qna �쟾泥댁“�쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		return mv;
 	}
@@ -80,17 +80,20 @@ public class ScController {
 	}
 	
 	@RequestMapping(value="qnainsert.sc",method=RequestMethod.POST)
-	public String QnaInsert(@ModelAttribute QnaBoard b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request) throws UnsupportedEncodingException {
+	public String QnaInsert(@ModelAttribute QnaBoard b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
 
 		FileInfo scfi = new FileInfo();
 
+		String qWriter = ((Member)session.getAttribute("loginUser")).getNickname();
+
+		
 		if(uploadFile != null && !uploadFile.isEmpty()) { 
 			FileInfo scfinfo = saveFile(uploadFile, request);
 
 			if(scfinfo.getChangeName() != null) {
 				scfi.setFileName(uploadFile.getOriginalFilename()); 
 				scfi.setChangeName(scfinfo.getChangeName()); scfi.setFilePath(scfinfo.getFilePath());
-			} }b.setqWriter("qnaWriter");
+			} }b.setqWriter(qWriter);
 
 			int result = qnaService.insertqnaBoard(b, scfi);
 
@@ -151,7 +154,7 @@ public class ScController {
 			uploadFile.transferTo(new File(renamePath));
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("파일전송 에러 : " + e.getMessage());
+			System.out.println("�뙆�씪�쟾�넚 �뿉�윭 : " + e.getMessage());
 
 		}
 
@@ -179,14 +182,17 @@ public class ScController {
 	public String NoInsert(@ModelAttribute ScBoard b, @RequestParam("uploadFile") MultipartFile uploadFile, HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
 
 		FileInfo fi = new FileInfo();
+		
+		String scWriter = ((Member)session.getAttribute("loginUser")).getNickname();
 
+		
 		if(uploadFile != null && !uploadFile.isEmpty()) { 
 			FileInfo finfo = saveFile(uploadFile, request);
 
 			if(finfo.getChangeName() != null) {
 				fi.setFileName(uploadFile.getOriginalFilename()); 
 				fi.setChangeName(finfo.getChangeName()); fi.setFilePath(finfo.getFilePath());
-			} }b.setScWriter("admin");
+			} }b.setScWriter(scWriter);
 
 			int result = scService.insertscBoard(b, fi);
 
@@ -201,7 +207,7 @@ public class ScController {
 	@RequestMapping("notice.sc")
 	public ModelAndView Notice(@RequestParam(value="page",required=false) Integer page, ModelAndView mv,HttpSession session) {
 
-		int currentPage = 1; // 占쎈염占쎄텦占쎈퓠 占쎄텢占쎌뒠占쎈막 癰귨옙占쎈땾
+		int currentPage = 1; // �뜝�럥�뿼�뜝�럡�뀰�뜝�럥�뱺 �뜝�럡�뀬�뜝�럩�뮔�뜝�럥留� �솻洹⑥삕�뜝�럥�빢
 
 		if(page != null) {
 			currentPage = page;
@@ -233,7 +239,7 @@ public class ScController {
 		if(scboard != null) {
 			mv.addObject("page",page).addObject("board",scboard).setViewName("noticeDetail");;
 		}else {
-			throw new NoticeException("野껊슣�뻻占쎈솇 占쎄맒占쎄쉭癰귣떯由곤옙肉� 占쎈뼄占쎈솭占쎈릭占쏙옙占쎈뮸占쎈빍占쎈뼄.");
+			throw new NoticeException("�뇦猿딆뒩占쎈뻣�뜝�럥�냷 �뜝�럡留믣뜝�럡�돪�솻洹ｋ뼬�뵳怨ㅼ삕�굢占� �뜝�럥堉꾢뜝�럥�넮�뜝�럥由��뜝�룞�삕�뜝�럥裕멨뜝�럥鍮띶뜝�럥堉�.");
 		}
 		return mv;
 
@@ -270,7 +276,7 @@ public class ScController {
 		int result = scService.deleteBoard(scId);
 		
 		if(result > 0) {
-			return "redirect:qna.sc";
+			return "redirect:notice.sc";
 		} else {
 			throw new QnAException(".");
 		}
@@ -326,7 +332,7 @@ public class ScController {
 				
 				return "redirect:qnaDetail.sc?qId=" + b.getqId() + "&page=" + page;
 			} else {
-				throw new QnAException("오류입니다.");
+				throw new QnAException("�삤瑜섏엯�땲�떎.");
 			}
 
 	}
@@ -344,13 +350,13 @@ public class ScController {
 		String rWriter = ((Member)session.getAttribute("loginUser")).getId();
 		
 		
-		r.setrWriter(rWriter); // user01을 가지고있음
+		r.setrWriter(rWriter); // user01�쓣 媛�吏�怨좎엳�쓬
 		
 		int result = qnaService.insertReply(r);
 		if(result > 0) {
 			return "success";
 		}else {
-			throw new QnAException("댓글등록에 실패하였습니다");
+			throw new QnAException("�뙎湲��벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎");
 		}
 			
 			
@@ -378,7 +384,7 @@ public class ScController {
 		if(result > 0) {
 			return "redirect:qnaDetail.sc?qId=" + qId + "&page=" + page;
 		} else {
-			throw new QnAException("寃뚯떆臾� �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
+			throw new QnAException("野껊슣�뻻�눧占� 占쎄텣占쎌젫占쎈퓠 占쎈뼄占쎈솭占쎈릭占쏙옙占쎈뮸占쎈빍占쎈뼄.");
 		}
 		
 	}
