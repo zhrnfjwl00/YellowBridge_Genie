@@ -13,31 +13,70 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <style>
-  	#serviceApplyBoardTable{text-align: center;}
-  	#serviceApplyBoardTable tr th{padding: 10px; font-size: 18px; font-weight: bold; border-bottom: 1px solid black;}
-  	#serviceApplyBoardTable tr td{padding: 7px; font-size: 16px; }
-  	
-	.serviceApplyBoard {
-		width: 65%;
-		margin: 0px auto;
-	}
-	.serviceApplyBoardtext{
-		margin-top: 150px;
-		letter-spacing: -1px;
-	}
-	
-	.tableNo{width: 10%;}
-	.animalNo{width: 10%;}
-	.content{width:40%;}
-	.tableDate{width:15%;}
-	.tableStatus{width:15%;}
-	
-	#listArea{padding: 5px; align:center;}
+#serviceApplyBoardTable {
+	text-align: center;
+}
+
+#serviceApplyBoardTable tr th {
+	padding: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	border-bottom: 1px solid black;
+}
+
+#serviceApplyBoardTable tr td {
+	padding: 7px;
+	font-size: 16px;
+}
+
+.serviceApplyBoard {
+	width: 65%;
+	margin: 0px auto;
+}
+
+.serviceApplyBoardtext {
+	margin-top: 150px;
+	letter-spacing: -1px;
+}
+
+.tableNo {
+	width: 10%;
+}
+
+.animalNo {
+	width: 10%;
+}
+
+.content {
+	width: 40%;
+}
+
+.tableDate {
+	width: 15%;
+}
+
+.tableStatus {
+	width: 15%;
+}
+
+#listArea {
+	padding: 5px;
+	align: center;
+}
+
+.area {
+	width: 100%;
+	height: 150px;
+}
+
+.serviceApplyBoard {
+	margin-top: -100px;
+}
 </style>
 </head>
 <body>
 <div class="serviceApplyBoard">
-
+	<div class="area"></div>
 	<c:import url="../common/header.jsp"/>
 	
 	<div style="text-align:center;" class="serviceApplyBoardtext">

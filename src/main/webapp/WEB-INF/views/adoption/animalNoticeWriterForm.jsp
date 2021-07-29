@@ -148,12 +148,17 @@
 	text-decoration: none;
 	font-size: 0.9375em;
 }
+
+.area {
+	width: 100%;
+	height: 150px;
+}
+
 </style>
-
-
 </head>
 <body>
 	<c:import url="../admin/header.jsp" />
+		<div class="area"></div>
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">

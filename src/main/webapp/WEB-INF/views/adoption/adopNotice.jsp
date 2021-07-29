@@ -10,21 +10,29 @@
 <title>입양공고</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/adoption.css">
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
+<style>
+.area {
+	width: 100%;
+	height: 150px;
+}
 
+.wrap_sub {
+	margin-top: -150px;
+}
+</style>
 </head>
 <body>
-	<c:import url="../common/header.jsp" />
-
-
-
-
+<c:if test="${loginUser.id.equals('admin')}">
+      <c:import url="../admin/header.jsp"/>
+   </c:if>
+   <c:if test="${!loginUser.id.equals('admin') || empty loginUser}">
+      <c:import url="../common/header.jsp"/>
+   </c:if>
+	<div class="area"></div>
 	<div class="wrap_sub">
 		<div class="rescue">
 			<div class="menu_name">
-
 				<h2>입양공고</h2> 
-
-
 				<hr>
 			</div>
 				<c:forEach var="animal" items="${ animallist }">
