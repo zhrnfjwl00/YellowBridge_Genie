@@ -29,11 +29,15 @@
 * 사이트의 메인페이지 
   * 입양동물, 봉사, 입양일지, 공지사항을 사용자 조회순으로 보여줌으로써 사용자에게 정보 제공 
 
+
+
+
 <img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="50%" height="50%">
 
 * 입양 카테고리 
   * 입양동물들의 대한 정보를 사용자에게 제공 
   * 입양을 위한 양식을 제공함으로써 사용자의 손쉬운 접근 유도
+
 
 
 
@@ -45,12 +49,14 @@
   
   
   
+  
 <img src ="https://user-images.githubusercontent.com/75979713/128276397-cbe42b65-8d79-4581-9708-59d1aac13470.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276449-98e5b7d9-c4dc-43dc-900c-65a70d0a2b1b.png" width="50%" height="50%">
 
 * 후원 카테고리 
   * 사용자의 정보를 입력하고 결제API를 사용하여 결제 가능 
   * 사용자 본인이 후원한 정보를 기간별로 정보 제공 
   
+
 
 ## 설계 주안점
 + 각 카테고리별 정보가 사용자에게  쉽게 파악할수 있도록 설계 
