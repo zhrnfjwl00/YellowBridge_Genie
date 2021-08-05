@@ -32,7 +32,7 @@
 
 
 
-<img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="40%" height="50%">
+<img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="40%" height="40%">
 
 * 입양 카테고리 
   * 입양동물들의 대한 정보를 사용자에게 제공 
@@ -56,13 +56,17 @@
   * 사용자의 정보를 입력하고 결제API를 사용하여 결제 가능 
   * 사용자 본인이 후원한 정보를 기간별로 정보 제공 
   
+  
+  
 
 
 ## 설계 주안점
 + 각 카테고리별 정보가 사용자에게  쉽게 파악할수 있도록 설계 
 + 봉사프로그램 구매와 입양 후 입양일지 작성을 통하여 책임감을 높임. 
 + 회원 정보 연동을  통한 편리한 후원 신청 가능
-+ 각각의 신청 및 구매내역을 쉽게 파악하도록 구성 및 설계 
++ 각각의 신청 및 구매내역을 쉽게 파악하도록 구성 및 설계
+
+
  
 
 
