@@ -24,24 +24,32 @@
 
 
 ## 핵심 특징
-<img src ="https://user-images.githubusercontent.com/73329610/127971641-2dd3fb6b-cca2-45a2-a027-9458d160770b.png" width="50%" height="50%">
+<img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="50%" height="50%">
 
 * 사이트의 메인페이지 
-  * 레시피 조회 순 별로 인기 TOP4를 보여줌 
-  * 지역 특산물을 사용한 횟수 순으로 인기 TOP4를 보여줌 
-  * 사용자들이 집에 있는 레시피 컨텐츠를 통해 ' 이 재료로 추천받기' 를 클릭하면 해당 재료에 맞게 레시피 목록을 보여줌  
+  * 입양동물, 봉사, 입양일지, 공지사항을 사용자 조회순으로 보여줌으로써 사용자에게 정보 제공 
 
-<img src ="https://user-images.githubusercontent.com/73329610/127974742-1663bc4d-71cd-425e-8763-941a8cf35dda.png" width="50%" height="50%">
+<img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="50%" height="50%">
 
-* 사용자가 해당 페이지에서 레시피를 추가할 수 있는 기능
-  * 레시피를 추가하면 메인페이지에 레시피가 노출
-  * 자신이 작성한 레시피는 마이 페이지에서 확인 가능 
+* 입양 카테고리 
+  * 입양동물들의 대한 정보를 사용자에게 제공 
+  * 입양을 위한 양식을 제공함으로써 사용자의 손쉬운 접근 유도
 
 
-<img src ="https://user-images.githubusercontent.com/73329610/127976877-28bc7642-c581-4fc9-8821-58858b6d2363.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/73329610/127976609-e0288243-c94a-455a-9c74-b7dc77d02d83.png" width="50%" height="50%">
 
-* 사용자가 설문조사를 작성하면 DB에 저장되고 , 설문조사를 구글 통계 API를 이용하여 집계처리
-* 설문조사를 통해  사용자들의 연령이나 성별과 연관시켜서 연령이나 성별에 따른 식습관이나 트렌드 파악
+<img src ="https://user-images.githubusercontent.com/75979713/128276276-0066d407-8355-447d-8bb1-fed555c0cd1b.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276298-291bf01b-8088-4e3e-a283-e50ec09f44ca.png" width="50%" height="50%">
+
+* 봉사 카테고리 
+  * 봉사시설에 대한 정보를 사용자에게 제공 
+  * API들을 사용하여 사용자에게 봉사시설에 대한 설명과 봉사신청을 진행 가능
+  
+  
+  
+<img src ="https://user-images.githubusercontent.com/75979713/128276397-cbe42b65-8d79-4581-9708-59d1aac13470.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276449-98e5b7d9-c4dc-43dc-900c-65a70d0a2b1b.png" width="50%" height="50%">
+
+* 후원 카테고리 
+  * 사용자의 정보를 입력하고 결제API를 사용하여 결제 가능 
+  * 사용자 본인이 후원한 정보를 기간별로 정보 제공 
   
 
 ## 설계 주안점
