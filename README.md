@@ -32,7 +32,7 @@
 
 
 
-<img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="50%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="50%" height="50%">
+<img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="40%" height="50%">
 
 * 입양 카테고리 
   * 입양동물들의 대한 정보를 사용자에게 제공 
