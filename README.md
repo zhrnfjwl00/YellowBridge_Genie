@@ -1,23 +1,23 @@
-# 콕콕! 쿡쿡!
+# YellowBridge
 
-## 개요 : 레시피 커뮤니티 사이트 
+## 개요 : 유기동물 입양 및 기부 사이트
 
-+ 전국의 특산물과 관련하여 사용자들끼리 레시피를 공유하고 이를 통해 지역 특산물 소비 촉진을 장려
-+ 사용자들이 실제로 가지고 있는 재료들에 맞게 레시피들을 제공해주는 큐레이션 기능을 통해 재료 구비에 대한 부담을 덜어줌
-+ 사용자들에 대한 설문조사를 진행하여 사용자들의 식생활에 대한 정보를 얻고 사용자들에게 서비스를 제공할 때 이를 활용
++ 유기동물이 늘어나고 있는 실정에 제작한 사이트를 통해 경각심 및 쉬운 입양 접근 
++ 기부금 내역을 투명하게 공개함으로 인해 기부를 적극적으로 유도 
++ 입양 이후의 입양 일지를 통해 파양율을 낮추고 입양한 동물들의 상태 확인 가능
++ 금전적인 기부 뿐만 아니라 봉사를 통해 다양한 후원 방식 제공
 
 ## 사용기술 및 개발 환경
 <img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white"><img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"><img src="https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">  <img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white">
 
 ## 구현 기능 
 
-+ 사용자 회원가입 / 로그인/ 회원탈퇴 / 내정보 수정 / 아이디 찾기 / 비밀번호 찾기 
-+ 네이버 API 를 이용하여 별도의 회원가입없이 간편하게 로그인 할 수 있는 기능 제공  
-+ Mail API 를 이용하여 회원가입 및 비밀번호 찾기 , 이벤트 정보 제공 등에서 사용자에게 메일 발송 기능  
-+ 사용자 레시피 등록/ 상세보기 / 수정 
-+ 이벤트 게시판을 만들어 사용자에게 이벤트에 대한 정보 제공 
-+ 설문조사 페이지를 만들어 사용자가 설문조사를 하고 이에 대한 통계를 추출 
-+ 관리자 페이지를 구현하여  사용자 관리, Q&A관리, 이벤트 관리 , 공지사항 관리 
++ 사용자 회원가입 / 로그인/ 회원탈퇴 / 회원정보 수정 / 마이페이지
++ 봉사프로그램을 구매할 수 있는 형태로 제작 및 자신이 원하는 조건에 맞는 봉사 검색 기능
++ 결제기능을 통해 후원 기능 구현 및 후원사용내역 확인 가능
++ 게시판 관련 기능(글 쓰기, 덧글, 목록 보기, 글 읽기)
++ 관리자를 통한 웹사이트 정보의 관리
+
 
 ## 핵심 특징
 <img src ="https://user-images.githubusercontent.com/73329610/127971641-2dd3fb6b-cca2-45a2-a027-9458d160770b.png" width="50%" height="50%">
@@ -41,22 +41,24 @@
   
 
 ## 설계 주안점
-+ 전국의 특산물 및 사용자들이 실제로 가지고 있는 재료들에 맞게 레시피를 작성/수정/ 찜 하게 하기 위하여 다음과 같은 기능을 구현 
-+ 메인 페이지서에 인기 레시피 및 지역 특산물을 이용한 레시피 제공 
-+ 메인 페이지에서 집에 있는 재료를 선택하여 사용자가 선택한 재료로 레시피 추천 
-+ 메인페이지에서 주제별 레시피 , 재료 별 레시피 , 특산물 별 레시피 게시판 구현 
-+ 마이페이지에서 자신이 찜한 레시피 목록을 보여주는 기능 구현 
++ 각 카테고리별 정보가 사용자에게  쉽게 파악할수 있도록 설계 
++ 봉사프로그램 구매와 입양 후 입양일지 작성을 통하여 책임감을 높임. 
++ 회원 정보 연동을  통한 편리한 후원 신청 가능
++ 각각의 신청 및 구매내역을 쉽게 파악하도록 구성 및 설계 
+ 
 
 
 ## 팀원별 단위 업무
 
-임 종 부 (팀장) : 프로젝트 일정 및 전체 관리 , GiHub 관리 , 프로젝트 api 담당, 사용자 Member 기능 구현   
-서 민 기        : DB스키마 생성, DB관리, 레시피 (등록, 상세보기, 수정)    
-윤 종 훈        : 스토리보드 작성 , ERD 설계 , 페이지 디자인, 공지사항 게시판 , Q&A 게시판 , 아이디 찾기 , 설문조사 구현    
-이 정 호        : 웹 사이트 디자인 , 스토리보드 제작, 사이트 배너 및 이벤트 이미지 제작 , 이벤트 게시판 , 관리자(재료 관리, 특산물 관리, 통계관리)    
-류 승 재        : Q&A 답변 기능 , 비밀번호 찾기 , 공지 사항 게시판 , 설문조사 기능 구현    
-오 진 영        : 관리자(사용자 관리, Q&A관리, 이벤트 관리 , 공지사항 관리)   
-         
+전 상 수 (팀장)  : 프로젝트 일정 및 전체 관리 , 회원 정보 관련 및 마이페이지, 메인페이지 구성 및 제작  
+김 도 영        : 커뮤니티 카테고리 및 관리자 관련 카테고리 담당, 공지사항,Q&A,FAQ 구성 및 제작, 커뮤니티(자유게시판) 제작, 관리자 페이지 구성  
+김 지 연        : 후원 관련카테고리 담당, [사용자] : 후원 결제 시스템 , 후원결제 내역 파악,후원사용내역 게시판 열람 및 댓글기능 가능, 
+                                       [관리자] : 후원 결제 내역 파악 (사용자의 결제 상태 변경 가능), 후원 사용내역 게시판 글 작성 (수정,삭제)    
+김 채 원        : 봉사 관련 카테고리 담당,  [사용자] 봉사공고, 봉사신청, 봉사신청 확인, 봉사게시판(물품요청, 후기작성),
+                                         [관리자] 봉사공고 작성, 봉사신청 관리
+이 새 린        : 입양 관련 카테고리 담당,  [사용자] 공고,입양신청,입양신청조회, 입양일지조회,작성,수정,삭제,
+                                         [관리자] 공고등록, 사용자 입양신청관리, 입양일지관리
+
 
 
 
