@@ -41,7 +41,7 @@
 
 
 
-<img src ="https://user-images.githubusercontent.com/75979713/128276276-0066d407-8355-447d-8bb1-fed555c0cd1b.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276298-291bf01b-8088-4e3e-a283-e50ec09f44ca.png" width="40%" height="50%">
+<img src ="https://user-images.githubusercontent.com/75979713/128277309-6e2b7ee1-4379-4916-b578-59871367cd2d.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128277345-554da238-b6ae-45c6-bedd-aa0174b5b2a4.png" width="40%" height="50%">
 
 * 봉사 카테고리 
   * 봉사시설에 대한 정보를 사용자에게 제공 
@@ -50,7 +50,7 @@
   
   
   
-<img src ="https://user-images.githubusercontent.com/75979713/128276397-cbe42b65-8d79-4581-9708-59d1aac13470.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128276449-98e5b7d9-c4dc-43dc-900c-65a70d0a2b1b.png" width="40%" height="50%">
+<img src ="https://user-images.githubusercontent.com/75979713/128277377-0da26aa3-296d-401b-8396-95c29a39a90b.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128277425-18e96a88-05dd-4d85-92d3-50fd1c16f877.png" width="40%" height="50%">
 
 * 후원 카테고리 
   * 사용자의 정보를 입력하고 결제API를 사용하여 결제 가능 
