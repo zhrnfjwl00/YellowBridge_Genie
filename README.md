@@ -72,7 +72,7 @@
 
  <br><br>
 
-
+<details><summary> ##핵심기능 </summary>
 ## 핵심 기능
 <img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="50%" height="50%">
 
@@ -107,8 +107,7 @@
   * 사용자의 정보를 입력하고 결제API를 사용하여 결제 가능 
   * 사용자 본인이 후원한 정보를 기간별로 정보 제공 
   
-
-  
+</etails>
 
 
 
