@@ -108,9 +108,10 @@
   * 사용자의 정보를 입력하고 결제API를 사용하여 결제 가능 
   * 사용자 본인이 후원한 정보를 기간별로 정보 제공 
   
-</etails>
+</details>
 
 
+<br><br>
 ## 참고사이트 
 - [러피월드](https://luppyworld.com/VolunteerApply)
 - [(사)한국동물구조관리협회](http://www.karma.or.kr/)
