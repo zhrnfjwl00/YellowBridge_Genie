@@ -89,7 +89,7 @@
 
 
 
-<img src ="https://user-images.githubusercontent.com/75979713/128277309-6e2b7ee1-4379-4916-b578-59871367cd2d.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128277345-554da238-b6ae-45c6-bedd-aa0174b5b2a4.png" width="40%" height="365">
+<img src ="https://user-images.githubusercontent.com/75979713/128277309-6e2b7ee1-4379-4916-b578-59871367cd2d.png" width="40%" height="50%"><img src ="https://user-images.githubusercontent.com/75979713/128277345-554da238-b6ae-45c6-bedd-aa0174b5b2a4.png" width="40%" height="368">
 
 * 봉사 카테고리 
   * 봉사시설에 대한 정보를 사용자에게 제공 
