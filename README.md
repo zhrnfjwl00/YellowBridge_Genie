@@ -72,12 +72,13 @@
 <details><summary> 펼치기 </summary>
 
 <img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="50%" height="50%">  
-
+  
+  
 * 사이트의 메인페이지 
   * 입양동물, 봉사, 입양일지, 공지사항을 사용자 조회순으로 보여줌으로써 사용자에게 정보 제공 
 
 
-<br><br>
+<br><br> 
 
 <img src ="https://user-images.githubusercontent.com/75979713/128276171-b3f34e28-0004-4487-9e10-c5c827e1b0ae.png" width="40%" height="50%">  <img src ="https://user-images.githubusercontent.com/75979713/128276231-c2b1e2de-f615-4b49-8e3d-ad7fb1824c91.png" width="40%" height="40%">
 
