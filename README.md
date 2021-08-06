@@ -71,8 +71,8 @@
 
 
  <br><br>
-##핵심기능
-<details><summary> 핵심기능 </summary>
+## 핵심기능
+<details><summary> ## 핵심기능 </summary>
 
 <img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="50%" height="50%">
 
