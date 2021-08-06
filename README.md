@@ -71,7 +71,7 @@
 ## 핵심기능
 <details><summary> 펼치기 </summary>
 
-<img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="50%" height="50%">  
+<img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="400" height="410">  
   
 * 사이트의 메인페이지 
   * 입양동물, 봉사, 입양일지, 공지사항을 사용자 조회순으로 보여줌으로써 사용자에게 정보 제공 
