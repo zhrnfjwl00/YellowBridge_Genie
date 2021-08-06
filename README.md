@@ -10,8 +10,8 @@
 
 
 
-# YellowBridge(#title).
-
+# 프로젝트명 : YellowBridge[Title section](#title).
+# 팀 명 : Genie(전상수, 김도영, 이새린, 김지영, 김채원)
 
 
 
