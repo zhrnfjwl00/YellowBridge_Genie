@@ -69,8 +69,8 @@
 
  <br><br>
 ## 핵심기능
-<details><summary> 펼치기/접기 </summary>
-
+<details><summary> 펼치기/접기 </summary>  
+<br>
 <img src ="https://user-images.githubusercontent.com/75979713/128276072-077e970d-7486-444f-9ec0-31f3de7b27a1.png" width="400" height="410">  
   
 * 사이트의 메인페이지 
